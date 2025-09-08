@@ -118,7 +118,7 @@ export default function FindDoctorPage() {
                     <DropdownMenuItem>मराठी</DropdownMenuItem>
                     </DropdownMenuItem>
                 </DropdownMenu>
-                <Button asChild>
+                 <Button asChild>
                     <Link href="/register">Register</Link>
                 </Button>
                 <Button variant="link" asChild className="text-primary">
@@ -173,7 +173,7 @@ export default function FindDoctorPage() {
                                 </div>
                                 <div className="flex items-center gap-4">
                                     <div className="flex items-center gap-1">
-                                        <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                                        <Star className="w-5 h-5 text-yellow-400 fill-current" />
                                         <span className="font-bold">{doctor.rating}</span>
                                         <span className="text-xs text-gray-500">({doctor.reviews} reviews)</span>
                                     </div>
@@ -247,4 +247,3 @@ export default function FindDoctorPage() {
     </div>
   );
 }
-
