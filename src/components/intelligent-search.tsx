@@ -25,6 +25,7 @@ import {
   Stethoscope,
   Store,
   AlertCircle,
+  BrainCircuit,
 } from 'lucide-react';
 import { useFormState, useFormStatus } from 'react-dom';
 
@@ -37,13 +38,15 @@ const initialState: SearchState = {
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" disabled={pending} size="icon" className="shrink-0">
+    <Button type="submit" disabled={pending} className="w-full mt-4 h-12 text-base bg-accent hover:bg-accent/90">
       {pending ? (
-        <div className="size-5 animate-spin rounded-full border-2 border-background border-t-transparent" />
+        <>
+          <div className="size-5 animate-spin rounded-full border-2 border-background border-t-transparent mr-2" />
+          Analyzing...
+        </>
       ) : (
-        <Search className="size-5" />
+        'Analyze Symptoms'
       )}
-      <span className="sr-only">Search</span>
     </Button>
   );
 }
@@ -66,23 +69,21 @@ export function IntelligentSearch() {
   const { pending } = useFormStatus();
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="font-headline text-2xl">
-          Intelligent Medical Search
-        </CardTitle>
-        <CardDescription>
-          Use our AI to find doctors, labs, and pharmacies. Try searching for
-          &quot;cardiologist near me&quot; or &quot;pharmacy open 24/7&quot;.
-        </CardDescription>
+    <Card className="w-full max-w-2xl mx-auto shadow-lg text-left">
+      <CardHeader className="text-center">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter text-gray-800">
+            Your Health, <span className="text-primary">Understood.</span>
+        </h1>
+        <p className="mt-4 max-w-xl mx-auto text-gray-500">
+            Feeling unwell? Describe your symptoms and our AI will suggest the right specialist for you.
+        </p>
       </CardHeader>
       <CardContent>
-        <form action={formAction} className="flex w-full items-start gap-2">
-          <div className="flex-1">
-            <Input
+        <form action={formAction}>
+           <Input
               name="query"
-              placeholder="e.g., 'fever medicine'"
-              className="text-base"
+              placeholder="I have a persistent headache and feel dizzy..."
+              className="h-12 text-base"
               aria-label="Search query"
             />
             {state.errors?.query && (
@@ -90,7 +91,6 @@ export function IntelligentSearch() {
                 {state.errors.query[0]}
               </p>
             )}
-          </div>
           <SubmitButton />
         </form>
       </CardContent>
@@ -105,7 +105,7 @@ export function IntelligentSearch() {
           )}
           {!pending && state.results.length > 0 && (
             <>
-              <h3 className="font-semibold">Search Results</h3>
+              <h3 className="font-semibold">Our Suggestions:</h3>
               <div className="grid w-full gap-4 md:grid-cols-2">
                 {state.results.map((result, index) => (
                   <div

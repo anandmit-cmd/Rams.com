@@ -1,13 +1,12 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
-import { Search, MapPin, Calendar, MessageSquare, Briefcase, Globe, BrainCircuit, HeartPulse, Bone, Baby, Glasses, Stethoscope, Dumbbell, Leaf, Users, ShieldCheck } from 'lucide-react';
+import { Search, Calendar, MessageSquare, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Leaf, Users, ShieldCheck, Dumbbell } from 'lucide-react';
 import Image from 'next/image';
 import { AppLogo } from '@/components/icons';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { Globe } from 'lucide-react';
+import { IntelligentSearch } from '@/components/intelligent-search';
 
 
 export default function LandingPage() {
@@ -50,27 +49,14 @@ export default function LandingPage() {
           <Button asChild>
             <Link href="/register">Register</Link>
           </Button>
-          <Button variant="outline" className="bg-accent hover:bg-accent/90 text-accent-foreground">Login</Button>
+          <Button variant="outline" className="bg-accent text-accent-foreground hover:bg-accent/90">Login</Button>
         </div>
       </header>
 
       <main className="flex-1">
         <section className="py-12 md:py-24 lg:py-32 bg-white">
-          <div className="container mx-auto px-4 md:px-6 text-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter text-gray-800">
-              Your Health, <span className="text-primary">Understood.</span>
-            </h1>
-            <p className="mt-4 max-w-xl mx-auto text-gray-500">
-              Feeling unwell? Describe your symptoms and our AI will suggest the right specialist for you.
-            </p>
-            <Card className="mt-8 max-w-2xl mx-auto text-left shadow-lg">
-              <CardContent className="p-6">
-                <div className="mt-4">
-                  <Input placeholder="I have a persistent headache and feel dizzy..." className="h-12 text-base" />
-                  <Button className="w-full mt-4 h-12 text-base bg-accent hover:bg-accent/90">Analyze Symptoms</Button>
-                </div>
-              </CardContent>
-            </Card>
+          <div className="container mx-auto px-4 md:px-6">
+           <IntelligentSearch />
           </div>
         </section>
 
@@ -104,78 +90,7 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-
-        <section className="py-12 md:py-24 lg:py-32 bg-white">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold tracking-tighter text-gray-800">Find a Doctor</h2>
-            </div>
-            <Card className="max-w-4xl mx-auto shadow-lg mb-12">
-              <CardContent className="p-6">
-                <div className="grid md:grid-cols-4 gap-4 items-center">
-                  <Select>
-                    <SelectTrigger className="h-12"><SelectValue placeholder="Symptom/Specialty" /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="cardiology">Cardiology</SelectItem>
-                      <SelectItem value="neurology">Neurology</SelectItem>
-                      <SelectItem value="dermatology">Dermatology</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Select>
-                    <SelectTrigger className="h-12"><SelectValue placeholder="Location" /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="mumbai">Mumbai</SelectItem>
-                      <SelectItem value="delhi">Delhi</SelectItem>
-                      <SelectItem value="bangalore">Bangalore</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Select>
-                    <SelectTrigger className="h-12"><SelectValue placeholder="Consultation Type" /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="online">Online</SelectItem>
-                      <SelectItem value="in-clinic">In-Clinic</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Button className="h-12 text-base bg-accent hover:bg-accent/90 w-full">Search</Button>
-                </div>
-              </CardContent>
-            </Card>
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {[
-                { name: 'Dr. Ananya Sharma', specialty: 'Cardiologist', location: 'Mumbai, India', rating: 4.8, reviews: 132, type: 'Online', image: '1' },
-                { name: 'Dr. Vikram Singh', specialty: 'Neurologist', location: 'Delhi, India', rating: 4.9, reviews: 98, type: 'In-Clinic', image: '2' },
-                { name: 'Dr. Priya Patel', specialty: 'Dermatologist', location: 'Bangalore, India', rating: 4.7, reviews: 150, type: 'Online', image: '3' },
-              ].map(doc => (
-                <Card key={doc.name} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                  <div className="relative h-56">
-                    <Image
-                      src={`https://picsum.photos/400/250?random=${doc.image}`}
-                      alt={`Doctor ${doc.name}`}
-                      fill
-                      className="object-cover"
-                      data-ai-hint="doctor portrait"
-                    />
-                    <div className="absolute top-2 right-2">
-                       <Badge className={doc.type === 'Online' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'}>{doc.type}</Badge>
-                    </div>
-                  </div>
-                  <CardContent className="p-4">
-                    <h3 className="font-bold text-lg text-gray-800">{doc.name}</h3>
-                    <p className="text-gray-500 text-sm">{doc.specialty}</p>
-                    <p className="text-gray-500 text-sm mt-1">{doc.location}</p>
-                    <div className="flex items-center gap-1 mt-2">
-                      <span className="text-yellow-500">⭐</span>
-                      <span className="font-semibold text-gray-700">{doc.rating}</span>
-                      <span className="text-gray-500 text-sm">({doc.reviews} reviews)</span>
-                    </div>
-                    <Button className="w-full mt-4 h-11 text-base">Book Appointment</Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
+        
         <section className="py-12 md:py-24 lg:py-32 bg-secondary">
           <div className="container mx-auto px-4 md:px-6">
             <div className="text-center mb-12">
@@ -216,7 +131,7 @@ export default function LandingPage() {
                 ].map(item => (
                     <Card key={item.title} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                         <div className="relative h-48 bg-gray-200 flex items-center justify-center">
-                            <Image src={`https://picsum.photos/400/300?${item.image}`} alt={item.title} layout="fill" objectFit="cover" data-ai-hint={item.image} />
+                            <Image src={`https://picsum.photos/400/300?${item.image}`} alt={item.title} fill objectFit="cover" data-ai-hint={item.image} />
                         </div>
                         <CardContent className="p-4">
                             <h3 className="font-bold text-lg text-gray-800">{item.title}</h3>
