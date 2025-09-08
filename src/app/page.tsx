@@ -47,7 +47,9 @@ export default function LandingPage() {
               <DropdownMenuItem>Other</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button>Register</Button>
+          <Button asChild>
+            <Link href="/register">Register</Link>
+          </Button>
           <Button variant="outline" className="bg-accent hover:bg-accent/90 text-accent-foreground">Login</Button>
         </div>
       </header>
