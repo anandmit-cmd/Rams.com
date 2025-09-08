@@ -13,12 +13,12 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-secondary">
       <header className="container mx-auto px-4 md:px-6 py-4 flex items-center justify-between bg-white shadow-sm">
-        <Link href="#" className="flex items-center gap-2" prefetch={false}>
+        <Link href="/" className="flex items-center gap-2" prefetch={false}>
           <AppLogo className="w-8 h-8 text-primary" />
           <span className="font-bold text-xl text-gray-800">RAMS.com</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6">
-          <Link href="#" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
+          <Link href="/find-a-doctor" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
             Find a Doctor
           </Link>
           <Link href="#" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
@@ -49,7 +49,7 @@ export default function LandingPage() {
           <Button asChild>
             <Link href="/register">Register</Link>
           </Button>
-          <Button variant="outline" asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
+          <Button variant="link" asChild className="text-primary">
             <Link href="/login">Login</Link>
           </Button>
         </div>
