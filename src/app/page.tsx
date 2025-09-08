@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { AppLogo } from '@/components/icons';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 
 
 export default function LandingPage() {
@@ -29,9 +30,23 @@ export default function LandingPage() {
           </Link>
         </nav>
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon">
-            <Globe className="w-5 h-5" />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                <Globe className="w-5 h-5 mr-2" />
+                Language
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>English</DropdownMenuItem>
+              <DropdownMenuItem>हिन्दी</DropdownMenuItem>
+              <DropdownMenuItem>मराठी</DropdownMenuItem>
+              <DropdownMenuItem>বাংলা</DropdownMenuItem>
+              <DropdownMenuItem>தமிழ்</DropdownMenuItem>
+              <DropdownMenuItem>తెలుగు</DropdownMenuItem>
+              <DropdownMenuItem>Other</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button>Register</Button>
           <Button variant="outline" className="bg-accent hover:bg-accent/90 text-accent-foreground">Login</Button>
         </div>
