@@ -49,7 +49,9 @@ export default function LandingPage() {
           <Button asChild>
             <Link href="/register">Register</Link>
           </Button>
-          <Button variant="outline" className="bg-accent text-accent-foreground hover:bg-accent/90">Login</Button>
+          <Button variant="outline" asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
+            <Link href="/login">Login</Link>
+          </Button>
         </div>
       </header>
 
