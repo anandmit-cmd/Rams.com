@@ -54,7 +54,7 @@ export default function RegisterPage() {
           <span className="font-bold text-xl text-gray-800">RAMS.com</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6">
-          <Link href="#" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
+          <Link href="/find-a-doctor" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
             Find a Doctor
           </Link>
           <Link href="#" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
@@ -85,7 +85,9 @@ export default function RegisterPage() {
           <Button asChild>
             <Link href="/register">Register</Link>
           </Button>
-          <Button variant="outline" className="bg-accent hover:bg-accent/90 text-accent-foreground">Login</Button>
+          <Button variant="outline" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
+            <Link href="/login">Login</Link>
+          </Button>
         </div>
       </header>
 
