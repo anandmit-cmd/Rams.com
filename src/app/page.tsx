@@ -10,6 +10,7 @@ import {
   Home,
   LayoutGrid,
   LogOut,
+  PanelLeft,
   Settings,
   Siren,
   Store,
@@ -99,11 +100,12 @@ const getAppointmentIcon = (type: string) => {
 export default function DashboardPage() {
   return (
     <SidebarProvider>
+      <div className="relative min-h-screen w-full bg-background">
       <Sidebar>
         <SidebarHeader>
-          <div className="flex items-center gap-2">
-            <AppLogo className="size-7 text-primary" />
-            <h1 className="font-headline text-lg font-semibold text-primary-foreground">
+          <div className="flex items-center gap-3">
+            <AppLogo className="size-8 text-primary" />
+            <h1 className="font-headline text-xl font-bold text-primary-foreground">
               Rams.com
             </h1>
           </div>
@@ -141,9 +143,9 @@ export default function DashboardPage() {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="w-full justify-start gap-2 px-2"
+                className="w-full justify-start gap-3 p-2 h-auto"
               >
-                <Avatar className="size-8">
+                <Avatar className="size-10">
                   <AvatarImage
                     src="https://picsum.photos/id/237/100/100"
                     alt="User"
@@ -152,8 +154,8 @@ export default function DashboardPage() {
                   <AvatarFallback>JD</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col items-start">
-                  <span className="text-sm font-medium">John Doe</span>
-                  <span className="text-xs text-muted-foreground">Patient</span>
+                  <span className="text-base font-medium">John Doe</span>
+                  <span className="text-sm text-muted-foreground">Patient</span>
                 </div>
               </Button>
             </DropdownMenuTrigger>
@@ -178,7 +180,7 @@ export default function DashboardPage() {
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-        <header className="flex h-16 items-center justify-between border-b bg-card px-4 sm:px-6 lg:px-8">
+        <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-card/80 backdrop-blur-sm px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4">
             <SidebarTrigger className="md:hidden" />
             <h1 className="font-headline text-xl font-semibold">Dashboard</h1>
@@ -190,8 +192,8 @@ export default function DashboardPage() {
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="gap-2">
-                  <Avatar className="size-8">
+                <Button variant="ghost" className="gap-2 p-1 h-auto">
+                  <Avatar className="size-9">
                     <AvatarImage
                       src="https://picsum.photos/id/237/100/100"
                       alt="User"
@@ -199,17 +201,29 @@ export default function DashboardPage() {
                     />
                     <AvatarFallback>JD</AvatarFallback>
                   </Avatar>
-                  <span className="hidden sm:inline">John Doe</span>
+                  <div className="hidden sm:flex flex-col items-start">
+                    <span className="text-sm font-medium">John Doe</span>
+                    <span className="text-xs text-muted-foreground">Patient</span>
+                  </div>
                   <ChevronDown className="hidden size-4 sm:inline" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Settings</DropdownMenuItem>
+                <DropdownMenuItem>
+                <User className="mr-2" />
+                <span>Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                <Settings className="mr-2" />
+                <span>Settings</span>
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
+                <DropdownMenuItem>
+                <LogOut className="mr-2" />
+                <span>Logout</span>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -327,6 +341,7 @@ export default function DashboardPage() {
           </div>
         </main>
       </SidebarInset>
+      </div>
     </SidebarProvider>
   );
 }
