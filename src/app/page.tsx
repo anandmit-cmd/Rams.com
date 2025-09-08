@@ -1,347 +1,189 @@
-import {
-  Ambulance,
-  Beaker,
-  Bell,
-  BookMarked,
-  Calendar,
-  ChevronDown,
-  Clock,
-  HeartPulse,
-  Home,
-  LayoutGrid,
-  LogOut,
-  PanelLeft,
-  Settings,
-  Siren,
-  Store,
-  Stethoscope,
-  User,
-} from 'lucide-react';
-
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarInset,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarProvider,
-  SidebarTrigger,
-} from '@/components/ui/sidebar';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent } from '@/components/ui/card';
+import { Search, MapPin, Calendar, MessageSquare, Briefcase } from 'lucide-react';
+import Image from 'next/image';
 
-import { AppLogo } from '@/components/icons';
-import { IntelligentSearch } from '@/components/intelligent-search';
-
-const appointments = [
-  {
-    type: 'Doctor',
-    name: 'Dr. Evelyn Reed',
-    specialty: 'Cardiologist',
-    time: '10:30 AM',
-    date: 'Aug 15',
-    status: 'Confirmed',
-    avatar: 'https://picsum.photos/id/1027/100/100',
-    dataAiHint: 'doctor portrait',
-  },
-  {
-    type: 'Lab',
-    name: 'Sunrise Diagnostics',
-    specialty: 'Blood Test',
-    time: '08:00 AM',
-    date: 'Aug 16',
-    status: 'Confirmed',
-    avatar: 'https://picsum.photos/id/30/100/100',
-    dataAiHint: 'lab building',
-  },
-  {
-    type: 'Doctor',
-    name: 'Dr. Marcus Thorne',
-    specialty: 'Dermatologist',
-    time: '02:00 PM',
-    date: 'Aug 20',
-    status: 'Pending',
-    avatar: 'https://picsum.photos/id/1005/100/100',
-    dataAiHint: 'doctor portrait',
-  },
-];
-
-const getAppointmentIcon = (type: string) => {
-  switch (type) {
-    case 'Doctor':
-      return <Stethoscope className="size-5 text-accent" />;
-    case 'Lab':
-      return <Beaker className="size-5 text-accent" />;
-    default:
-      return <HeartPulse className="size-5 text-accent" />;
-  }
-};
-
-export default function DashboardPage() {
+export default function LandingPage() {
   return (
-    <SidebarProvider>
-      <div className="relative min-h-screen w-full bg-background">
-      <Sidebar>
-        <SidebarHeader>
-          <div className="flex items-center gap-3">
-            <AppLogo className="size-8 text-primary" />
-            <h1 className="font-headline text-xl font-bold text-primary-foreground">
-              Rams.com
+    <div className="flex flex-col min-h-screen bg-background">
+      <header className="container mx-auto px-4 md:px-6 py-4 flex items-center justify-between">
+        <Link href="#" className="flex items-center gap-2" prefetch={false}>
+          <Briefcase className="w-6 h-6 text-primary" />
+          <span className="font-bold text-lg">RAMS.com</span>
+        </Link>
+        <nav className="hidden md:flex items-center gap-6">
+          <Link href="#" className="text-sm font-medium hover:underline" prefetch={false}>
+            Find a Doctor
+          </Link>
+          <Link href="#" className="text-sm font-medium hover:underline" prefetch={false}>
+            Wellness
+          </Link>
+          <Link href="#" className="text-sm font-medium hover:underline" prefetch={false}>
+            For Doctors
+          </Link>
+        </nav>
+        <div className="flex items-center gap-4">
+          <Button variant="outline">Register</Button>
+          <Button>Login</Button>
+        </div>
+      </header>
+
+      <main className="flex-1">
+        <section className="py-12 md:py-24 lg:py-32">
+          <div className="container mx-auto px-4 md:px-6 text-center">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter">
+              Your Health, <span className="text-blue-500">Understood.</span>
             </h1>
-          </div>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="#" isActive>
-                <Home />
-                Dashboard
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="#">
-                <Calendar />
-                Appointments
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="#">
-                <BookMarked />
-                Medical History
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="#">
-                <LayoutGrid />
-                Services
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarContent>
-        <SidebarFooter>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className="w-full justify-start gap-3 p-2 h-auto"
-              >
-                <Avatar className="size-10">
-                  <AvatarImage
-                    src="https://picsum.photos/id/237/100/100"
-                    alt="User"
-                    data-ai-hint="user avatar"
-                  />
-                  <AvatarFallback>JD</AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col items-start">
-                  <span className="text-base font-medium">John Doe</span>
-                  <span className="text-sm text-muted-foreground">Patient</span>
+            <p className="mt-4 max-w-xl mx-auto text-muted-foreground">
+              Feeling unwell? Describe your symptoms and our AI will suggest the right specialist for you.
+            </p>
+            <Card className="mt-8 max-w-2xl mx-auto text-left">
+              <CardContent className="p-6">
+                <h3 className="font-semibold text-lg flex items-center gap-2">
+                  <Briefcase className="text-blue-500" /> AI Symptom Checker
+                </h3>
+                <p className="text-muted-foreground text-sm mt-1">Don't know where to start? Let our AI guide you.</p>
+                <div className="mt-4">
+                  <Input placeholder="e.g., I have a persistent headache and feel dizzy..." />
+                  <Button className="w-full mt-2 bg-accent hover:bg-accent/90 text-accent-foreground">Analyze Symptoms</Button>
                 </div>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" side="top" align="start">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <User className="mr-2" />
-                <span>Profile</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Settings className="mr-2" />
-                <span>Settings</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <LogOut className="mr-2" />
-                <span>Log out</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </SidebarFooter>
-      </Sidebar>
-      <SidebarInset>
-        <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-card/80 backdrop-blur-sm px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-4">
-            <SidebarTrigger className="md:hidden" />
-            <h1 className="font-headline text-xl font-semibold">Dashboard</h1>
+              </CardContent>
+            </Card>
           </div>
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon">
-              <Bell className="size-5" />
-              <span className="sr-only">Notifications</span>
-            </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="gap-2 p-1 h-auto">
-                  <Avatar className="size-9">
-                    <AvatarImage
-                      src="https://picsum.photos/id/237/100/100"
-                      alt="User"
-                      data-ai-hint="user avatar"
-                    />
-                    <AvatarFallback>JD</AvatarFallback>
-                  </Avatar>
-                  <div className="hidden sm:flex flex-col items-start">
-                    <span className="text-sm font-medium">John Doe</span>
-                    <span className="text-xs text-muted-foreground">Patient</span>
-                  </div>
-                  <ChevronDown className="hidden size-4 sm:inline" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                <User className="mr-2" />
-                <span>Profile</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                <Settings className="mr-2" />
-                <span>Settings</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                <LogOut className="mr-2" />
-                <span>Logout</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </header>
+        </section>
 
-        <main className="flex-1 space-y-8 p-4 sm:p-6 lg:p-8">
-          <IntelligentSearch />
-
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-            <div className="lg:col-span-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Upcoming Appointments</CardTitle>
-                  <CardDescription>
-                    Your scheduled consultations and lab tests.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {appointments.map((appt, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center space-x-4 rounded-lg border bg-background/50 p-4 transition-shadow hover:shadow-md"
-                      >
-                        <Avatar className="hidden h-12 w-12 sm:flex">
-                          <AvatarImage
-                            src={appt.avatar}
-                            alt={appt.name}
-                            data-ai-hint={appt.dataAiHint}
-                          />
-                          <AvatarFallback>
-                            {getAppointmentIcon(appt.type)}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="grid flex-1 gap-1">
-                          <div className="font-semibold">{appt.name}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {appt.specialty}
-                          </div>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Clock className="size-4" />
-                            <span>{appt.time}</span>
-                            <Calendar className="ml-2 size-4" />
-                            <span>{appt.date}</span>
-                          </div>
-                        </div>
-                        <Badge
-                          variant={
-                            appt.status === 'Confirmed'
-                              ? 'default'
-                              : 'secondary'
-                          }
-                          className={
-                            appt.status === 'Confirmed'
-                              ? 'bg-green-500/20 text-green-400 border-green-500/30'
-                              : 'bg-amber-500/20 text-amber-400 border-amber-500/30'
-                          }
-                        >
-                          {appt.status}
-                        </Badge>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+        <section className="py-12 md:py-24 lg:py-32 bg-secondary">
+          <div className="container mx-auto px-4 md:px-6">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold tracking-tighter">How It Works</h2>
+              <p className="mt-3 max-w-md mx-auto text-muted-foreground">Get expert medical care in three simple steps.</p>
             </div>
+            <div className="mt-12 grid gap-8 md:grid-cols-3">
+              <div className="flex flex-col items-center text-center">
+                <div className="p-4 rounded-full bg-background shadow-md">
+                  <Search className="w-8 h-8 text-blue-500" />
+                </div>
+                <h3 className="mt-4 font-bold text-xl">Find Your Doctor</h3>
+                <p className="mt-2 text-muted-foreground">Search by specialty or symptoms to find the right doctor for you.</p>
+              </div>
+              <div className="flex flex-col items-center text-center">
+                <div className="p-4 rounded-full bg-background shadow-md">
+                  <Calendar className="w-8 h-8 text-blue-500" />
+                </div>
+                <h3 className="mt-4 font-bold text-xl">Book an Appointment</h3>
+                <p className="mt-2 text-muted-foreground">Choose a convenient time and book a video, audio, or in-clinic visit.</p>
+              </div>
+              <div className="flex flex-col items-center text-center">
+                <div className="p-4 rounded-full bg-background shadow-md">
+                  <MessageSquare className="w-8 h-8 text-blue-500" />
+                </div>
+                <h3 className="mt-4 font-bold text-xl">Consult Online</h3>
+                <p className="mt-2 text-muted-foreground">Connect with your doctor from the comfort of your home.</p>
+              </div>
+            </div>
+          </div>
+        </section>
 
-            <div className="space-y-8">
-              <Card className="bg-gradient-to-br from-red-500/80 to-destructive">
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-lg font-bold text-destructive-foreground">
-                    Emergency SOS
-                  </CardTitle>
-                  <Siren className="size-6 text-destructive-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-destructive-foreground/80">
-                    Send an alert to nearby ambulances and hospitals instantly.
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <Button
-                    variant="destructive"
-                    className="w-full bg-background text-destructive hover:bg-background/90"
-                  >
-                    Request Help Now
-                  </Button>
-                </CardFooter>
-              </Card>
-
+        <section className="py-12 md:py-24 lg:py-32">
+          <div className="container mx-auto px-4 md:px-6">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold tracking-tighter">Find a Doctor</h2>
+              <p className="mt-3 max-w-md mx-auto text-muted-foreground">Search for doctors by specialty, location, or consultation type.</p>
+            </div>
+            <Card className="mt-8 max-w-4xl mx-auto">
+              <CardContent className="p-6">
+                <div className="grid md:grid-cols-3 gap-4">
+                  <Input placeholder="Symptom or Specialty" icon={<Search className="text-muted-foreground" />} />
+                  <Input placeholder="Location" icon={<MapPin className="text-muted-foreground" />} />
+                  <Input placeholder="Consultation Type" />
+                  <Button className="md:col-span-3 bg-accent hover:bg-accent/90 text-accent-foreground">Search</Button>
+                </div>
+              </CardContent>
+            </Card>
+            <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               <Card>
-                <CardHeader>
-                  <CardTitle>Quick Actions</CardTitle>
-                </CardHeader>
-                <CardContent className="grid grid-cols-2 gap-4">
-                  <Button variant="outline" className="h-20 flex-col gap-2">
-                    <Ambulance className="size-6 text-accent" />
-                    <span className="text-xs">Book Ambulance</span>
-                  </Button>
-                  <Button variant="outline" className="h-20 flex-col gap-2">
-                    <Store className="size-6 text-accent" />
-                    <span className="text-xs">Find Pharmacy</span>
-                  </Button>
-                  <Button variant="outline" className="h-20 flex-col gap-2">
-                    <Stethoscope className="size-6 text-accent" />
-                    <span className="text-xs">Find a Doctor</span>
-                  </Button>
-                  <Button variant="outline" className="h-20 flex-col gap-2">
-                    <Beaker className="size-6 text-accent" />
-                    <span className="text-xs">Book Lab Test</span>
-                  </Button>
+                <Image
+                  src="https://picsum.photos/400/250?random=1"
+                  alt="Doctor Ananya Sharma"
+                  width={400}
+                  height={250}
+                  className="rounded-t-lg object-cover"
+                  data-ai-hint="doctor portrait"
+                />
+                <CardContent className="p-4">
+                  <h3 className="font-bold">Dr. Ananya Sharma</h3>
+                  <p className="text-muted-foreground text-sm">Cardiologist</p>
+                  <p className="text-muted-foreground text-sm mt-1">Mumbai, India</p>
+                  <div className="flex items-center gap-1 mt-2">
+                    <span className="text-yellow-500">⭐</span>
+                    <span className="font-semibold">4.8</span>
+                    <span className="text-muted-foreground text-sm">(132 reviews)</span>
+                  </div>
+                  <Button variant="outline" className="w-full mt-4">Online</Button>
+                </CardContent>
+              </Card>
+              <Card>
+                <Image
+                  src="https://picsum.photos/400/250?random=2"
+                  alt="Doctor Vikram Singh"
+                  width={400}
+                  height={250}
+                  className="rounded-t-lg object-cover"
+                  data-ai-hint="doctor portrait"
+                />
+                <CardContent className="p-4">
+                  <h3 className="font-bold">Dr. Vikram Singh</h3>
+                  <p className="text-muted-foreground text-sm">Neurologist</p>
+                  <p className="text-muted-foreground text-sm mt-1">Delhi, India</p>
+                  <div className="flex items-center gap-1 mt-2">
+                    <span className="text-yellow-500">⭐</span>
+                    <span className="font-semibold">4.9</span>
+                    <span className="text-muted-foreground text-sm">(98 reviews)</span>
+                  </div>
+                  <Button variant="outline" className="w-full mt-4">In-Clinic</Button>
+                </CardContent>
+              </Card>
+              <Card>
+                <Image
+                  src="https://picsum.photos/400/250?random=3"
+                  alt="Doctor Priya Patel"
+                  width={400}
+                  height={250}
+                  className="rounded-t-lg object-cover"
+                  data-ai-hint="doctor portrait"
+                />
+                <CardContent className="p-4">
+                  <h3 className="font-bold">Dr. Priya Patel</h3>
+                  <p className="text-muted-foreground text-sm">Dermatologist</p>
+                  <p className="text-muted-foreground text-sm mt-1">Bangalore, India</p>
+                  <div className="flex items-center gap-1 mt-2">
+                    <span className="text-yellow-500">⭐</span>
+                    <span className="font-semibold">4.7</span>
+                    <span className="text-muted-foreground text-sm">(150 reviews)</span>
+                  </div>
+                   <Button variant="outline" className="w-full mt-4">Online</Button>
                 </CardContent>
               </Card>
             </div>
           </div>
-        </main>
-      </SidebarInset>
-      </div>
-    </SidebarProvider>
+        </section>
+      </main>
+
+      <footer className="container mx-auto px-4 md:px-6 py-6 border-t">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-muted-foreground">&copy; 2024 Rams.com. All rights reserved.</p>
+          <div className="flex gap-4">
+            <Link href="#" className="text-sm hover:underline" prefetch={false}>
+              Terms of Service
+            </Link>
+            <Link href="#" className="text-sm hover:underline" prefetch={false}>
+              Privacy Policy
+            </Link>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }
