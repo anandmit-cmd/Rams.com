@@ -33,9 +33,7 @@ export default function LandingPage() {
             <Globe className="w-5 h-5" />
           </Button>
           <Button>Register</Button>
-          <Link href="#" className="text-sm font-medium text-primary hover:underline" prefetch={false}>
-            Login
-          </Link>
+          <Button variant="outline" className="bg-accent hover:bg-accent/90 text-accent-foreground">Login</Button>
         </div>
       </header>
 
