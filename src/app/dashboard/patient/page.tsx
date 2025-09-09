@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Calendar, Stethoscope, FileText, Wallet, Bell, Settings, LogOut, LayoutGrid, HeartPulse, ShieldCheck, Dumbbell } from 'lucide-react';
+import { Calendar, Stethoscope, FileText, Wallet, Bell, Settings, LogOut, LayoutGrid, HeartPulse, ShieldCheck, Dumbbell, Star, MessageSquare } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 
 export default function PatientDashboard() {
@@ -104,6 +104,48 @@ export default function PatientDashboard() {
                 </Card>
             </div>
 
+             <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Recent Consultations</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between p-2 rounded-lg bg-gray-50">
+                                <div>
+                                    <p className="font-semibold">Consultation with Dr. Sharma</p>
+                                    <p className="text-sm text-gray-500">12th July - Technical Issue</p>
+                                </div>
+                                <Button size="sm" variant="destructive">Request Refund</Button>
+                            </div>
+                             <div className="flex items-center justify-between p-2 rounded-lg bg-gray-50">
+                                <div>
+                                    <p className="font-semibold">Lab Test from City Labs</p>
+                                    <p className="text-sm text-gray-500">10th July - Completed</p>
+                                </div>
+                                <Button size="sm" variant="outline">Give Feedback</Button>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+                 <Card>
+                    <CardHeader>
+                        <CardTitle>Give Feedback</CardTitle>
+                    </CardHeader>
+                     <CardContent className="grid grid-cols-2 gap-4">
+                        <Button variant="outline" className="h-20 flex-col gap-1">
+                            <Star className="w-6 h-6 mb-1 text-yellow-500"/>
+                            Rate a Doctor
+                        </Button>
+                        <Button variant="outline" className="h-20 flex-col gap-1">
+                            <MessageSquare className="w-6 h-6 mb-1 text-blue-500"/>
+                            Write a Review
+                        </Button>
+                     </CardContent>
+                </Card>
+            </div>
+
+
             <div className="mt-8">
                 <h2 className="text-xl font-semibold mb-4">Explore Wellness</h2>
                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -140,3 +182,4 @@ export default function PatientDashboard() {
     </div>
   );
 }
+

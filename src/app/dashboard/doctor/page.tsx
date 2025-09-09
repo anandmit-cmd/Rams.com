@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Calendar, User, FileText, BarChart2, Bell, LogOut, LayoutGrid, Video } from 'lucide-react';
+import { Calendar, User, FileText, BarChart2, Bell, LogOut, LayoutGrid, Video, Star, Wallet } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 
 export default function DoctorDashboard() {
@@ -57,14 +57,7 @@ export default function DoctorDashboard() {
         </header>
 
         <main className="flex-1 p-6">
-            <Card className="mb-8">
-                <CardHeader>
-                    <CardTitle>Welcome back, Dr. Sharma!</CardTitle>
-                    <CardDescription>Here's what's happening today.</CardDescription>
-                </CardHeader>
-            </Card>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
                         <CardTitle className="text-sm font-medium">Today's Appointments</CardTitle>
@@ -73,7 +66,6 @@ export default function DoctorDashboard() {
                     <CardContent>
                         <div className="text-2xl font-bold">12</div>
                         <p className="text-xs text-muted-foreground">8 Video Calls, 4 In-Clinic</p>
-                         <Button className="mt-4 w-full">View Schedule</Button>
                     </CardContent>
                 </Card>
                 <Card>
@@ -84,42 +76,57 @@ export default function DoctorDashboard() {
                     <CardContent>
                         <div className="text-2xl font-bold">5 New</div>
                         <p className="text-xs text-muted-foreground">Pending approval for consultation.</p>
-                         <Button className="mt-4 w-full">Manage Patients</Button>
                     </CardContent>
                 </Card>
                  <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">Total Earnings (This Month)</CardTitle>
+                        <CardTitle className="text-sm font-medium">Earnings (This Month)</CardTitle>
                         <BarChart2 className="w-4 h-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">₹85,500</div>
                         <p className="text-xs text-muted-foreground">+15% from last month</p>
-                        <Button className="mt-4 w-full">View Earnings Report</Button>
+                    </CardContent>
+                </Card>
+                 <Card>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Overall Rating</CardTitle>
+                        <Star className="w-4 h-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold flex items-center">4.8 <Star className="w-5 h-5 ml-1 text-yellow-400 fill-current" /></div>
+                        <p className="text-xs text-muted-foreground">Based on 215 patient reviews</p>
                     </CardContent>
                 </Card>
             </div>
 
-            <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card>
+            <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card className="lg:col-span-2">
                     <CardHeader>
                         <CardTitle>Upcoming Consultations</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">
-                            <div className="flex items-center justify-between p-2 rounded-lg bg-gray-50">
+                            <div className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
                                 <div>
                                     <p className="font-semibold">Riya Singh</p>
                                     <p className="text-sm text-gray-500">10:30 AM - Video Call</p>
                                 </div>
-                                <Button size="sm">Start Call</Button>
+                                <div className="flex items-center gap-2">
+                                  <Button size="sm">Start Call</Button>
+                                  <Button size="sm" variant="outline">Details</Button>
+                                </div>
                             </div>
-                            <div className="flex items-center justify-between p-2 rounded-lg bg-gray-50">
+                            <div className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
                                 <div>
                                     <p className="font-semibold">Amit Patel</p>
                                     <p className="text-sm text-gray-500">11:00 AM - In-Clinic</p>
+                                     <p className="text-xs text-red-500 mt-1">Patient requested a refund.</p>
                                 </div>
-                                <Button size="sm" variant="outline">View Details</Button>
+                                <div className="flex items-center gap-2">
+                                  <Button size="sm" variant="destructive">Refund Payment</Button>
+                                  <Button size="sm" variant="outline">Details</Button>
+                                </div>
                             </div>
                         </div>
                     </CardContent>
@@ -128,13 +135,13 @@ export default function DoctorDashboard() {
                     <CardHeader>
                         <CardTitle>Quick Actions</CardTitle>
                     </CardHeader>
-                     <CardContent className="grid grid-cols-2 gap-4">
-                        <Button variant="outline" className="h-20 flex-col gap-1">
-                            <FileText className="w-6 h-6 mb-1"/>
+                     <CardContent className="grid grid-cols-1 gap-4">
+                        <Button variant="outline" className="h-16 flex-col gap-1">
+                            <FileText className="w-5 h-5 mb-1"/>
                             Create E-Prescription
                         </Button>
-                        <Button variant="outline" className="h-20 flex-col gap-1">
-                            <Video className="w-6 h-6 mb-1"/>
+                        <Button variant="outline" className="h-16 flex-col gap-1">
+                            <Video className="w-5 h-5 mb-1"/>
                             Start Unscheduled Call
                         </Button>
                      </CardContent>

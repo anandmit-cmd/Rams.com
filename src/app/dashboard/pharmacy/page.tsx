@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { ShoppingCart, Package, ListOrdered, BarChart, Bell, LogOut, LayoutGrid } from 'lucide-react';
+import { ShoppingCart, Package, ListOrdered, BarChart, Bell, LogOut, LayoutGrid, Star } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
@@ -65,7 +65,7 @@ export default function PharmacyDashboard() {
         </header>
 
         <main className="flex-1 p-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
                         <CardTitle className="text-sm font-medium">New Orders</CardTitle>
@@ -78,7 +78,7 @@ export default function PharmacyDashboard() {
                 </Card>
                  <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">Total Revenue (Today)</CardTitle>
+                        <CardTitle className="text-sm font-medium">Revenue (Today)</CardTitle>
                         <BarChart className="w-4 h-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
@@ -94,6 +94,16 @@ export default function PharmacyDashboard() {
                     <CardContent>
                         <div className="text-2xl font-bold">8</div>
                         <p className="text-xs text-muted-foreground">Items need to be restocked</p>
+                    </CardContent>
+                </Card>
+                 <Card>
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-sm font-medium">Customer Rating</CardTitle>
+                        <Star className="w-4 h-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold flex items-center">4.7 <Star className="w-5 h-5 ml-1 text-yellow-400 fill-current" /></div>
+                        <p className="text-xs text-muted-foreground">Based on 150 ratings</p>
                     </CardContent>
                 </Card>
             </div>

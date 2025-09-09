@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Map, Siren, List, Bell, LogOut, LayoutGrid } from 'lucide-react';
+import { Map, Siren, List, Bell, LogOut, LayoutGrid, Star } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import Image from 'next/image';
 
@@ -62,7 +62,6 @@ export default function AmbulanceDashboard() {
                     <CardDescription>Real-time location of active requests.</CardDescription>
                 </CardHeader>
                 <CardContent className="h-[calc(100%-4rem)]">
-                    {/* Placeholder for a map component */}
                      <div className="w-full h-full bg-gray-200 rounded-lg relative overflow-hidden">
                         <Image src="https://picsum.photos/seed/map/1200/800" alt="Map" fill style={{ objectFit: 'cover' }} data-ai-hint="city map" />
                          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 bg-black/50 text-white rounded-lg">
@@ -87,6 +86,21 @@ export default function AmbulanceDashboard() {
                              <Button className="w-full bg-green-600 hover:bg-green-700">Accept</Button>
                              <Button className="w-full" variant="destructive">Decline</Button>
                         </div>
+                    </div>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Ratings & Feedback</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="text-center">
+                        <div className="text-4xl font-bold flex items-center justify-center">4.9 <Star className="w-8 h-8 ml-2 text-yellow-400 fill-current" /></div>
+                        <p className="text-sm text-muted-foreground mt-1">Based on 42 recent trips</p>
+                    </div>
+                    <div className="mt-4 text-sm">
+                        <p className="font-semibold">"Very fast and professional service. Highly recommended."</p>
+                        <p className="text-xs text-gray-500">- Anonymous User</p>
                     </div>
                 </CardContent>
             </Card>
