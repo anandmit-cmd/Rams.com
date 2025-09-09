@@ -46,7 +46,10 @@ export default function AmbulanceDashboard() {
         <header className="bg-white shadow-sm p-4 flex items-center justify-between">
           <h1 className="text-xl font-semibold">Ambulance Dashboard</h1>
           <div className="flex items-center gap-4">
-            <Bell className="w-6 h-6 text-gray-600" />
+            <Button variant="ghost" size="icon">
+                <Bell className="w-6 h-6 text-gray-600" />
+                <span className="sr-only">Notifications</span>
+            </Button>
             <Avatar>
               <AvatarImage src="https://picsum.photos/100/100?random=ambulance-driver" alt="Driver" />
               <AvatarFallback>AD</AvatarFallback>

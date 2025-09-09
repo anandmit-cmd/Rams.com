@@ -66,7 +66,10 @@ export default function DoctorSchedulePage() {
                 <Switch id="availability" checked={isAvailable} onCheckedChange={setIsAvailable} />
                 <Label htmlFor="availability" className="font-medium">{isAvailable ? "I'm Available" : "I'm Busy"}</Label>
             </div>
-            <Bell className="w-6 h-6 text-gray-600" />
+            <Button variant="ghost" size="icon">
+                <Bell className="w-6 h-6 text-gray-600" />
+                 <span className="sr-only">Notifications</span>
+            </Button>
             <Avatar>
               <AvatarImage src="https://picsum.photos/100/100?random=doctor" alt="Doctor" />
               <AvatarFallback>DR</AvatarFallback>
