@@ -99,7 +99,7 @@ function LabRegisterPage() {
                       <FormMessage />
                     </FormItem>
                   )} />
-                  <FormField control={form.control} name="address" render={({ field })-/> (
+                  <FormField control={form.control} name="address" render={({ field }) => (
                     <FormItem>
                       <FormLabel>Full Address</FormLabel>
                       <FormControl><Input placeholder="456, Health Ave, City" {...field} /></FormControl>
