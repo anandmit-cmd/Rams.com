@@ -57,7 +57,7 @@ export default function RegisterPage() {
           <Link href="/find-a-doctor" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
             Find a Doctor
           </Link>
-          <Link href="#" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
+          <Link href="/wellness" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
             Wellness
           </Link>
           <Link href="#" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
@@ -146,8 +146,8 @@ export default function RegisterPage() {
                     <h4 className="font-semibold mb-3">Services</h4>
                     <ul className="space-y-2 text-sm">
                         <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>AI Checker</Link></li>
-                        <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Find a Doctor</Link></li>
-                        <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Wellness</Link></li>
+                        <li><Link href="/find-a-doctor" className="text-gray-400 hover:text-white" prefetch={false}>Find a Doctor</Link></li>
+                        <li><Link href="/wellness" className="text-gray-400 hover:text-white" prefetch={false}>Wellness</Link></li>
                         <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Emergency</Link></li>
                     </ul>
                 </div>

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Calendar, Stethoscope, FileText, Wallet, Bell, Settings, LogOut, LayoutGrid, HeartPulse, ShieldCheck, Dumbbell, Star, MessageSquare } from 'lucide-react';
+import { Calendar, Stethoscope, FileText, Wallet, Bell, Settings, LogOut, LayoutGrid, HeartPulse, ShieldCheck, Dumbbell, Star, MessageSquare, Leaf, Users } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { useState } from 'react';
@@ -212,32 +212,38 @@ export default function PatientDashboard() {
             <div className="mt-8">
                 <h2 className="text-xl font-semibold mb-4">Explore Wellness</h2>
                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <Link href="/">
-                        <Card className="text-center hover:shadow-lg transition-shadow h-full">
+                    <Link href="/" className="block hover:shadow-lg transition-shadow rounded-lg">
+                        <Card className="text-center h-full">
                             <CardContent className="p-6 flex flex-col items-center justify-center">
                                 <HeartPulse className="w-10 h-10 text-primary mx-auto mb-2"/>
                                 <h3 className="font-semibold">AI Symptom Checker</h3>
                             </CardContent>
                         </Card>
                     </Link>
-                     <Card className="text-center hover:shadow-lg transition-shadow">
-                        <CardContent className="p-6">
-                            <ShieldCheck className="w-10 h-10 text-primary mx-auto mb-2"/>
-                            <h3 className="font-semibold">Health Insurance</h3>
-                        </CardContent>
-                    </Card>
-                     <Card className="text-center hover:shadow-lg transition-shadow">
-                        <CardContent className="p-6">
-                            <Dumbbell className="w-10 h-10 text-primary mx-auto mb-2"/>
-                            <h3 className="font-semibold">Fitness Plans</h3>
-                        </CardContent>
-                    </Card>
-                     <Card className="text-center hover:shadow-lg transition-shadow">
-                        <CardContent className="p-6">
-                            <Stethoscope className="w-10 h-10 text-primary mx-auto mb-2"/>
-                            <h3 className="font-semibold">Find a New Doctor</h3>
-                        </CardContent>
-                    </Card>
+                     <Link href="/wellness" className="block hover:shadow-lg transition-shadow rounded-lg">
+                        <Card className="text-center h-full">
+                            <CardContent className="p-6 flex flex-col items-center justify-center">
+                                <Leaf className="w-10 h-10 text-primary mx-auto mb-2"/>
+                                <h3 className="font-semibold">Wellness Zone</h3>
+                            </CardContent>
+                        </Card>
+                    </Link>
+                    <Link href="/find-a-doctor" className="block hover:shadow-lg transition-shadow rounded-lg">
+                        <Card className="text-center h-full">
+                            <CardContent className="p-6 flex flex-col items-center justify-center">
+                                <Stethoscope className="w-10 h-10 text-primary mx-auto mb-2"/>
+                                <h3 className="font-semibold">Find a New Doctor</h3>
+                            </CardContent>
+                        </Card>
+                    </Link>
+                     <Link href="#" className="block hover:shadow-lg transition-shadow rounded-lg">
+                         <Card className="text-center h-full">
+                            <CardContent className="p-6 flex flex-col items-center justify-center">
+                                <ShieldCheck className="w-10 h-10 text-primary mx-auto mb-2"/>
+                                <h3 className="font-semibold">Health Insurance</h3>
+                            </CardContent>
+                        </Card>
+                    </Link>
                 </div>
             </div>
         </main>

@@ -21,7 +21,7 @@ export default function LandingPage() {
           <Link href="/find-a-doctor" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
             Find a Doctor
           </Link>
-          <Link href="#" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
+          <Link href="/wellness" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
             Wellness
           </Link>
           <Link href="#" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
@@ -126,23 +126,25 @@ export default function LandingPage() {
             </div>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
                 {[
-                  { title: 'Yoga & Mindfulness', image: 'yoga', icon: Leaf },
-                  { title: 'Fitness & Workouts', image: 'fitness', icon: Dumbbell },
-                  { title: 'Mental Wellness', image: 'mental', icon: Users },
-                  { title: 'Diet & Nutrition', image: 'diet', icon: ShieldCheck },
+                  { title: 'Yoga & Mindfulness', image: 'yoga', icon: Leaf, href: '/wellness' },
+                  { title: 'Fitness & Workouts', image: 'fitness', icon: Dumbbell, href: '/wellness' },
+                  { title: 'Mental Wellness', image: 'mental', icon: Users, href: '/wellness' },
+                  { title: 'Diet & Nutrition', image: 'diet', icon: ShieldCheck, href: '/wellness' },
                 ].map(item => (
-                    <Card key={item.title} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                  <Link href={item.href} key={item.title}>
+                    <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow h-full">
                         <div className="relative h-48 bg-gray-200 flex items-center justify-center">
                             <Image src={`https://picsum.photos/400/300?${item.image}`} alt={item.title} fill style={{objectFit: 'cover'}} data-ai-hint={item.image} />
                         </div>
                         <CardContent className="p-4">
                             <h3 className="font-bold text-lg text-gray-800">{item.title}</h3>
                             <p className="text-sm text-gray-500 mt-1">Explore resources to improve your well-being.</p>
-                            <Link href="#" className="text-primary font-semibold text-sm mt-4 inline-block hover:underline" prefetch={false}>
+                            <div className="text-primary font-semibold text-sm mt-4 inline-block hover:underline">
                                 Explore More →
-                            </Link>
+                            </div>
                         </CardContent>
                     </Card>
+                  </Link>
                 ))}
             </div>
           </div>
@@ -178,8 +180,8 @@ export default function LandingPage() {
                     <h4 className="font-semibold mb-3">Services</h4>
                     <ul className="space-y-2 text-sm">
                         <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>AI Checker</Link></li>
-                        <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Find a Doctor</Link></li>
-                        <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Wellness</Link></li>
+                        <li><Link href="/find-a-doctor" className="text-gray-400 hover:text-white" prefetch={false}>Find a Doctor</Link></li>
+                        <li><Link href="/wellness" className="text-gray-400 hover:text-white" prefetch={false}>Wellness</Link></li>
                         <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Emergency</Link></li>
                     </ul>
                 </div>
