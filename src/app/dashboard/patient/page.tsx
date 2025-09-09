@@ -7,8 +7,15 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Calendar, Stethoscope, FileText, Wallet, Bell, Settings, LogOut, LayoutGrid, HeartPulse, ShieldCheck, Dumbbell, Star, MessageSquare } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
+import { useState } from 'react';
+import { Textarea } from '@/components/ui/textarea';
 
 export default function PatientDashboard() {
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const ratingLabels = ["Very Poor", "Poor", "Fair", "Good", "Excellent"];
+
   return (
     <div className="flex min-h-screen bg-secondary">
       <aside className="w-64 bg-white shadow-md flex-col hidden md:flex">
@@ -128,20 +135,76 @@ export default function PatientDashboard() {
                         </div>
                     </CardContent>
                 </Card>
-                 <Card>
+                <Card>
                     <CardHeader>
                         <CardTitle>Give Feedback</CardTitle>
                     </CardHeader>
-                     <CardContent className="grid grid-cols-2 gap-4">
-                        <Button variant="outline" className="h-20 flex-col gap-1">
-                            <Star className="w-6 h-6 mb-1 text-yellow-500"/>
-                            Rate a Doctor
-                        </Button>
-                        <Button variant="outline" className="h-20 flex-col gap-1">
-                            <MessageSquare className="w-6 h-6 mb-1 text-blue-500"/>
-                            Write a Review
-                        </Button>
-                     </CardContent>
+                    <CardContent className="grid grid-cols-2 gap-4">
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <Button variant="outline" className="h-20 flex-col gap-1">
+                                    <Star className="w-6 h-6 mb-1 text-yellow-500"/>
+                                    Rate a Doctor
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Rate your experience</DialogTitle>
+                                    <DialogDescription>
+                                        Your feedback helps us improve.
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <div className="flex flex-col items-center justify-center py-4">
+                                    <div className="flex items-center gap-2">
+                                        {[...Array(5)].map((_, index) => {
+                                            const starValue = index + 1;
+                                            return (
+                                                <Star
+                                                    key={starValue}
+                                                    className={`w-10 h-10 cursor-pointer ${starValue <= (hoverRating || rating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
+                                                    onClick={() => setRating(starValue)}
+                                                    onMouseEnter={() => setHoverRating(starValue)}
+                                                    onMouseLeave={() => setHoverRating(0)}
+                                                />
+                                            );
+                                        })}
+                                    </div>
+                                     <p className="mt-4 h-6 text-sm font-medium">
+                                        {hoverRating > 0 ? ratingLabels[hoverRating - 1] : rating > 0 ? ratingLabels[rating - 1] : 'Select a rating'}
+                                    </p>
+                                </div>
+                                <DialogFooter>
+                                    <DialogClose asChild>
+                                        <Button type="submit">Submit Rating</Button>
+                                    </DialogClose>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <Button variant="outline" className="h-20 flex-col gap-1">
+                                    <MessageSquare className="w-6 h-6 mb-1 text-blue-500"/>
+                                    Write a Review
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Write a review</DialogTitle>
+                                    <DialogDescription>
+                                        Share your detailed feedback about the service.
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <div className="py-4">
+                                    <Textarea placeholder="Describe your experience here..." rows={5} />
+                                </div>
+                                <DialogFooter>
+                                     <DialogClose asChild>
+                                        <Button type="submit">Submit Review</Button>
+                                    </DialogClose>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
+                    </CardContent>
                 </Card>
             </div>
 
@@ -182,4 +245,3 @@ export default function PatientDashboard() {
     </div>
   );
 }
-
