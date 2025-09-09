@@ -11,6 +11,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { AppLogo } from '@/components/icons';
 import { ArrowLeft } from 'lucide-react';
+import { auth } from '@/lib/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
   pharmacyName: z.string().min(2, "Pharmacy name is required."),
@@ -22,6 +26,8 @@ const formSchema = z.object({
 });
 
 export default function PharmacyRegisterPage() {
+  const router = useRouter();
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,9 +40,24 @@ export default function PharmacyRegisterPage() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    // TODO: Handle pharmacy registration and redirect to dashboard
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+      console.log("Pharmacy registered:", userCredential.user);
+      // TODO: Save pharmacy-specific data to Firestore
+      toast({
+        title: "Registration Successful",
+        description: "Your account has been created.",
+      });
+      router.push('/dashboard/pharmacy');
+    } catch (error: any) {
+      console.error("Registration failed:", error);
+      toast({
+        variant: "destructive",
+        title: "Registration Failed",
+        description: error.message || "An unexpected error occurred.",
+      });
+    }
   }
 
   return (
@@ -105,7 +126,9 @@ export default function PharmacyRegisterPage() {
                       <FormMessage />
                     </FormItem>
                   )} />
-                  <Button type="submit" className="w-full bg-accent hover:bg-accent/90 h-11">Register Pharmacy</Button>
+                  <Button type="submit" className="w-full bg-accent hover:bg-accent/90 h-11" disabled={form.formState.isSubmitting}>
+                    {form.formState.isSubmitting ? 'Registering...' : 'Register Pharmacy'}
+                  </Button>
                 </form>
               </Form>
             </CardContent>

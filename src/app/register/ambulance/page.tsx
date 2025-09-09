@@ -11,9 +11,14 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { AppLogo } from '@/components/icons';
 import { ArrowLeft } from 'lucide-react';
+import { auth } from '@/lib/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
   driverName: z.string().min(2, "Driver name is required."),
+  email: z.string().email("Invalid email address."),
   phone: z.string().min(10, "Phone number is required."),
   vehicleNumber: z.string().min(6, "Vehicle number is required."),
   city: z.string().min(3, "City is required."),
@@ -21,10 +26,13 @@ const formSchema = z.object({
 });
 
 export default function AmbulanceRegisterPage() {
+  const router = useRouter();
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       driverName: "",
+      email: "",
       phone: "",
       vehicleNumber: "",
       city: "",
@@ -32,9 +40,24 @@ export default function AmbulanceRegisterPage() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    // TODO: Handle ambulance registration and redirect to dashboard
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+      console.log("Ambulance Service registered:", userCredential.user);
+      // TODO: Save ambulance-specific data to Firestore
+      toast({
+        title: "Registration Successful",
+        description: "Your account has been created.",
+      });
+      router.push('/dashboard/ambulance');
+    } catch (error: any) {
+      console.error("Registration failed:", error);
+      toast({
+        variant: "destructive",
+        title: "Registration Failed",
+        description: error.message || "An unexpected error occurred.",
+      });
+    }
   }
 
   return (
@@ -68,6 +91,19 @@ export default function AmbulanceRegisterPage() {
                       <FormMessage />
                     </FormItem>
                   )} />
+                   <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email Address</FormLabel>
+                        <FormControl>
+                          <Input type="email" placeholder="driver@example.com" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                   <FormField control={form.control} name="phone" render={({ field }) => (
                     <FormItem>
                       <FormLabel>Contact Number</FormLabel>
@@ -96,7 +132,9 @@ export default function AmbulanceRegisterPage() {
                       <FormMessage />
                     </FormItem>
                   )} />
-                  <Button type="submit" className="w-full bg-accent hover:bg-accent/90 h-11">Register Ambulance</Button>
+                  <Button type="submit" className="w-full bg-accent hover:bg-accent/90 h-11" disabled={form.formState.isSubmitting}>
+                    {form.formState.isSubmitting ? 'Registering...' : 'Register Ambulance'}
+                  </Button>
                 </form>
               </Form>
             </CardContent>

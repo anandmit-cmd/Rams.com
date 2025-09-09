@@ -11,6 +11,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { AppLogo } from '@/components/icons';
 import { ArrowLeft } from 'lucide-react';
+import { auth } from '@/lib/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
   labName: z.string().min(2, "Lab name is required."),
@@ -22,6 +26,8 @@ const formSchema = z.object({
 });
 
 export default function LabRegisterPage() {
+  const router = useRouter();
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,9 +40,24 @@ export default function LabRegisterPage() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    // TODO: Handle lab registration and redirect to dashboard
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+     try {
+      const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+      console.log("Lab registered:", userCredential.user);
+      // TODO: Save lab-specific data to Firestore
+      toast({
+        title: "Registration Successful",
+        description: "Your account has been created.",
+      });
+      router.push('/dashboard/lab');
+    } catch (error: any) {
+      console.error("Registration failed:", error);
+      toast({
+        variant: "destructive",
+        title: "Registration Failed",
+        description: error.message || "An unexpected error occurred.",
+      });
+    }
   }
 
   return (
@@ -105,7 +126,9 @@ export default function LabRegisterPage() {
                       <FormMessage />
                     </FormItem>
                   )} />
-                  <Button type="submit" className="w-full bg-accent hover:bg-accent/90 h-11">Register Lab</Button>
+                  <Button type="submit" className="w-full bg-accent hover:bg-accent/90 h-11" disabled={form.formState.isSubmitting}>
+                    {form.formState.isSubmitting ? 'Registering...' : 'Register Lab'}
+                  </Button>
                 </form>
               </Form>
             </CardContent>
