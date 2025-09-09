@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { AuthProvider } from '@/context/auth-context';
+import { EmergencyButton } from '@/components/emergency-button';
 
 export const metadata: Metadata = {
   title: 'Rams.com - Your Health Companion',
@@ -24,6 +25,7 @@ export default function RootLayout({
         <AuthProvider>
           {children}
           <Toaster />
+          <EmergencyButton />
         </AuthProvider>
       </body>
     </html>
