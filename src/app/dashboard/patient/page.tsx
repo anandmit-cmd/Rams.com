@@ -107,12 +107,14 @@ export default function PatientDashboard() {
             <div className="mt-8">
                 <h2 className="text-xl font-semibold mb-4">Explore Wellness</h2>
                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <Card className="text-center hover:shadow-lg transition-shadow">
-                        <CardContent className="p-6">
-                            <HeartPulse className="w-10 h-10 text-primary mx-auto mb-2"/>
-                            <h3 className="font-semibold">AI Symptom Checker</h3>
-                        </CardContent>
-                    </Card>
+                    <Link href="/">
+                        <Card className="text-center hover:shadow-lg transition-shadow h-full">
+                            <CardContent className="p-6 flex flex-col items-center justify-center">
+                                <HeartPulse className="w-10 h-10 text-primary mx-auto mb-2"/>
+                                <h3 className="font-semibold">AI Symptom Checker</h3>
+                            </CardContent>
+                        </Card>
+                    </Link>
                      <Card className="text-center hover:shadow-lg transition-shadow">
                         <CardContent className="p-6">
                             <ShieldCheck className="w-10 h-10 text-primary mx-auto mb-2"/>

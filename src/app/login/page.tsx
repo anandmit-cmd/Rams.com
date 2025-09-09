@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -32,12 +33,13 @@ function LoginPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("Login submitted", values);
-    // Firebase logic removed as requested
+    // This is a temporary login handler
+    // It will redirect to the patient dashboard for any credentials
     toast({
-      title: "Login Temporarily Disabled",
-      description: "Firebase connection is temporarily disabled.",
+      title: "Login Successful",
+      description: "Redirecting to your dashboard...",
     });
-    // router.push('/dashboard/patient');
+    router.push('/dashboard/patient');
   }
 
   return (

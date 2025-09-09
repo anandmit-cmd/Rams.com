@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -38,10 +39,10 @@ function PatientRegisterPage() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("Patient registration submitted", values);
     toast({
-      title: "Registration Temporarily Disabled",
-      description: "Firebase connection is temporarily disabled.",
+      title: "Registration Successful",
+      description: "Redirecting to your dashboard...",
     });
-    // router.push('/dashboard/patient');
+    router.push('/dashboard/patient');
   }
 
   return (
