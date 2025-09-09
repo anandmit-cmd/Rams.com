@@ -37,7 +37,6 @@ function PatientRegisterPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("Patient registration submitted", values);
-    // Firebase logic removed as requested
     toast({
       title: "Registration Temporarily Disabled",
       description: "Firebase connection is temporarily disabled.",
@@ -61,7 +60,13 @@ function PatientRegisterPage() {
           <Card className="max-w-xl mx-auto">
             <CardHeader>
               <Button asChild variant="ghost" className="absolute top-6 left-6">
-                <Link href="/register"><ArrowLeft className="w-4 h-4 mr-2" />Back</Link>              </Button>
+                <Link href="/register">
+                  <span className="flex items-center">
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Back
+                  </span>
+                </Link>
+              </Button>
               <CardTitle className="text-2xl font-bold text-center pt-8">Patient Registration</CardTitle>
               <CardDescription className="text-center">Create your account to manage your health.</CardDescription>
             </CardHeader>
