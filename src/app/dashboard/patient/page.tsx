@@ -26,7 +26,7 @@ export default function PatientDashboard() {
             </Link>
         </div>
         <nav className="flex-1 px-4 space-y-2">
-          <Link href="#" className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg bg-accent text-accent-foreground" prefetch={false}>
+          <Link href="/dashboard/patient" className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg bg-accent text-accent-foreground" prefetch={false}>
             <LayoutGrid className="h-5 w-5" />
             Dashboard
           </Link>
@@ -254,3 +254,5 @@ export default function PatientDashboard() {
     </div>
   );
 }
+
+    
