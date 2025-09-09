@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, Star, MapPin, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope } from 'lucide-react';
+import { Search, Star, MapPin, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Hospital } from 'lucide-react';
 import Image from 'next/image';
 import { AppLogo } from '@/components/icons';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
@@ -97,11 +97,14 @@ export default function FindDoctorPage() {
             <Link href="/find-a-doctor" className="text-sm font-medium text-primary" prefetch={false}>
                 Find a Doctor
             </Link>
+             <Link href="/find-a-hospital" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
+                Find a Hospital
+            </Link>
             <Link href="/wellness" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
                 Wellness
             </Link>
             <Link href="#" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
-                For Doctors
+                For Providers
             </Link>
             </nav>
             <div className="flex items-center gap-4">
@@ -153,7 +156,7 @@ export default function FindDoctorPage() {
                         </div>
                         <Button className="h-10 bg-accent hover:bg-accent/90">
                             <Search className="w-5 h-5 mr-2" />
-                            Search
+                            Search Doctors
                         </Button>
                     </div>
                 </Card>
@@ -224,7 +227,7 @@ export default function FindDoctorPage() {
                             <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>About Us</Link></li>
                             <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Careers</Link></li>
                             <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Press</Link></li>
-                            <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>For Doctors</Link></li>
+                            <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>For Providers</Link></li>
                         </ul>
                     </div>
                      <div>
