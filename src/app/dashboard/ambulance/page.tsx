@@ -64,7 +64,7 @@ export default function AmbulanceDashboard() {
                 <CardContent className="h-[calc(100%-4rem)]">
                     {/* Placeholder for a map component */}
                      <div className="w-full h-full bg-gray-200 rounded-lg relative overflow-hidden">
-                        <Image src="https://picsum.photos/seed/map/1200/800" alt="Map" layout="fill" objectFit="cover" data-ai-hint="city map" />
+                        <Image src="https://picsum.photos/seed/map/1200/800" alt="Map" fill style={{ objectFit: 'cover' }} data-ai-hint="city map" />
                          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 bg-black/50 text-white rounded-lg">
                             Map Area
                         </div>

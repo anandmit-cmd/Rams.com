@@ -133,7 +133,7 @@ export default function LandingPage() {
                 ].map(item => (
                     <Card key={item.title} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                         <div className="relative h-48 bg-gray-200 flex items-center justify-center">
-                            <Image src={`https://picsum.photos/400/300?${item.image}`} alt={item.title} fill objectFit="cover" data-ai-hint={item.image} />
+                            <Image src={`https://picsum.photos/400/300?${item.image}`} alt={item.title} fill style={{objectFit: 'cover'}} data-ai-hint={item.image} />
                         </div>
                         <CardContent className="p-4">
                             <h3 className="font-bold text-lg text-gray-800">{item.title}</h3>

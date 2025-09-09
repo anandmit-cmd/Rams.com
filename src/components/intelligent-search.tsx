@@ -27,7 +27,8 @@ import {
   AlertCircle,
   BrainCircuit,
 } from 'lucide-react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 
 const initialState: SearchState = {
   message: '',
@@ -65,7 +66,7 @@ function ResultIcon({ type }: { type: string }) {
 }
 
 export function IntelligentSearch() {
-  const [state, formAction] = useFormState(handleSearch, initialState);
+  const [state, formAction] = useActionState(handleSearch, initialState);
   const { pending } = useFormStatus();
 
   return (
