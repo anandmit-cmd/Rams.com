@@ -14,6 +14,7 @@ export default function LabDashboard() {
     { id: '#BK-101', patient: 'Rina Desai', test: 'Complete Blood Count', status: 'Sample Collected' },
     { id: '#BK-102', patient: 'Mohit Verma', test: 'Lipid Profile', status: 'Report Ready' },
     { id: '#BK-103', patient: 'Sonia Agarwal', test: 'Thyroid Function Test', status: 'Awaiting Sample' },
+    { id: '#BK-104', patient: 'Vikram Rathod', test: 'Vitamin D Test', status: 'Sample Collected'},
   ];
 
   return (
@@ -26,7 +27,7 @@ export default function LabDashboard() {
             </Link>
         </div>
         <nav className="flex-1 px-4 space-y-2">
-          <Link href="#" className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg bg-accent text-accent-foreground" prefetch={false}>
+          <Link href="/dashboard/lab" className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg bg-accent text-accent-foreground" prefetch={false}>
             <LayoutGrid className="h-5 w-5" />
             Dashboard
           </Link>
@@ -129,7 +130,14 @@ export default function LabDashboard() {
                                     <TableCell className="font-medium">{booking.id}</TableCell>
                                     <TableCell>{booking.patient}</TableCell>
                                     <TableCell>{booking.test}</TableCell>
-                                    <TableCell>{booking.status}</TableCell>
+                                    <TableCell>
+                                        <span className={`px-2 py-1 text-xs rounded-full ${
+                                            booking.status === 'Report Ready' ? 'bg-green-100 text-green-800' : 
+                                            booking.status === 'Sample Collected' ? 'bg-blue-100 text-blue-800' : 'bg-yellow-100 text-yellow-800'
+                                        }`}>
+                                            {booking.status}
+                                        </span>
+                                    </TableCell>
                                     <TableCell className="text-right">
                                         <Button variant="outline" size="sm">Manage</Button>
                                     </TableCell>
