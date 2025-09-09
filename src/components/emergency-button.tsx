@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -12,7 +13,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { Phone, Siren } from 'lucide-react';
+import { Hospital, Phone, Siren } from 'lucide-react';
 import Link from 'next/link';
 
 export function EmergencyButton() {
@@ -41,9 +42,15 @@ export function EmergencyButton() {
                     Call for Ambulance (102)
                 </Link>
             </Button>
+             <Button asChild size="lg" variant="outline">
+                 <Link href="/find-a-doctor" className="flex items-center gap-2">
+                    <Hospital className="w-5 h-5 text-blue-500" />
+                    Search Nearby Hospital
+                </Link>
+            </Button>
             <Button asChild size="lg" variant="outline">
                 <Link href="tel:100" className="flex items-center gap-2">
-                    <Phone className="w-5 h-5 text-blue-500" />
+                    <Phone className="w-5 h-5 text-gray-500" />
                     Contact Police (100)
                 </Link>
             </Button>
