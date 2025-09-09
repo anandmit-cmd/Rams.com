@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Calendar, User, FileText, BarChart2, Bell, LogOut, LayoutGrid, Video, Star, Wallet } from 'lucide-react';
+import { Calendar, User, FileText, BarChart2, Bell, LogOut, LayoutGrid, Video, Star } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 
 export default function DoctorDashboard() {
