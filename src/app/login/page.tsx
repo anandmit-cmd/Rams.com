@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -13,16 +12,17 @@ import { AppLogo } from '@/components/icons';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import React from 'react';
-
+import { useAuth } from '@/hooks/use-auth';
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address."),
   password: z.string().min(1, "Password is required."),
 });
 
-function LoginPage() {
+export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
+  const { signIn } = useAuth();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -33,12 +33,21 @@ function LoginPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Login form submitted. Auth logic temporarily disabled to fix build.", values);
-    toast({
-      title: "Login Temporarily Disabled",
-      description: "Redirecting to dashboard for now.",
-    });
-    router.push('/dashboard/patient');
+    try {
+      await signIn(values.email, values.password);
+      toast({
+        title: "Login Successful",
+        description: "Welcome back!",
+      });
+      router.push('/dashboard/patient');
+    } catch (error: any) {
+      console.error("Login failed:", error);
+      toast({
+        title: "Login Failed",
+        description: error.message || "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    }
   }
 
   return (
@@ -103,9 +112,3 @@ function LoginPage() {
     </div>
   );
 }
-
-import dynamic from 'next/dynamic';
-
-export default dynamic(() => Promise.resolve(LoginPage), {
-  ssr: false,
-});

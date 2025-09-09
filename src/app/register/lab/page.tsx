@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -14,6 +13,7 @@ import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import React from 'react';
+import { useAuth } from '@/hooks/use-auth';
 
 const formSchema = z.object({
   labName: z.string().min(2, "Lab name is required."),
@@ -24,9 +24,10 @@ const formSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters."),
 });
 
-function LabRegisterPage() {
+export default function LabRegisterPage() {
   const router = useRouter();
   const { toast } = useToast();
+  const { signUp } = useAuth();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -41,12 +42,21 @@ function LabRegisterPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Lab registration submitted. Auth logic temporarily disabled to fix build.", values);
-    toast({
-        title: "Registration Successful (Temporarily)",
+    try {
+      await signUp(values.email, values.password);
+      toast({
+        title: "Registration Successful",
         description: "Your account has been created.",
       });
-    router.push('/dashboard/lab');
+      router.push('/dashboard/lab');
+    } catch (error: any) {
+      console.error("Registration failed:", error);
+      toast({
+        title: "Registration Failed",
+        description: error.message || "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    }
   }
 
   return (
@@ -127,9 +137,3 @@ function LabRegisterPage() {
     </div>
   );
 }
-
-import dynamic from 'next/dynamic';
-
-export default dynamic(() => Promise.resolve(LabRegisterPage), {
-  ssr: false,
-});
