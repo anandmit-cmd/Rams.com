@@ -7,8 +7,15 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Calendar, User, FileText, BarChart2, Bell, LogOut, LayoutGrid, Video, Star } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
+import { useState } from 'react';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
 
 export default function DoctorDashboard() {
+    const [rating, setRating] = useState(0);
+    const [hoverRating, setHoverRating] = useState(0);
+    const ratingLabels = ["Very Poor", "Poor", "Fair", "Good", "Excellent"];
+
   return (
     <div className="flex min-h-screen bg-secondary">
       <aside className="w-64 bg-white shadow-md flex-col hidden md:flex">
@@ -19,11 +26,11 @@ export default function DoctorDashboard() {
             </Link>
         </div>
         <nav className="flex-1 px-4 space-y-2">
-          <Link href="#" className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg bg-accent text-accent-foreground" prefetch={false}>
+          <Link href="/dashboard/doctor" className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg bg-accent text-accent-foreground" prefetch={false}>
             <LayoutGrid className="h-5 w-5" />
             Dashboard
           </Link>
-          <Link href="#" className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100" prefetch={false}>
+          <Link href="/dashboard/doctor/my-schedule" className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100" prefetch={false}>
             <Calendar className="h-5 w-5" />
             My Schedule
           </Link>
@@ -88,9 +95,9 @@ export default function DoctorDashboard() {
                         <p className="text-xs text-muted-foreground">+15% from last month</p>
                     </CardContent>
                 </Card>
-                 <Card>
+                <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">Overall Rating</CardTitle>
+                        <CardTitle className="text-sm font-medium">Patient Feedback</CardTitle>
                         <Star className="w-4 h-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
@@ -113,7 +120,7 @@ export default function DoctorDashboard() {
                                     <p className="text-sm text-gray-500">10:30 AM - Video Call</p>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                  <Button size="sm">Start Call</Button>
+                                  <Button size="sm"><Video className="w-4 h-4 mr-2"/>Start Call</Button>
                                   <Button size="sm" variant="outline">Details</Button>
                                 </div>
                             </div>
@@ -125,6 +132,16 @@ export default function DoctorDashboard() {
                                 </div>
                                 <div className="flex items-center gap-2">
                                   <Button size="sm" variant="destructive">Refund Payment</Button>
+                                  <Button size="sm" variant="outline">Details</Button>
+                                </div>
+                            </div>
+                             <div className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
+                                <div>
+                                    <p className="font-semibold">Sunita Sharma</p>
+                                    <p className="text-sm text-gray-500">12:00 PM - Video Call</p>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <Button size="sm"><Video className="w-4 h-4 mr-2"/>Start Call</Button>
                                   <Button size="sm" variant="outline">Details</Button>
                                 </div>
                             </div>
