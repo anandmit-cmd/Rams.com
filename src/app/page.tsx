@@ -114,7 +114,9 @@ export default function LandingPage() {
               ))}
             </div>
             <div className="text-center mt-12">
-              <Button variant="outline">View All Specialties</Button>
+              <Button asChild variant="outline">
+                <Link href="/specialties">View All Specialties</Link>
+              </Button>
             </div>
           </div>
         </section>

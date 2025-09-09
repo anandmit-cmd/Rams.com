@@ -97,7 +97,7 @@ export default function FindDoctorPage() {
             <Link href="/find-a-doctor" className="text-sm font-medium text-primary" prefetch={false}>
                 Find a Doctor
             </Link>
-            <Link href="#" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
+            <Link href="/wellness" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
                 Wellness
             </Link>
             <Link href="#" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
@@ -202,7 +202,9 @@ export default function FindDoctorPage() {
                         ))}
                     </div>
                      <div className="text-center mt-12">
-                        <Button variant="outline">View All Specialties</Button>
+                        <Button asChild variant="outline">
+                            <Link href="/specialties">View All Specialties</Link>
+                        </Button>
                     </div>
                 </section>
 
