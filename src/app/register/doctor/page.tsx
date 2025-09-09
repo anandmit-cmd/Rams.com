@@ -14,7 +14,6 @@ import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import React from 'react';
-import { useAuth } from '@/hooks/use-auth';
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters."),
@@ -25,10 +24,9 @@ const formSchema = z.object({
   medicalLicense: z.string().min(5, "Medical license number is required."),
 });
 
-export default function DoctorRegisterPage() {
+function DoctorRegisterPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const { signUp } = useAuth();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,21 +41,13 @@ export default function DoctorRegisterPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      await signUp(values.email, values.password);
-      toast({
-        title: "Registration Successful",
-        description: "Your account has been created.",
-      });
-      router.push('/dashboard/doctor');
-    } catch (error: any) {
-      console.error("Registration failed:", error);
-      toast({
-        title: "Registration Failed",
-        description: error.message || "An unexpected error occurred. Please try again.",
-        variant: "destructive",
-      });
-    }
+    console.log("Doctor registration submitted", values);
+    // Firebase logic removed as requested
+    toast({
+      title: "Registration Temporarily Disabled",
+      description: "Firebase connection is temporarily disabled.",
+    });
+    // router.push('/dashboard/doctor');
   }
 
   return (
@@ -150,3 +140,5 @@ export default function DoctorRegisterPage() {
     </div>
   );
 }
+
+export default DoctorRegisterPage;

@@ -12,17 +12,15 @@ import { AppLogo } from '@/components/icons';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import React from 'react';
-import { useAuth } from '@/hooks/use-auth';
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address."),
   password: z.string().min(1, "Password is required."),
 });
 
-export default function LoginPage() {
+function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const { signIn } = useAuth();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -33,21 +31,13 @@ export default function LoginPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      await signIn(values.email, values.password);
-      toast({
-        title: "Login Successful",
-        description: "Welcome back!",
-      });
-      router.push('/dashboard/patient');
-    } catch (error: any) {
-      console.error("Login failed:", error);
-      toast({
-        title: "Login Failed",
-        description: error.message || "An unexpected error occurred. Please try again.",
-        variant: "destructive",
-      });
-    }
+    console.log("Login submitted", values);
+    // Firebase logic removed as requested
+    toast({
+      title: "Login Temporarily Disabled",
+      description: "Firebase connection is temporarily disabled.",
+    });
+    // router.push('/dashboard/patient');
   }
 
   return (
@@ -112,3 +102,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
+export default LoginPage;
