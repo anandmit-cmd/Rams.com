@@ -116,7 +116,7 @@ export default function FindDoctorPage() {
                     <DropdownMenuItem>English</DropdownMenuItem>
                     <DropdownMenuItem>हिन्दी</DropdownMenuItem>
                     <DropdownMenuItem>मराठी</DropdownMenuItem>
-                    </DropdownMenuItem>
+                    </DropdownMenuContent>
                 </DropdownMenu>
                  <Button asChild>
                     <Link href="/register">Register</Link>
