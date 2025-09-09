@@ -13,9 +13,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { AppLogo } from '@/components/icons';
 import { ArrowLeft } from 'lucide-react';
 import { auth } from '@/lib/firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, type Auth } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
+import React from 'react';
 
 
 const formSchema = z.object({
@@ -30,6 +31,12 @@ const formSchema = z.object({
 export default function DoctorRegisterPage() {
   const router = useRouter();
   const { toast } = useToast();
+  const [authInstance, setAuthInstance] = React.useState<Auth | null>(null);
+
+  React.useEffect(() => {
+    setAuthInstance(auth);
+  }, []);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -43,8 +50,9 @@ export default function DoctorRegisterPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!authInstance) return;
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+      const userCredential = await createUserWithEmailAndPassword(authInstance, values.email, values.password);
       console.log("Doctor registered:", userCredential.user);
       // TODO: Save doctor-specific data (fullName, phone, specialty, license) to Firestore
       toast({
@@ -140,7 +148,7 @@ export default function DoctorRegisterPage() {
                       <FormMessage />
                     </FormItem>
                   )} />
-                  <Button type="submit" className="w-full bg-accent hover:bg-accent/90 h-11" disabled={form.formState.isSubmitting}>
+                  <Button type="submit" className="w-full bg-accent hover:bg-accent/90 h-11" disabled={form.formState.isSubmitting || !authInstance}>
                     {form.formState.isSubmitting ? 'Registering...' : 'Register as Doctor'}
                   </Button>
                 </form>

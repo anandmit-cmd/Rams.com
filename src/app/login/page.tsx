@@ -11,9 +11,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { AppLogo } from '@/components/icons';
 import { auth } from '@/lib/firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, type Auth } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
+import React from 'react';
 
 
 const formSchema = z.object({
@@ -24,6 +25,12 @@ const formSchema = z.object({
 export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
+  const [authInstance, setAuthInstance] = React.useState<Auth | null>(null);
+
+  React.useEffect(() => {
+    setAuthInstance(auth);
+  }, []);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -33,8 +40,9 @@ export default function LoginPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!authInstance) return;
     try {
-      await signInWithEmailAndPassword(auth, values.email, values.password);
+      await signInWithEmailAndPassword(authInstance, values.email, values.password);
       toast({
         title: "Login Successful",
         description: "Redirecting to your dashboard...",
@@ -98,7 +106,7 @@ export default function LoginPage() {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" className="w-full bg-accent hover:bg-accent/90 h-11" disabled={form.formState.isSubmitting}>
+                  <Button type="submit" className="w-full bg-accent hover:bg-accent/90 h-11" disabled={form.formState.isSubmitting || !authInstance}>
                     {form.formState.isSubmitting ? 'Logging in...' : 'Login'}
                   </Button>
                 </form>
