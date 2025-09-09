@@ -3,7 +3,6 @@
 
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -37,9 +36,9 @@ export function EmergencyButton() {
         </AlertDialogHeader>
         <div className="grid grid-cols-1 gap-4 my-4">
             <Button asChild size="lg" variant="outline">
-                 <Link href="tel:102" className="flex items-center gap-2">
+                 <Link href="tel:108" className="flex items-center gap-2">
                     <Siren className="w-5 h-5 text-red-500" />
-                    Call for Ambulance (102)
+                    Call for Ambulance (108)
                 </Link>
             </Button>
              <Button asChild size="lg" variant="outline">
@@ -49,9 +48,9 @@ export function EmergencyButton() {
                 </Link>
             </Button>
             <Button asChild size="lg" variant="outline">
-                <Link href="tel:100" className="flex items-center gap-2">
+                <Link href="tel:112" className="flex items-center gap-2">
                     <Phone className="w-5 h-5 text-gray-500" />
-                    Contact Police (100)
+                    Contact Police (112)
                 </Link>
             </Button>
         </div>
