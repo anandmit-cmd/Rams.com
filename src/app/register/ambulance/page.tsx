@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { AppLogo } from '@/components/icons';
 import { ArrowLeft } from 'lucide-react';
-import { auth } from '@/lib/firebase';
+import { auth }_ from '@/lib/firebase';
 import { createUserWithEmailAndPassword, type Auth } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
