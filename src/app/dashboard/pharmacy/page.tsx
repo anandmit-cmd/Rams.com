@@ -27,7 +27,7 @@ export default function PharmacyDashboard() {
             </Link>
         </div>
         <nav className="flex-1 px-4 space-y-2">
-          <Link href="#" className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg bg-accent text-accent-foreground" prefetch={false}>
+          <Link href="/dashboard/pharmacy" className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg bg-accent text-accent-foreground" prefetch={false}>
             <LayoutGrid className="h-5 w-5" />
             Dashboard
           </Link>
@@ -35,7 +35,7 @@ export default function PharmacyDashboard() {
             <ShoppingCart className="h-5 w-5" />
             Orders
           </Link>
-           <Link href="#" className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100" prefetch={false}>
+           <Link href="/dashboard/pharmacy/inventory" className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100" prefetch={false}>
             <Package className="h-5 w-5" />
             Inventory
           </Link>
