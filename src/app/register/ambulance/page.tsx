@@ -26,7 +26,7 @@ const formSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters."),
 });
 
-export default function AmbulanceRegisterPage() {
+function AmbulanceRegisterPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [authInstance, setAuthInstance] = React.useState<Auth | null>(null);
@@ -152,3 +152,9 @@ export default function AmbulanceRegisterPage() {
     </div>
   );
 }
+
+import dynamic from 'next/dynamic';
+
+export default dynamic(() => Promise.resolve(AmbulanceRegisterPage), {
+  ssr: false,
+});

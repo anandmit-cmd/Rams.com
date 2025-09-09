@@ -22,7 +22,7 @@ const formSchema = z.object({
   password: z.string().min(1, "Password is required."),
 });
 
-export default function LoginPage() {
+function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [authInstance, setAuthInstance] = React.useState<Auth | null>(null);
@@ -121,3 +121,9 @@ export default function LoginPage() {
     </div>
   );
 }
+
+import dynamic from 'next/dynamic';
+
+export default dynamic(() => Promise.resolve(LoginPage), {
+  ssr: false,
+});

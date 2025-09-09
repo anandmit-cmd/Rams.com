@@ -28,7 +28,7 @@ const formSchema = z.object({
   medicalLicense: z.string().min(5, "Medical license number is required."),
 });
 
-export default function DoctorRegisterPage() {
+function DoctorRegisterPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [authInstance, setAuthInstance] = React.useState<Auth | null>(null);
@@ -160,3 +160,9 @@ export default function DoctorRegisterPage() {
     </div>
   );
 }
+
+import dynamic from 'next/dynamic';
+
+export default dynamic(() => Promise.resolve(DoctorRegisterPage), {
+  ssr: false,
+});

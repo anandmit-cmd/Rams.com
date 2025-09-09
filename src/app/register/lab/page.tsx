@@ -26,7 +26,7 @@ const formSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters."),
 });
 
-export default function LabRegisterPage() {
+function LabRegisterPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [authInstance, setAuthInstance] = React.useState<Auth | null>(null);
@@ -99,7 +99,7 @@ export default function LabRegisterPage() {
                       <FormMessage />
                     </FormItem>
                   )} />
-                  <FormField control={form.control} name="address" render={({ field }) => (
+                  <FormField control={form.control} name="address" render={({ field })-/> (
                     <FormItem>
                       <FormLabel>Full Address</FormLabel>
                       <FormControl><Input placeholder="456, Health Ave, City" {...field} /></FormControl>
@@ -146,3 +146,9 @@ export default function LabRegisterPage() {
     </div>
   );
 }
+
+import dynamic from 'next/dynamic';
+
+export default dynamic(() => Promise.resolve(LabRegisterPage), {
+  ssr: false,
+});
