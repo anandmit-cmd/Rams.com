@@ -44,7 +44,8 @@ function PharmacyRegisterPage() {
     console.log("Pharmacy registration submitted", values);
     toast({
       title: "Registration Temporarily Disabled",
-      description: "Firebase connection is temporarily disabled.",
+      description: "This feature is not yet available.",
+       variant: "destructive",
     });
     // router.push('/dashboard/pharmacy');
   }
