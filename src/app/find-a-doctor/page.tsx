@@ -181,7 +181,9 @@ export default function FindDoctorPage() {
                                         {doctor.availability}
                                     </span>
                                 </div>
-                                <Button className="w-full mt-4 h-10">Book Appointment</Button>
+                                <Button asChild className="w-full mt-4 h-10">
+                                    <Link href="/book-appointment">Book Appointment</Link>
+                                </Button>
                             </CardContent>
                         </Card>
                     ))}
