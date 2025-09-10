@@ -18,6 +18,7 @@ const hospitals = [
     rating: 4.9,
     reviews: 1800,
     image: 'https://picsum.photos/seed/hospital1/600/400',
+    imageHint: 'hospital exterior modern',
     bedsAvailable: 25,
     tags: ['Multi-Specialty', '24/7 Emergency']
   },
@@ -28,6 +29,7 @@ const hospitals = [
     rating: 4.8,
     reviews: 1500,
     image: 'https://picsum.photos/seed/hospital2/600/400',
+    imageHint: 'hospital building glass',
     bedsAvailable: 15,
     tags: ['Cardiac Care', 'Neurology']
   },
@@ -38,6 +40,7 @@ const hospitals = [
     rating: 4.7,
     reviews: 1200,
     image: 'https://picsum.photos/seed/hospital3/600/400',
+    imageHint: 'large hospital building',
     bedsAvailable: 30,
     tags: ['Cancer Care', 'Pediatrics']
   },
@@ -79,7 +82,7 @@ export default function FindHospitalPage() {
             {hospitals.map((hospital) => (
               <Card key={hospital.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow">
                 <div className="relative h-52">
-                  <Image src={hospital.image} alt={`Photo of ${hospital.name}`} fill style={{ objectFit: 'cover' }} data-ai-hint="hospital exterior" />
+                  <Image src={hospital.image} alt={`Photo of ${hospital.name}`} fill style={{ objectFit: 'cover' }} data-ai-hint={hospital.imageHint} />
                 </div>
                 <CardContent className="p-4">
                   <h3 className="font-bold text-xl text-gray-800">{hospital.name}</h3>

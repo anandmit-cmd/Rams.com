@@ -16,10 +16,10 @@ const hospitalData = {
     id: '1',
     name: 'Apollo Hospital, Mumbai',
     images: [
-        'https://picsum.photos/seed/apollo-gallery1/1200/800',
-        'https://picsum.photos/seed/apollo-gallery2/1200/800',
-        'https://picsum.photos/seed/apollo-gallery3/1200/800',
-        'https://picsum.photos/seed/apollo-gallery4/1200/800',
+        { src: 'https://picsum.photos/seed/apollo-gallery1/1200/800', hint: 'hospital building exterior' },
+        { src: 'https://picsum.photos/seed/apollo-gallery2/1200/800', hint: 'hospital lobby interior' },
+        { src: 'https://picsum.photos/seed/apollo-gallery3/1200/800', hint: 'patient room clean' },
+        { src: 'https://picsum.photos/seed/apollo-gallery4/1200/800', hint: 'advanced medical equipment' },
     ],
     rating: 4.9,
     reviews: 1800,
@@ -71,22 +71,27 @@ export default function HospitalDetailPage({ params }: { params: { id: string } 
       <main className="flex-1 py-12">
         <div className="container mx-auto px-4 md:px-6">
 
-            <Carousel className="w-full max-w-4xl mx-auto mb-8">
+            <Carousel className="w-full max-w-4xl mx-auto mb-8"
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+            >
                 <CarouselContent>
-                    {hospitalData.images.map((src, index) => (
+                    {hospitalData.images.map((img, index) => (
                     <CarouselItem key={index}>
                         <div className="p-1">
                         <Card>
                             <CardContent className="flex aspect-[16/9] items-center justify-center p-0 relative overflow-hidden rounded-lg">
-                                 <Image src={src} alt={`${hospitalData.name} - Image ${index + 1}`} fill style={{ objectFit: 'cover' }} />
+                                 <Image src={img.src} alt={`${hospitalData.name} - Image ${index + 1}`} fill style={{ objectFit: 'cover' }} data-ai-hint={img.hint}/>
                             </CardContent>
                         </Card>
                         </div>
                     </CarouselItem>
                     ))}
                 </CarouselContent>
-                <CarouselPrevious className="left-[-50px]" />
-                <CarouselNext className="right-[-50px]" />
+                <CarouselPrevious className="left-[-50px] hidden sm:flex" />
+                <CarouselNext className="right-[-50px] hidden sm:flex" />
             </Carousel>
           
           <Card className="max-w-4xl mx-auto shadow-xl">
