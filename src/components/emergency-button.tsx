@@ -1,4 +1,3 @@
-
 'use client';
 
 import {
@@ -12,6 +11,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Hospital, Phone, Siren } from 'lucide-react';
 import Link from 'next/link';
 
@@ -35,14 +35,46 @@ export function EmergencyButton() {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="grid grid-cols-1 gap-4 my-4">
-            <Button asChild size="lg" variant="outline">
-                 <Link href="tel:108" className="flex items-center gap-2">
+             <Dialog>
+              <DialogTrigger asChild>
+                <Button size="lg" variant="outline" className="flex items-center gap-2">
                     <Siren className="w-5 h-5 text-red-500" />
-                    Call for Ambulance (108)
-                </Link>
-            </Button>
+                    Book or Call Ambulance
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Ambulance Service</DialogTitle>
+                  <DialogDescription>
+                    Choose an option to get emergency medical transport.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid grid-cols-1 gap-4 py-4">
+                    <Button asChild size="lg">
+                        <Link href="/book-ambulance" className='flex items-center gap-2'>
+                           <Siren className="w-5 h-5"/>
+                           Book an Ambulance Online
+                        </Link>
+                    </Button>
+                     <Button asChild size="lg" variant="destructive">
+                        <Link href="tel:108" className="flex items-center gap-2">
+                            <Phone className="w-5 h-5" />
+                            Call 108 Directly
+                        </Link>
+                    </Button>
+                </div>
+                <DialogFooter>
+                    <DialogClose asChild>
+                        <Button type="button" variant="secondary">
+                        Close
+                        </Button>
+                    </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
              <Button asChild size="lg" variant="outline">
-                 <Link href="/find-a-doctor" className="flex items-center gap-2">
+                 <Link href="/find-a-hospital" className="flex items-center gap-2">
                     <Hospital className="w-5 h-5 text-blue-500" />
                     Search Nearby Hospital
                 </Link>
