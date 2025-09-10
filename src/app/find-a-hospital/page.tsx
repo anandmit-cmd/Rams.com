@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Search, Star, MapPin, BedDouble } from 'lucide-react';
+import { Search, Star, MapPin, BedDouble, ShieldAlert, HeartPulse, Baby, GitCommitVertical, User } from 'lucide-react';
 import Image from 'next/image';
 import { AppLogo } from '@/components/icons';
 import { Badge } from '@/components/ui/badge';
@@ -46,6 +46,14 @@ const hospitals = [
   },
 ];
 
+const hospitalCategories = [
+    { name: 'Emergency', icon: ShieldAlert },
+    { name: 'Maternity', icon: GitCommitVertical },
+    { name: 'Pediatrics', icon: Baby },
+    { name: 'Heart Care', icon: HeartPulse },
+    { name: 'Senior Care', icon: User },
+]
+
 export default function FindHospitalPage() {
   return (
     <div className="flex flex-col min-h-screen bg-secondary">
@@ -64,7 +72,7 @@ export default function FindHospitalPage() {
           <Card className="p-6 mb-12 shadow-lg">
             <CardHeader className="text-center p-0 mb-6">
                 <CardTitle className="text-3xl font-bold">Find and Book a Hospital</CardTitle>
-                <CardDescription>Search for hospitals in your city for admission.</CardDescription>
+                <CardDescription>Search for hospitals based on your specific needs.</CardDescription>
             </CardHeader>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
               <div className="md:col-span-2 space-y-2">
@@ -75,6 +83,17 @@ export default function FindHospitalPage() {
                 <Search className="w-5 h-5 mr-2" />
                 Search Hospitals
               </Button>
+            </div>
+             <div className="mt-6">
+                <p className="text-sm font-semibold text-center mb-3">Or search by category:</p>
+                <div className="flex flex-wrap justify-center gap-3">
+                    {hospitalCategories.map((cat) => (
+                        <Button key={cat.name} variant="outline" className="flex items-center gap-2">
+                            <cat.icon className="w-5 h-5"/>
+                            {cat.name}
+                        </Button>
+                    ))}
+                </div>
             </div>
           </Card>
 
