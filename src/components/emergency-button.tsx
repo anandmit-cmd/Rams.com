@@ -51,14 +51,14 @@ export function EmergencyButton() {
                   </DialogDescription>
                 </DialogHeader>
                 <div className="grid grid-cols-1 gap-4 py-4">
-                    <AlertDialogCancel asChild>
+                    <DialogClose asChild>
                       <Button asChild size="lg">
                           <Link href="/book-ambulance" className='flex items-center justify-center gap-2 h-12'>
                              <Siren className="w-5 h-5"/>
                              Book an Ambulance Online
                           </Link>
                       </Button>
-                    </AlertDialogCancel>
+                    </DialogClose>
                      <Button asChild size="lg" variant="destructive">
                         <Link href="tel:108" className="flex items-center justify-center gap-2 h-12">
                             <Phone className="w-5 h-5" />
