@@ -118,7 +118,7 @@ export default function LandingPage() {
                   <p className="text-gray-500 mt-2 text-sm">Explore hospitals and check bed availability.</p>
                 </Card>
               </Link>
-               <Link href="/#" className="flex">
+               <Link href="/order-medicines" className="flex">
                 <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-shadow w-full">
                   <Pill className="w-12 h-12 text-primary mb-4" />
                   <h3 className="text-xl font-bold text-gray-800">Order Medicines</h3>
