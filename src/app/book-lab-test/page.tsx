@@ -8,9 +8,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { AppLogo } from '@/components/icons';
 import { Input } from '@/components/ui/input';
-import { Search, TestTube, Home, Building, ArrowLeft } from 'lucide-react';
+import { Search, TestTube, Home, Building, ArrowLeft, Calendar as CalendarIcon } from 'lucide-react';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
+import { Calendar } from '@/components/ui/calendar';
 
 const labTests = [
   { name: 'Complete Blood Count (CBC)', description: 'Measures different components of your blood.', price: 350.00, image: 'https://picsum.photos/seed/test1/300/200', imageHint: 'blood test tube' },
@@ -21,14 +22,32 @@ const labTests = [
   { name: 'Vitamin D Test', description: 'Checks for Vitamin D deficiency.', price: 1200.00, image: 'https://picsum.photos/seed/test6/300/200', imageHint: 'health supplements' },
 ];
 
+const timeSlots = [
+  '08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM'
+];
+
 export default function BookLabTestPage() {
     const { toast } = useToast();
+    const [selectedTest, setSelectedTest] = useState<string | null>(null);
+    const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+    const [selectedTime, setSelectedTime] = useState<string | null>(null);
 
-    const handleHomeCollection = (testName: string) => {
+    const handleScheduleHomeCollection = () => {
+        if (!selectedDate || !selectedTime || !selectedTest) {
+            toast({
+                title: 'Incomplete Information',
+                description: 'Please select a date and time for home collection.',
+                variant: 'destructive',
+            });
+            return;
+        }
         toast({
             title: 'Booking Confirmed',
-            description: `A technician will be scheduled for home sample collection for your ${testName}.`,
+            description: `A technician will visit you for ${selectedTest} on ${selectedDate.toLocaleDateString()} at ${selectedTime}.`,
         });
+        setSelectedDate(new Date());
+        setSelectedTime(null);
+        setSelectedTest(null);
     };
 
   return (
@@ -70,7 +89,7 @@ export default function BookLabTestPage() {
                   <p className="font-bold text-xl my-2">₹{test.price.toFixed(2)}</p>
                   <Dialog>
                     <DialogTrigger asChild>
-                       <Button className="w-full mt-2">
+                       <Button className="w-full mt-2" onClick={() => setSelectedTest(test.name)}>
                         <TestTube className="mr-2 h-4 w-4" /> Book Test
                       </Button>
                     </DialogTrigger>
@@ -82,12 +101,52 @@ export default function BookLabTestPage() {
                         </DialogDescription>
                       </DialogHeader>
                       <div className="grid grid-cols-2 gap-4 py-4">
-                        <DialogClose asChild>
-                            <Button variant="outline" className="h-24 flex-col gap-2" onClick={() => handleHomeCollection(test.name)}>
-                                <Home className="w-8 h-8 text-primary"/>
-                                Home Collection
-                            </Button>
-                        </DialogClose>
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <Button variant="outline" className="h-24 flex-col gap-2">
+                                    <Home className="w-8 h-8 text-primary"/>
+                                    Home Collection
+                                </Button>
+                            </DialogTrigger>
+                             <DialogContent className="max-w-3xl">
+                                <DialogHeader>
+                                    <DialogTitle>Schedule Home Collection</DialogTitle>
+                                    <DialogDescription>Select a date and time for sample collection from your home.</DialogDescription>
+                                </DialogHeader>
+                                <div className="flex flex-col md:flex-row gap-8 py-4">
+                                     <div className="flex justify-center">
+                                        <Calendar
+                                            mode="single"
+                                            selected={selectedDate}
+                                            onSelect={setSelectedDate}
+                                            disabled={(date) => date < new Date(new Date().setHours(0,0,0,0))}
+                                            className="rounded-md border"
+                                        />
+                                    </div>
+                                    <div className="flex-1">
+                                        <h3 className="font-semibold mb-4">Available Slots for {selectedDate ? selectedDate.toLocaleDateString() : ''}</h3>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            {timeSlots.map(time => (
+                                                <Button
+                                                    key={time}
+                                                    variant={selectedTime === time ? 'default' : 'outline'}
+                                                    onClick={() => setSelectedTime(time)}
+                                                >
+                                                    {time}
+                                                </Button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                <DialogFooter>
+                                    <DialogClose asChild>
+                                        <Button onClick={handleScheduleHomeCollection} className="bg-accent hover:bg-accent/90">
+                                            Confirm Schedule
+                                        </Button>
+                                    </DialogClose>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
                          <DialogClose asChild>
                             <Link href="/find-lab" passHref>
                                 <Button variant="outline" className="h-24 flex-col gap-2 w-full">
