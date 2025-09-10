@@ -243,8 +243,9 @@ export default function FindDoctorPage() {
                         <h4 className="font-semibold mb-3">Services</h4>
                         <ul className="space-y-2 text-sm">
                             <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>AI Checker</Link></li>
-                            <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Find a Doctor</Link></li>
-                            <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Wellness</Link></li>
+                            <li><Link href="/find-a-doctor" className="text-gray-400 hover:text-white" prefetch={false}>Find a Doctor</Link></li>
+                             <li><Link href="/find-a-hospital" className="text-gray-400 hover:text-white" prefetch={false}>Find a Hospital</Link></li>
+                            <li><Link href="/wellness" className="text-gray-400 hover:text-white" prefetch={false}>Wellness</Link></li>
                             <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Emergency</Link></li>
                         </ul>
                     </div>

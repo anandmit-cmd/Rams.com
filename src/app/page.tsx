@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Search, Calendar, MessageSquare, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Leaf, Users, ShieldCheck, Dumbbell } from 'lucide-react';
+import { Search, Calendar, MessageSquare, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Leaf, Users, ShieldCheck, Dumbbell, Hospital } from 'lucide-react';
 import Image from 'next/image';
 import { AppLogo } from '@/components/icons';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
@@ -20,6 +20,9 @@ export default function LandingPage() {
         <nav className="hidden md:flex items-center gap-6">
           <Link href="/find-a-doctor" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
             Find a Doctor
+          </Link>
+           <Link href="/find-a-hospital" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
+            Find a Hospital
           </Link>
           <Link href="/wellness" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
             Wellness
@@ -93,6 +96,31 @@ export default function LandingPage() {
           </div>
         </section>
         
+        <section className="py-12 md:py-24 lg:py-32 bg-white">
+          <div className="container mx-auto px-4 md:px-6">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold tracking-tighter text-gray-800">Explore Our Core Services</h2>
+              <p className="mt-2 text-gray-500">Comprehensive healthcare at your fingertips.</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              <Link href="/find-a-doctor">
+                <Card className="p-8 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-shadow h-full">
+                  <Stethoscope className="w-16 h-16 text-primary mb-4" />
+                  <h3 className="text-2xl font-bold text-gray-800">Find a Doctor</h3>
+                  <p className="text-gray-500 mt-2">Search for top specialists and book appointments instantly.</p>
+                </Card>
+              </Link>
+              <Link href="/find-a-hospital">
+                <Card className="p-8 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-shadow h-full">
+                  <Hospital className="w-16 h-16 text-primary mb-4" />
+                  <h3 className="text-2xl font-bold text-gray-800">Find a Hospital</h3>
+                  <p className="text-gray-500 mt-2">Explore hospitals, check bed availability, and book your stay.</p>
+                </Card>
+              </Link>
+            </div>
+          </div>
+        </section>
+
         <section className="py-12 md:py-24 lg:py-32 bg-secondary">
           <div className="container mx-auto px-4 md:px-6">
             <div className="text-center mb-12">
