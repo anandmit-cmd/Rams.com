@@ -125,7 +125,7 @@ export default function LandingPage() {
                   <p className="text-gray-500 mt-2 text-sm">Get medicines delivered to your doorstep.</p>
                 </Card>
               </Link>
-               <Link href="/#" className="flex">
+               <Link href="/book-lab-test" className="flex">
                 <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-shadow w-full">
                   <TestTube2 className="w-12 h-12 text-primary mb-4" />
                   <h3 className="text-xl font-bold text-gray-800">Book a Lab Test</h3>
