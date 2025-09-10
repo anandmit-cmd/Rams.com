@@ -24,10 +24,10 @@ const medicines = [
 export default function OrderMedicinesPage() {
     const { toast } = useToast();
 
-    const handleDeliveryChoice = (choice: 'delivery' | 'pickup', medicineName: string) => {
+    const handleHomeDelivery = (medicineName: string) => {
         toast({
             title: 'Selection Confirmed',
-            description: `You chose ${choice === 'delivery' ? 'Home Delivery' : 'In-Store Pickup'} for ${medicineName}.`,
+            description: `You chose Home Delivery for ${medicineName}. The item has been added to your cart.`,
         });
     };
 
@@ -83,16 +83,18 @@ export default function OrderMedicinesPage() {
                       </DialogHeader>
                       <div className="grid grid-cols-2 gap-4 py-4">
                         <DialogClose asChild>
-                            <Button variant="outline" className="h-24 flex-col gap-2" onClick={() => handleDeliveryChoice('delivery', med.name)}>
+                            <Button variant="outline" className="h-24 flex-col gap-2" onClick={() => handleHomeDelivery(med.name)}>
                                 <Truck className="w-8 h-8 text-primary"/>
                                 Home Delivery
                             </Button>
                         </DialogClose>
                          <DialogClose asChild>
-                            <Button variant="outline" className="h-24 flex-col gap-2" onClick={() => handleDeliveryChoice('pickup', med.name)}>
-                                <Store className="w-8 h-8 text-primary"/>
-                                In-Store Pickup
-                            </Button>
+                            <Link href="/find-pharmacy" passHref>
+                                <Button variant="outline" className="h-24 flex-col gap-2 w-full">
+                                    <Store className="w-8 h-8 text-primary"/>
+                                    In-Store Pickup
+                                </Button>
+                            </Link>
                         </DialogClose>
                       </div>
                     </DialogContent>
