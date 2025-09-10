@@ -12,6 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { AppLogo } from '@/components/icons';
 import { ArrowLeft } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Full name is required."),
@@ -23,6 +24,7 @@ const formSchema = z.object({
 });
 
 export default function WellnessRegisterPage() {
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,7 +39,11 @@ export default function WellnessRegisterPage() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
-    // TODO: Handle wellness expert registration and redirect to dashboard
+    toast({
+      title: "Registration Temporarily Disabled",
+      description: "This feature is not yet available.",
+      variant: "destructive",
+    });
   }
 
   return (
@@ -121,7 +127,9 @@ export default function WellnessRegisterPage() {
                       <FormMessage />
                     </FormItem>
                   )} />
-                  <Button type="submit" className="w-full bg-accent hover:bg-accent/90 h-11">Register as Expert</Button>
+                  <Button type="submit" className="w-full bg-accent hover:bg-accent/90 h-11" disabled={form.formState.isSubmitting}>
+                    {form.formState.isSubmitting ? 'Registering...' : 'Register as Expert'}
+                  </Button>
                 </form>
               </Form>
             </CardContent>
