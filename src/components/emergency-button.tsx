@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -37,7 +38,7 @@ export function EmergencyButton() {
         <div className="grid grid-cols-1 gap-4 my-4">
              <Dialog>
               <DialogTrigger asChild>
-                <Button size="lg" variant="outline" className="flex items-center gap-2">
+                <Button size="lg" variant="outline" className="flex items-center justify-center gap-2 h-12">
                     <Siren className="w-5 h-5 text-red-500" />
                     Book or Call Ambulance
                 </Button>
@@ -50,37 +51,35 @@ export function EmergencyButton() {
                   </DialogDescription>
                 </DialogHeader>
                 <div className="grid grid-cols-1 gap-4 py-4">
-                    <Button asChild size="lg">
-                        <Link href="/book-ambulance" className='flex items-center gap-2'>
-                           <Siren className="w-5 h-5"/>
-                           Book an Ambulance Online
-                        </Link>
-                    </Button>
+                    <AlertDialogCancel asChild>
+                      <Button asChild size="lg">
+                          <Link href="/book-ambulance" className='flex items-center justify-center gap-2 h-12'>
+                             <Siren className="w-5 h-5"/>
+                             Book an Ambulance Online
+                          </Link>
+                      </Button>
+                    </AlertDialogCancel>
                      <Button asChild size="lg" variant="destructive">
-                        <Link href="tel:108" className="flex items-center gap-2">
+                        <Link href="tel:108" className="flex items-center justify-center gap-2 h-12">
                             <Phone className="w-5 h-5" />
                             Call 108 Directly
                         </Link>
                     </Button>
                 </div>
-                <DialogFooter>
-                    <DialogClose asChild>
-                        <Button type="button" variant="secondary">
-                        Close
-                        </Button>
-                    </DialogClose>
-                </DialogFooter>
               </DialogContent>
             </Dialog>
 
-             <Button asChild size="lg" variant="outline">
-                 <Link href="/find-a-hospital" className="flex items-center gap-2">
-                    <Hospital className="w-5 h-5 text-blue-500" />
-                    Search Nearby Hospital
-                </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-                <Link href="tel:112" className="flex items-center gap-2">
+             <AlertDialogCancel asChild>
+               <Button asChild size="lg" variant="outline" className="h-12">
+                   <Link href="/find-a-hospital" className="flex items-center justify-center gap-2">
+                      <Hospital className="w-5 h-5 text-blue-500" />
+                      Search Nearby Hospital
+                  </Link>
+              </Button>
+            </AlertDialogCancel>
+
+            <Button asChild size="lg" variant="outline" className="h-12">
+                <Link href="tel:112" className="flex items-center justify-center gap-2">
                     <Phone className="w-5 h-5 text-gray-500" />
                     Contact Police (112)
                 </Link>
