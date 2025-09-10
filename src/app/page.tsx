@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Search, Calendar, MessageSquare, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Leaf, Users, ShieldCheck, Dumbbell, Hospital, Ambulance } from 'lucide-react';
+import { Search, Calendar, MessageSquare, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Leaf, Users, ShieldCheck, Dumbbell, Hospital, Ambulance, Pill, TestTube2 } from 'lucide-react';
 import Image from 'next/image';
 import { AppLogo } from '@/components/icons';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
@@ -103,26 +103,40 @@ export default function LandingPage() {
               <h2 className="text-3xl font-bold tracking-tighter text-gray-800">Explore Our Core Services</h2>
               <p className="mt-2 text-gray-500">Comprehensive healthcare at your fingertips.</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              <Link href="/find-a-doctor">
-                <Card className="p-8 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-shadow h-full">
-                  <Stethoscope className="w-16 h-16 text-primary mb-4" />
-                  <h3 className="text-2xl font-bold text-gray-800">Find a Doctor</h3>
-                  <p className="text-gray-500 mt-2">Search for top specialists and book appointments instantly.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 max-w-7xl mx-auto">
+              <Link href="/find-a-doctor" className="flex">
+                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-shadow w-full">
+                  <Stethoscope className="w-12 h-12 text-primary mb-4" />
+                  <h3 className="text-xl font-bold text-gray-800">Find a Doctor</h3>
+                  <p className="text-gray-500 mt-2 text-sm">Search for top specialists and book instantly.</p>
                 </Card>
               </Link>
-              <Link href="/find-a-hospital">
-                <Card className="p-8 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-shadow h-full">
-                  <Hospital className="w-16 h-16 text-primary mb-4" />
-                  <h3 className="text-2xl font-bold text-gray-800">Find a Hospital</h3>
-                  <p className="text-gray-500 mt-2">Explore hospitals, check bed availability, and book your stay.</p>
+              <Link href="/find-a-hospital" className="flex">
+                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-shadow w-full">
+                  <Hospital className="w-12 h-12 text-primary mb-4" />
+                  <h3 className="text-xl font-bold text-gray-800">Find a Hospital</h3>
+                  <p className="text-gray-500 mt-2 text-sm">Explore hospitals and check bed availability.</p>
                 </Card>
               </Link>
-              <Link href="/book-ambulance">
-                <Card className="p-8 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-shadow h-full bg-destructive/10 border-destructive">
-                  <Ambulance className="w-16 h-16 text-destructive mb-4" />
-                  <h3 className="text-2xl font-bold text-gray-800">Book an Ambulance</h3>
-                  <p className="text-gray-500 mt-2">Get immediate emergency assistance with real-time tracking.</p>
+               <Link href="/#" className="flex">
+                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-shadow w-full">
+                  <Pill className="w-12 h-12 text-primary mb-4" />
+                  <h3 className="text-xl font-bold text-gray-800">Order Medicines</h3>
+                  <p className="text-gray-500 mt-2 text-sm">Get medicines delivered to your doorstep.</p>
+                </Card>
+              </Link>
+               <Link href="/#" className="flex">
+                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-shadow w-full">
+                  <TestTube2 className="w-12 h-12 text-primary mb-4" />
+                  <h3 className="text-xl font-bold text-gray-800">Book a Lab Test</h3>
+                  <p className="text-gray-500 mt-2 text-sm">Book tests and get reports online.</p>
+                </Card>
+              </Link>
+              <Link href="/book-ambulance" className="flex">
+                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-shadow bg-destructive/10 border-destructive w-full">
+                  <Ambulance className="w-12 h-12 text-destructive mb-4" />
+                  <h3 className="text-xl font-bold text-gray-800">Book an Ambulance</h3>
+                  <p className="text-gray-500 mt-2 text-sm">Get immediate emergency assistance.</p>
                 </Card>
               </Link>
             </div>
