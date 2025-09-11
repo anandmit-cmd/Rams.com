@@ -64,7 +64,7 @@ export default function PatientDashboard() {
                 <span className="sr-only">Notifications</span>
             </Button>
             <Avatar>
-              <AvatarImage src="https://picsum.photos/100/100?random=user" alt="Patient" />
+              <AvatarImage src="https://picsum.photos/seed/user/100/100" data-ai-hint="person portrait" alt="Patient" />
               <AvatarFallback>P</AvatarFallback>
             </Avatar>
           </div>
@@ -254,3 +254,5 @@ export default function PatientDashboard() {
     </div>
   );
 }
+
+    
