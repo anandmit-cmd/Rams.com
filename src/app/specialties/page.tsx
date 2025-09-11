@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Search, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Ear, Brain, Activity, User, Syringe, Shield, Microscope } from 'lucide-react';
+import { Search, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Ear, Brain, Activity, User, Syringe, Shield, Microscope, Dumbbell } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import { useState } from 'react';
 
