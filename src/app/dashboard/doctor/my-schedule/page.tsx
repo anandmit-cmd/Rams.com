@@ -71,7 +71,7 @@ export default function DoctorSchedulePage() {
                  <span className="sr-only">Notifications</span>
             </Button>
             <Avatar>
-              <AvatarImage src="https://picsum.photos/100/100?random=doctor" alt="Doctor" />
+              <AvatarImage src="https://picsum.photos/seed/doctor/100/100" data-ai-hint="doctor portrait" alt="Doctor" />
               <AvatarFallback>DR</AvatarFallback>
             </Avatar>
           </div>
@@ -89,7 +89,7 @@ export default function DoctorSchedulePage() {
                             <div key={index} className="flex items-center justify-between p-4 rounded-lg bg-gray-50 border">
                                 <div className="flex items-center gap-4">
                                      <Avatar>
-                                        <AvatarImage src={`https://picsum.photos/100/100?random=patient-${index}`} alt={apt.patient} />
+                                        <AvatarImage src={`https://picsum.photos/seed/patient-${index}/100/100`} data-ai-hint="patient portrait" alt={apt.patient} />
                                         <AvatarFallback>{apt.patient.charAt(0)}</AvatarFallback>
                                     </Avatar>
                                     <div>

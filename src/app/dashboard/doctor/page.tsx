@@ -8,13 +8,8 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Calendar, User, FileText, BarChart2, Bell, LogOut, LayoutGrid, Video, Star } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import { useState } from 'react';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Textarea } from '@/components/ui/textarea';
 
 export default function DoctorDashboard() {
-    const [rating, setRating] = useState(0);
-    const [hoverRating, setHoverRating] = useState(0);
-    const ratingLabels = ["Very Poor", "Poor", "Fair", "Good", "Excellent"];
 
   return (
     <div className="flex min-h-screen bg-secondary">
