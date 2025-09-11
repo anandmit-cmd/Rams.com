@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, Star, MapPin, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Award } from 'lucide-react';
+import { Search, Star, MapPin, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Award, Twitter, Facebook, Instagram } from 'lucide-react';
 import Image from 'next/image';
 import { AppLogo } from '@/components/icons';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
@@ -21,7 +21,7 @@ const doctors = [
     rating: 4.8,
     reviews: 120,
     availability: 'Online',
-    image: 'https://picsum.photos/300/200?random=1',
+    image: 'https://picsum.photos/seed/1/300/200',
     imageHint: 'doctor portrait',
     rank: 'gold'
   },
@@ -32,7 +32,7 @@ const doctors = [
     rating: 4.9,
     reviews: 98,
     availability: 'In-Clinic',
-    image: 'https://picsum.photos/300/200?random=2',
+    image: 'https://picsum.photos/seed/2/300/200',
     imageHint: 'doctor smiling',
     rank: 'gold'
   },
@@ -43,7 +43,7 @@ const doctors = [
     rating: 4.7,
     reviews: 210,
     availability: 'Online',
-    image: 'https://picsum.photos/300/200?random=3',
+    image: 'https://picsum.photos/seed/3/300/200',
     imageHint: 'female doctor',
     rank: 'silver'
   },
@@ -54,7 +54,7 @@ const doctors = [
     rating: 4.9,
     reviews: 150,
     availability: 'In-Clinic',
-    image: 'https://picsum.photos/300/200?random=4',
+    image: 'https://picsum.photos/seed/4/300/200',
     imageHint: 'male doctor',
     rank: 'silver'
   },
@@ -65,7 +65,7 @@ const doctors = [
     rating: 4.8,
     reviews: 85,
     availability: 'Online',
-    image: 'https://picsum.photos/300/200?random=5',
+    image: 'https://picsum.photos/seed/5/300/200',
     imageHint: 'doctor glasses',
     rank: 'bronze'
   },
@@ -76,7 +76,7 @@ const doctors = [
     rating: 4.6,
     reviews: 300,
     availability: 'In-Clinic',
-    image: 'https://picsum.photos/300/200?random=6',
+    image: 'https://picsum.photos/seed/6/300/200',
     imageHint: 'doctor friendly',
     rank: 'bronze'
   },
@@ -112,7 +112,7 @@ const RankBadge = ({ rank }: { rank: 'gold' | 'silver' | 'bronze' }) => {
     };
     const { label, className, icon } = rankConfig[rank];
     return (
-        <Badge className={`absolute top-2 right-2 text-xs ${className}`}>
+        <Badge className={`absolute top-2 right-2 text-xs z-10 ${className}`}>
             {icon}
             {label}
         </Badge>
@@ -197,11 +197,11 @@ export default function FindDoctorPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {doctors.map((doctor, index) => (
-                        <Card key={index} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow relative">
-                            <div className="relative h-48">
+                        <Card key={index} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow">
+                            <div className="relative h-52">
                                 <Image src={doctor.image} alt={`Photo of ${doctor.name}`} fill style={{ objectFit: 'cover' }} data-ai-hint={doctor.imageHint} />
+                                 {doctor.rank && <RankBadge rank={doctor.rank as 'gold' | 'silver' | 'bronze'} />}
                             </div>
-                            {doctor.rank && <RankBadge rank={doctor.rank as 'gold' | 'silver' | 'bronze'} />}
                             <CardContent className="p-4">
                                 <h3 className="font-bold text-xl text-gray-800">{doctor.name}</h3>
                                 <p className="text-primary font-semibold">{doctor.specialty}</p>
@@ -209,15 +209,15 @@ export default function FindDoctorPage() {
                                     <MapPin className="w-4 h-4 mr-1" />
                                     {doctor.location}
                                 </div>
-                                <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-4 my-3">
                                     <div className="flex items-center gap-1">
                                         <Star className="w-5 h-5 text-yellow-400 fill-current" />
                                         <span className="font-bold">{doctor.rating}</span>
                                         <span className="text-xs text-gray-500">({doctor.reviews} reviews)</span>
                                     </div>
-                                    <span className={`px-2 py-1 text-xs rounded-full ${doctor.availability === 'Online' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`}>
+                                    <Badge variant={doctor.availability === 'Online' ? 'default' : 'secondary'} className={`${doctor.availability === 'Online' ? 'bg-green-100 text-green-800' : ''}`}>
                                         {doctor.availability}
-                                    </span>
+                                    </Badge>
                                 </div>
                                 <Button asChild className="w-full mt-4 h-10">
                                     <Link href="/book-appointment">Book Appointment</Link>
@@ -284,9 +284,23 @@ export default function FindDoctorPage() {
                             <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Emergency</Link></li>
                         </ul>
                     </div>
+                     <div className="col-span-2 md:col-span-1">
+                        <h4 className="font-semibold mb-3">Follow Us</h4>
+                        <div className="flex gap-4">
+                            <Link href="#" className="text-gray-400 hover:text-white" prefetch={false}><Twitter /></Link>
+                            <Link href="#" className="text-gray-400 hover:text-white" prefetch={false}><Facebook /></Link>
+                            <Link href="#" className="text-gray-400 hover:text-white" prefetch={false}><Instagram /></Link>
+                        </div>
+                    </div>
+                </div>
+                 <div className="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400 text-sm">
+                    <p>© 2025 RAMS.com. All rights reserved.</p>
                 </div>
             </div>
       </footer>
     </div>
   );
 }
+
+
+    
