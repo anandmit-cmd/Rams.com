@@ -1,0 +1,197 @@
+
+{
+  "doctor-1": {
+    "src": "https://picsum.photos/seed/1/300/200",
+    "hint": "doctor portrait"
+  },
+  "doctor-2": {
+    "src": "https://picsum.photos/seed/2/300/200",
+    "hint": "doctor smiling"
+  },
+  "doctor-3": {
+    "src": "https://picsum.photos/seed/3/300/200",
+    "hint": "female doctor"
+  },
+  "doctor-4": {
+    "src": "https://picsum.photos/seed/4/300/200",
+    "hint": "male doctor"
+  },
+  "doctor-5": {
+    "src": "https://picsum.photos/seed/5/300/200",
+    "hint": "doctor glasses"
+  },
+  "doctor-6": {
+    "src": "https://picsum.photos/seed/6/300/200",
+    "hint": "doctor friendly"
+  },
+  "hospital-1": {
+    "src": "https://picsum.photos/seed/hospital1/600/400",
+    "hint": "hospital exterior modern"
+  },
+  "hospital-2": {
+    "src": "https://picsum.photos/seed/hospital2/600/400",
+    "hint": "hospital building glass"
+  },
+  "hospital-3": {
+    "src": "https://picsum.photos/seed/hospital3/600/400",
+    "hint": "large hospital building"
+  },
+  "lab-1": {
+    "src": "https://picsum.photos/seed/lab1/600/400",
+    "hint": "modern lab interior"
+  },
+  "lab-2": {
+    "src": "https://picsum.photos/seed/lab2/600/400",
+    "hint": "lab collection center"
+  },
+  "lab-3": {
+    "src": "https://picsum.photos/seed/lab3/600/400",
+    "hint": "diagnostic lab building"
+  },
+  "pharmacy-1": {
+    "src": "https://picsum.photos/seed/pharm1/600/400",
+    "hint": "pharmacy interior shelves"
+  },
+  "pharmacy-2": {
+    "src": "https://picsum.photos/seed/pharm2/600/400",
+    "hint": "modern pharmacy counter"
+  },
+  "pharmacy-3": {
+    "src": "https://picsum.photos/seed/pharm3/600/400",
+    "hint": "pharmacy storefront bright"
+  },
+  "lab-test-1": {
+    "src": "https://picsum.photos/seed/test1/300/200",
+    "hint": "blood test tube"
+  },
+  "lab-test-2": {
+    "src": "https://picsum.photos/seed/test2/300/200",
+    "hint": "lab analysis"
+  },
+  "lab-test-3": {
+    "src": "https://picsum.photos/seed/test3/300/200",
+    "hint": "medical lab equipment"
+  },
+  "lab-test-4": {
+    "src": "https://picsum.photos/seed/test4/300/200",
+    "hint": "lab technician"
+  },
+  "lab-test-5": {
+    "src": "https://picsum.photos/seed/test5/300/200",
+    "hint": "blood sugar test"
+  },
+  "lab-test-6": {
+    "src": "https://picsum.photos/seed/test6/300/200",
+    "hint": "health supplements"
+  },
+  "medicine-1": {
+    "src": "https://picsum.photos/seed/med1/300/200",
+    "hint": "medicine tablets"
+  },
+  "medicine-2": {
+    "src": "https://picsum.photos/seed/med2/300/200",
+    "hint": "medicine pills"
+  },
+  "medicine-3": {
+    "src": "https://picsum.photos/seed/med3/300/200",
+    "hint": "medicine capsules"
+  },
+  "medicine-4": {
+    "src": "https://picsum.photos/seed/med4/300/200",
+    "hint": "allergy pills"
+  },
+  "medicine-5": {
+    "src": "https://picsum.photos/seed/med5/300/200",
+    "hint": "antacid tablets"
+  },
+  "medicine-6": {
+    "src": "https://picsum.photos/seed/med6/300/200",
+    "hint": "vitamin supplements"
+  },
+  "wellness-yoga": {
+    "src": "https://picsum.photos/seed/yoga/400/300",
+    "hint": "yoga mindfulness"
+  },
+  "wellness-fitness": {
+    "src": "https://picsum.photos/seed/fitness/400/300",
+    "hint": "fitness workout"
+  },
+  "wellness-mental": {
+    "src": "https://picsum.photos/seed/mental/400/300",
+    "hint": "mental wellness"
+  },
+  "wellness-diet": {
+    "src": "https://picsum.photos/seed/diet/400/300",
+    "hint": "diet nutrition"
+  },
+  "ambulance-driver-avatar": {
+    "src": "https://picsum.photos/seed/ambulance-driver/100/100",
+    "hint": "driver portrait"
+  },
+  "live-map": {
+    "src": "https://picsum.photos/seed/map/1200/800",
+    "hint": "city map"
+  },
+  "doctor-avatar": {
+    "src": "https://picsum.photos/seed/doctor/100/100",
+    "hint": "doctor portrait"
+  },
+  "patient-avatar": {
+    "src": "https://picsum.photos/seed/patient/100/100",
+    "hint": "person portrait"
+  },
+  "lab-tech-avatar": {
+    "src": "https://picsum.photos/seed/lab-tech/100/100",
+    "hint": "technician portrait"
+  },
+  "pharmacist-avatar": {
+    "src": "https://picsum.photos/seed/pharmacist/100/100",
+    "hint": "pharmacist portrait"
+  },
+  "hospital-gallery-1": {
+    "src": "https://picsum.photos/seed/apollo-gallery1/1200/800",
+    "hint": "hospital building exterior"
+  },
+  "hospital-gallery-2": {
+    "src": "https://picsum.photos/seed/apollo-gallery2/1200/800",
+    "hint": "hospital lobby interior"
+  },
+  "hospital-gallery-3": {
+    "src": "https://picsum.photos/seed/apollo-gallery3/1200/800",
+    "hint": "patient room clean"
+  },
+  "hospital-gallery-4": {
+    "src": "https://picsum.photos/seed/apollo-gallery4/1200/800",
+    "hint": "advanced medical equipment"
+  },
+  "doctor-avatar-1": {
+    "src": "https://picsum.photos/seed/doc1/100/100",
+    "hint": "doctor portrait"
+  },
+  "doctor-avatar-2": {
+    "src": "https://picsum.photos/seed/doc2/100/100",
+    "hint": "doctor smiling"
+  },
+  "doctor-avatar-3": {
+    "src": "https://picsum.photos/seed/doc3/100/100",
+    "hint": "female doctor"
+  },
+  "patient-user-avatar": {
+    "src": "https://picsum.photos/seed/user/100/100",
+    "hint": "person portrait"
+  },
+  "yoga-instructor-avatar": {
+    "src": "https://picsum.photos/seed/yoga-instructor/300/200",
+    "hint": "yoga instructor"
+  },
+  "fitness-coach-avatar": {
+    "src": "https://picsum.photos/seed/fitness-coach/300/200",
+    "hint": "fitness coach"
+  },
+  "counselor-avatar": {
+    "src": "https://picsum.photos/seed/counselor/300/200",
+    "hint": "counselor portrait"
+  }
+}
+
+    
