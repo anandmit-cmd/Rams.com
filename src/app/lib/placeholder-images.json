@@ -109,19 +109,19 @@
     "hint": "vitamin supplements"
   },
   "wellness-yoga": {
-    "src": "https://picsum.photos/seed/yoga/400/300",
+    "src": "https://picsum.photos/seed/wellness-yoga/400/300",
     "hint": "yoga mindfulness"
   },
   "wellness-fitness": {
-    "src": "https://picsum.photos/seed/fitness/400/300",
+    "src": "https://picsum.photos/seed/wellness-fitness/400/300",
     "hint": "fitness workout"
   },
   "wellness-mental": {
-    "src": "https://picsum.photos/seed/mental/400/300",
+    "src": "https://picsum.photos/seed/wellness-mental/400/300",
     "hint": "mental wellness"
   },
   "wellness-diet": {
-    "src": "https://picsum.photos/seed/diet/400/300",
+    "src": "https://picsum.photos/seed/wellness-diet/400/300",
     "hint": "diet nutrition"
   },
   "ambulance-driver-avatar": {

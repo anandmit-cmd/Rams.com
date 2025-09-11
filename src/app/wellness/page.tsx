@@ -11,28 +11,28 @@ const wellnessCategories = [
     title: 'Yoga & Mindfulness',
     description: 'Find inner peace and improve flexibility with our curated yoga sessions.',
     icon: Leaf,
-    image: 'yoga',
+    image: 'wellness-yoga',
     href: '#',
   },
   {
     title: 'Fitness & Workouts',
     description: 'Get stronger and healthier with personalized workout plans.',
     icon: Dumbbell,
-    image: 'fitness',
+    image: 'wellness-fitness',
     href: '#',
   },
   {
     title: 'Mental Wellness',
     description: 'Connect with therapists and access resources for mental peace.',
     icon: Users,
-    image: 'mental',
+    image: 'wellness-mental',
     href: '#',
   },
   {
     title: 'Diet & Nutrition',
     description: 'Get custom diet plans from expert nutritionists for a healthier lifestyle.',
     icon: ShieldCheck,
-    image: 'diet',
+    image: 'wellness-diet',
     href: '#',
   },
 ];
@@ -43,21 +43,24 @@ const experts = [
         expertise: 'Yoga Instructor',
         rating: 4.9,
         reviews: 85,
-        image: 'https://picsum.photos/300/200?random=yoga-instructor'
+        image: 'yoga-instructor-avatar',
+        imageHint: 'yoga instructor'
     },
     {
         name: 'Priya Singh',
         expertise: 'Fitness Coach',
         rating: 4.8,
         reviews: 120,
-        image: 'https://picsum.photos/300/200?random=fitness-coach'
+        image: 'fitness-coach-avatar',
+        imageHint: 'fitness coach'
     },
     {
         name: 'Dr. Rohan Mehra',
         expertise: 'Mental Health Counselor',
         rating: 4.9,
         reviews: 92,
-        image: 'https://picsum.photos/300/200?random=counselor'
+        image: 'counselor-avatar',
+        imageHint: 'counselor portrait'
     }
 ]
 
@@ -102,7 +105,7 @@ export default function WellnessPage() {
                 <Link href={category.href} key={category.title}>
                   <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow h-full">
                      <div className="relative h-48">
-                        <Image src={`https://picsum.photos/400/300?${category.image}`} alt={category.title} fill style={{objectFit: 'cover'}} data-ai-hint={category.image} />
+                        <Image src={`https://picsum.photos/seed/${category.image}/400/300`} alt={category.title} fill style={{objectFit: 'cover'}} data-ai-hint={category.image} />
                      </div>
                     <CardHeader>
                       <div className="flex items-center gap-3">
@@ -130,7 +133,7 @@ export default function WellnessPage() {
                     {experts.map(expert => (
                         <Card key={expert.name} className="text-center shadow-lg">
                             <CardContent className="p-6">
-                                <Image src={expert.image} alt={expert.name} width={100} height={100} className="rounded-full mx-auto mb-4 border-4 border-secondary" data-ai-hint="expert portrait" />
+                                <Image src={`https://picsum.photos/seed/${expert.image}/300/200`} alt={expert.name} width={100} height={100} className="rounded-full mx-auto mb-4 border-4 border-secondary" data-ai-hint={expert.imageHint} />
                                 <h3 className="text-lg font-bold">{expert.name}</h3>
                                 <p className="text-primary">{expert.expertise}</p>
                                 <div className="flex items-center justify-center gap-1 my-2">

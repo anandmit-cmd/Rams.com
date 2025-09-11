@@ -178,15 +178,15 @@ export default function LandingPage() {
             </div>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
                 {[
-                  { title: 'Yoga & Mindfulness', image: 'yoga', icon: Leaf, href: '/wellness' },
-                  { title: 'Fitness & Workouts', image: 'fitness', icon: Dumbbell, href: '/wellness' },
-                  { title: 'Mental Wellness', image: 'mental', icon: Users, href: '/wellness' },
-                  { title: 'Diet & Nutrition', image: 'diet', icon: ShieldCheck, href: '/wellness' },
+                  { title: 'Yoga & Mindfulness', image: 'wellness-yoga', hint: 'yoga mindfulness', icon: Leaf, href: '/wellness' },
+                  { title: 'Fitness & Workouts', image: 'wellness-fitness', hint: 'fitness workout', icon: Dumbbell, href: '/wellness' },
+                  { title: 'Mental Wellness', image: 'wellness-mental', hint: 'mental wellness', icon: Users, href: '/wellness' },
+                  { title: 'Diet & Nutrition', image: 'wellness-diet', hint: 'diet nutrition', icon: ShieldCheck, href: '/wellness' },
                 ].map(item => (
                   <Link href={item.href} key={item.title}>
                     <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow h-full">
                         <div className="relative h-48 bg-gray-200 flex items-center justify-center">
-                            <Image src={`https://picsum.photos/400/300?${item.image}`} alt={item.title} fill style={{objectFit: 'cover'}} data-ai-hint={item.image} />
+                            <Image src={`https://picsum.photos/seed/${item.image}/400/300`} alt={item.title} fill style={{objectFit: 'cover'}} data-ai-hint={item.hint} />
                         </div>
                         <CardContent className="p-4">
                             <h3 className="font-bold text-lg text-gray-800">{item.title}</h3>
