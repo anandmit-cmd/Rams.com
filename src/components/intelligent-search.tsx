@@ -1,3 +1,4 @@
+
 'use client';
 
 import { handleSearch, type SearchState } from '@/app/actions';
@@ -19,14 +20,14 @@ import {
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
+  AlertCircle,
+  ArrowRight,
   Beaker,
   Clock,
-  Search,
+  Pill,
   Stethoscope,
-  Store,
-  AlertCircle,
-  BrainCircuit,
 } from 'lucide-react';
+import Link from 'next/link';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 
@@ -55,15 +56,21 @@ function SubmitButton() {
 function ResultIcon({ type }: { type: string }) {
   switch (type) {
     case 'doctor':
-      return <Stethoscope className="size-5 text-accent" />;
+      return <Stethoscope className="size-8 text-primary" />;
     case 'lab':
-      return <Beaker className="size-5 text-accent" />;
+      return <Beaker className="size-8 text-primary" />;
     case 'medical_store':
-      return <Store className="size-5 text-accent" />;
+      return <Pill className="size-8 text-primary" />;
     default:
       return null;
   }
 }
+
+const resultLinks = {
+  doctor: '/find-a-doctor',
+  lab: '/book-lab-test',
+  medical_store: '/order-medicines',
+};
 
 export function IntelligentSearch() {
   const [state, formAction] = useActionState(handleSearch, initialState);
@@ -96,33 +103,35 @@ export function IntelligentSearch() {
         </form>
       </CardContent>
 
-      {(pending || state.results.length > 0 || state.message) && (
+      {(pending || state.results.length > 0 || (state.message && !state.errors)) && (
         <CardFooter className="flex-col items-start gap-4 border-t px-6 py-4">
           {pending && (
-            <div className="grid w-full gap-4 md:grid-cols-2">
-              <Skeleton className="h-28 w-full" />
-              <Skeleton className="h-28 w-full" />
+            <div className="grid w-full gap-4">
+              <Skeleton className="h-32 w-full" />
+              <Skeleton className="h-32 w-full" />
             </div>
           )}
           {!pending && state.results.length > 0 && (
             <>
-              <h3 className="font-semibold">Our Suggestions:</h3>
-              <div className="grid w-full gap-4 md:grid-cols-2">
+              <h3 className="font-semibold text-lg">Our Suggestions:</h3>
+              <div className="grid w-full gap-4">
                 {state.results.map((result, index) => (
-                  <div
+                  <Card
                     key={index}
-                    className="flex gap-4 rounded-lg border bg-background/50 p-4 transition-all hover:shadow-lg"
+                    className="flex flex-col sm:flex-row gap-4 p-4 transition-all hover:shadow-md"
                   >
-                    <div className="mt-1">
-                      <ResultIcon type={result.type} />
+                    <div className="flex items-center justify-center sm:justify-start">
+                       <div className="p-3 bg-primary/10 rounded-lg">
+                         <ResultIcon type={result.type} />
+                       </div>
                     </div>
-                    <div className="flex-1 space-y-1">
-                      <p className="font-semibold">{result.name}</p>
+                    <div className="flex-1 space-y-1 text-center sm:text-left">
+                      <p className="font-bold text-base">{result.name}</p>
                       <p className="text-sm text-muted-foreground">
                         {result.description}
                       </p>
                       {result.availability && (
-                        <div className="flex items-center pt-2">
+                        <div className="flex items-center justify-center sm:justify-start pt-2">
                           <Badge
                             variant="outline"
                             className="flex items-center gap-1.5"
@@ -133,21 +142,30 @@ export function IntelligentSearch() {
                         </div>
                       )}
                     </div>
-                  </div>
+                     <div className="flex items-center justify-center">
+                        <Button asChild variant="outline" size="sm">
+                            <Link href={resultLinks[result.type as keyof typeof resultLinks] || '/'}>
+                                Go to {result.type.replace('_', ' ')} <ArrowRight className="ml-2"/>
+                            </Link>
+                        </Button>
+                    </div>
+                  </Card>
                 ))}
               </div>
             </>
           )}
-          {!pending && state.message && state.results.length === 0 && (
-            <Alert variant={state.errors ? 'destructive' : 'default'}>
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>
-                {state.errors ? 'Search Failed' : 'Information'}
-              </AlertTitle>
-              <AlertDescription>{state.message}</AlertDescription>
-            </Alert>
-          )}
         </CardFooter>
+      )}
+      {!pending && state.message && (state.results.length === 0 || state.errors) && (
+            <CardFooter className="border-t px-6 py-4">
+                <Alert variant={state.errors ? 'destructive' : 'default'} className="w-full">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>
+                    {state.errors ? 'Search Failed' : 'Information'}
+                </AlertTitle>
+                <AlertDescription>{state.message}</AlertDescription>
+                </Alert>
+            </CardFooter>
       )}
     </Card>
   );
