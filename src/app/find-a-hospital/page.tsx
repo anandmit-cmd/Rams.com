@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Search, Star, MapPin, BedDouble, ShieldAlert, HeartPulse, Baby, GitCommitVertical, User } from 'lucide-react';
+import { Search, Star, MapPin, BedDouble, ShieldAlert, HeartPulse, Baby, GitCommitVertical, User, Award } from 'lucide-react';
 import Image from 'next/image';
 import { AppLogo } from '@/components/icons';
 import { Badge } from '@/components/ui/badge';
@@ -20,7 +20,8 @@ const hospitals = [
     image: 'https://picsum.photos/seed/hospital1/600/400',
     imageHint: 'hospital exterior modern',
     bedsAvailable: 25,
-    tags: ['Multi-Specialty', '24/7 Emergency']
+    tags: ['Multi-Specialty', '24/7 Emergency'],
+    rank: 'gold'
   },
   {
     id: '2',
@@ -31,7 +32,8 @@ const hospitals = [
     image: 'https://picsum.photos/seed/hospital2/600/400',
     imageHint: 'hospital building glass',
     bedsAvailable: 15,
-    tags: ['Cardiac Care', 'Neurology']
+    tags: ['Cardiac Care', 'Neurology'],
+    rank: 'silver'
   },
   {
     id: '3',
@@ -42,7 +44,8 @@ const hospitals = [
     image: 'https://picsum.photos/seed/hospital3/600/400',
     imageHint: 'large hospital building',
     bedsAvailable: 30,
-    tags: ['Cancer Care', 'Pediatrics']
+    tags: ['Cancer Care', 'Pediatrics'],
+    rank: 'bronze'
   },
 ];
 
@@ -52,7 +55,34 @@ const hospitalCategories = [
     { name: 'Pediatrics', icon: Baby },
     { name: 'Heart Care', icon: HeartPulse },
     { name: 'Senior Care', icon: User },
-]
+];
+
+const RankBadge = ({ rank }: { rank: 'gold' | 'silver' | 'bronze' }) => {
+    const rankConfig = {
+        gold: {
+            label: 'Gold',
+            className: 'bg-yellow-400 text-yellow-900 border-yellow-500',
+            icon: <Award className="w-3 h-3" />
+        },
+        silver: {
+            label: 'Silver',
+            className: 'bg-slate-300 text-slate-800 border-slate-400',
+            icon: <Award className="w-3 h-3" />
+        },
+        bronze: {
+            label: 'Bronze',
+            className: 'bg-amber-600 text-white border-amber-700',
+            icon: <Award className="w-3 h-3" />
+        }
+    };
+    const { label, className, icon } = rankConfig[rank];
+    return (
+        <Badge className={`absolute top-2 right-2 text-xs z-10 ${className}`}>
+            {icon}
+            {label}
+        </Badge>
+    );
+};
 
 export default function FindHospitalPage() {
   return (
@@ -99,9 +129,10 @@ export default function FindHospitalPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {hospitals.map((hospital) => (
-              <Card key={hospital.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow">
+              <Card key={hospital.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow relative">
                 <div className="relative h-52">
                   <Image src={hospital.image} alt={`Photo of ${hospital.name}`} fill style={{ objectFit: 'cover' }} data-ai-hint={hospital.imageHint} />
+                   {hospital.rank && <RankBadge rank={hospital.rank as 'gold' | 'silver' | 'bronze'} />}
                 </div>
                 <CardContent className="p-4">
                   <h3 className="font-bold text-xl text-gray-800">{hospital.name}</h3>

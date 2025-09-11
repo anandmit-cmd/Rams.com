@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Search, Star, MapPin, Navigation } from 'lucide-react';
+import { Search, Star, MapPin, Navigation, Award } from 'lucide-react';
 import Image from 'next/image';
 import { AppLogo } from '@/components/icons';
 import { Badge } from '@/components/ui/badge';
@@ -21,6 +21,7 @@ const pharmacies = [
     image: 'https://picsum.photos/seed/pharm1/600/400',
     imageHint: 'pharmacy interior shelves',
     isOpen: true,
+    rank: 'gold'
   },
   {
     id: '2',
@@ -32,6 +33,7 @@ const pharmacies = [
     image: 'https://picsum.photos/seed/pharm2/600/400',
     imageHint: 'modern pharmacy counter',
     isOpen: true,
+    rank: 'silver'
   },
   {
     id: '3',
@@ -43,8 +45,36 @@ const pharmacies = [
     image: 'https://picsum.photos/seed/pharm3/600/400',
     imageHint: 'pharmacy storefront bright',
     isOpen: false,
+    rank: 'bronze'
   },
 ];
+
+const RankBadge = ({ rank }: { rank: 'gold' | 'silver' | 'bronze' }) => {
+    const rankConfig = {
+        gold: {
+            label: 'Gold',
+            className: 'bg-yellow-400 text-yellow-900 border-yellow-500',
+            icon: <Award className="w-3 h-3" />
+        },
+        silver: {
+            label: 'Silver',
+            className: 'bg-slate-300 text-slate-800 border-slate-400',
+            icon: <Award className="w-3 h-3" />
+        },
+        bronze: {
+            label: 'Bronze',
+            className: 'bg-amber-600 text-white border-amber-700',
+            icon: <Award className="w-3 h-3" />
+        }
+    };
+    const { label, className, icon } = rankConfig[rank];
+    return (
+        <Badge className={`absolute top-2 right-2 text-xs z-10 ${className}`}>
+            {icon}
+            {label}
+        </Badge>
+    );
+};
 
 export default function FindPharmacyPage() {
   return (
@@ -80,9 +110,10 @@ export default function FindPharmacyPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {pharmacies.map((pharmacy) => (
-              <Card key={pharmacy.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow">
+              <Card key={pharmacy.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow relative">
                 <div className="relative h-52">
                   <Image src={pharmacy.image} alt={`Photo of ${pharmacy.name}`} fill style={{ objectFit: 'cover' }} data-ai-hint={pharmacy.imageHint} />
+                   {pharmacy.rank && <RankBadge rank={pharmacy.rank as 'gold' | 'silver' | 'bronze'} />}
                 </div>
                 <CardContent className="p-4">
                   <div className="flex justify-between items-start">
@@ -118,4 +149,3 @@ export default function FindPharmacyPage() {
     </div>
   );
 }
-
