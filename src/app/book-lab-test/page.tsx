@@ -66,6 +66,10 @@ export default function BookLabTestPage() {
         <div className="container mx-auto px-4 md:px-6">
           <Card className="max-w-4xl mx-auto shadow-lg mb-8">
             <CardHeader>
+              <Link href="/" className="flex items-center text-sm text-primary mb-4 hover:underline">
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Back to Home
+              </Link>
               <CardTitle className="text-2xl md:text-3xl">Book a Lab Test</CardTitle>
               <CardDescription>Search for tests and book an appointment for home collection or a lab visit.</CardDescription>
             </CardHeader>
@@ -162,16 +166,6 @@ export default function BookLabTestPage() {
               </Card>
             ))}
           </div>
-
-           <div className="text-center mt-12">
-            <Button asChild variant="outline">
-                <Link href="/" className="flex items-center">
-                    <ArrowLeft className="w-4 h-4 mr-2" />
-                    Back to Home
-                </Link>
-            </Button>
-          </div>
-
         </div>
       </main>
     </div>
