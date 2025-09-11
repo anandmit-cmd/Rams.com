@@ -34,7 +34,7 @@ export default function BookAppointmentPage() {
     
     toast({
         title: 'Appointment Booked!',
-        description: `Your appointment is confirmed for ${selectedDate.toLocaleDateString()} at ${selectedTime}.`,
+        description: `Your appointment with Dr. Anjali Sharma is confirmed for ${selectedDate.toLocaleDateString()} at ${selectedTime}.`,
     });
   };
 
@@ -69,11 +69,12 @@ export default function BookAppointmentPage() {
                     mode="single"
                     selected={selectedDate}
                     onSelect={setSelectedDate}
+                    disabled={(date) => date < new Date(new Date().setHours(0,0,0,0))}
                     className="rounded-md border"
                     />
                 </div>
                 <div className="flex-1">
-                    <h3 className="font-semibold mb-4">Available Time Slots</h3>
+                    <h3 className="font-semibold mb-4">Available Time Slots for {selectedDate ? selectedDate.toLocaleDateString() : ''}</h3>
                     <div className="grid grid-cols-3 gap-3">
                         {timeSlots.map(time => (
                             <Button
@@ -98,7 +99,7 @@ export default function BookAppointmentPage() {
              <Card>
                 <CardHeader className="items-center text-center">
                     <Avatar className="w-24 h-24 mb-4 border-4 border-primary">
-                        <AvatarImage src="https://picsum.photos/300/200?random=1" alt="Dr. Anjali Sharma"/>
+                        <AvatarImage src="https://picsum.photos/seed/1/300/200" alt="Dr. Anjali Sharma" data-ai-hint="doctor portrait"/>
                         <AvatarFallback>AS</AvatarFallback>
                     </Avatar>
                     <CardTitle>Dr. Anjali Sharma</CardTitle>
