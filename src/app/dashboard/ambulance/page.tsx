@@ -51,7 +51,7 @@ export default function AmbulanceDashboard() {
                 <span className="sr-only">Notifications</span>
             </Button>
             <Avatar>
-              <AvatarImage src="https://picsum.photos/100/100?random=ambulance-driver" alt="Driver" />
+              <AvatarImage src="https://picsum.photos/seed/ambulance-driver/100/100" data-ai-hint="driver portrait" alt="Driver" />
               <AvatarFallback>AD</AvatarFallback>
             </Avatar>
           </div>
