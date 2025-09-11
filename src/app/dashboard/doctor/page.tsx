@@ -60,7 +60,7 @@ export default function DoctorDashboard() {
                 <span className="sr-only">Notifications</span>
             </Button>
             <Avatar>
-              <AvatarImage src="https://picsum.photos/100/100?random=doctor" alt="Doctor" />
+              <AvatarImage src="https://picsum.photos/seed/doctor/100/100" data-ai-hint="doctor portrait" alt="Doctor" />
               <AvatarFallback>DR</AvatarFallback>
             </Avatar>
           </div>
@@ -131,7 +131,7 @@ export default function DoctorDashboard() {
                                 <div>
                                     <p className="font-semibold">Amit Patel</p>
                                     <p className="text-sm text-gray-500">11:00 AM - In-Clinic</p>
-                                     <p className="text-xs text-red-500 mt-1">Patient requested a refund.</p>
+                                     <p className="text-xs text-red-500 mt-1">Patient requested a refund due to technical issues.</p>
                                 </div>
                                 <div className="flex items-center gap-2">
                                   <Button size="sm" variant="destructive">Refund Payment</Button>
@@ -141,7 +141,7 @@ export default function DoctorDashboard() {
                              <div className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
                                 <div>
                                     <p className="font-semibold">Sunita Sharma</p>
-                                    <p className="text-sm text-gray-500">12:00 PM - Video Call</p>
+                                    <p className="text-sm text-gray-500">12:00 PM - Video Call (Follow-up)</p>
                                 </div>
                                 <div className="flex items-center gap-2">
                                   <Button size="sm"><Video className="w-4 h-4 mr-2"/>Start Call</Button>
