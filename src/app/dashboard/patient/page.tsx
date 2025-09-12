@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Calendar, Stethoscope, FileText, Wallet, Bell, Settings, LogOut, LayoutGrid, HeartPulse, ShieldCheck, Dumbbell, Star, MessageSquare, Leaf, Users } from 'lucide-react';
+import { Calendar, Stethoscope, FileText, Wallet, Bell, Settings, LogOut, LayoutGrid, HeartPulse, ShieldCheck, Dumbbell, Star, MessageSquare, Leaf, Users, Download } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { useState } from 'react';
@@ -71,9 +71,9 @@ export default function PatientDashboard() {
         </header>
 
         <main className="flex-1 p-6">
-            <Card className="mb-8">
+            <Card className="mb-8 bg-gradient-to-r from-primary/10 to-accent/10">
                 <CardHeader>
-                    <CardTitle>Welcome back, Patient!</CardTitle>
+                    <CardTitle>Welcome back, Anjali!</CardTitle>
                     <CardDescription>Here's a quick overview of your health dashboard.</CardDescription>
                 </CardHeader>
             </Card>
@@ -81,24 +81,33 @@ export default function PatientDashboard() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">Upcoming Appointments</CardTitle>
+                        <CardTitle className="text-sm font-medium">Upcoming Appointment</CardTitle>
                         <Calendar className="w-4 h-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">2</div>
-                        <p className="text-xs text-muted-foreground">You have 2 appointments this week.</p>
-                         <Button className="mt-4 w-full">View Appointments</Button>
+                        <p className="text-lg font-bold">Dr. Anjali Sharma</p>
+                        <p className="text-sm text-muted-foreground">Cardiologist</p>
+                        <p className="text-sm font-semibold mt-2">Tomorrow at 10:30 AM</p>
+                         <Button className="mt-4 w-full" variant="outline">View Appointments</Button>
                     </CardContent>
                 </Card>
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">Recent Reports</CardTitle>
+                        <CardTitle className="text-sm font-medium">New Medical Records</CardTitle>
                         <FileText className="w-4 h-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">3 New</div>
-                        <p className="text-xs text-muted-foreground">Blood test and X-ray reports are in.</p>
-                         <Button className="mt-4 w-full">View Records</Button>
+                       <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <p className="text-sm">Blood Test Report</p>
+                            <Button variant="ghost" size="icon" className="h-8 w-8"><Download className="h-4 w-4" /></Button>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <p className="text-sm">X-Ray Report</p>
+                            <Button variant="ghost" size="icon" className="h-8 w-8"><Download className="h-4 w-4" /></Button>
+                          </div>
+                       </div>
+                         <Button className="mt-4 w-full" variant="outline">View All Records</Button>
                     </CardContent>
                 </Card>
                  <Card>
@@ -107,9 +116,9 @@ export default function PatientDashboard() {
                         <Wallet className="w-4 h-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">₹1,250</div>
-                        <p className="text-xs text-muted-foreground">Due for recent consultation.</p>
-                        <Button className="mt-4 w-full">Pay Now</Button>
+                        <div className="text-2xl font-bold">₹1,250.00</div>
+                        <p className="text-xs text-muted-foreground">Due for recent consultation with Dr. Sharma.</p>
+                        <Button className="mt-4 w-full bg-accent hover:bg-accent/90">Pay Now</Button>
                     </CardContent>
                 </Card>
             </div>
@@ -117,7 +126,7 @@ export default function PatientDashboard() {
              <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Recent Consultations</CardTitle>
+                        <CardTitle>Recent Activity</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">
@@ -135,74 +144,79 @@ export default function PatientDashboard() {
                                 </div>
                                 <Button size="sm" variant="outline">Give Feedback</Button>
                             </div>
+                            <div className="flex items-center justify-between p-2 rounded-lg bg-gray-50">
+                                <div>
+                                    <p className="font-semibold">Appointment with Dr. Vikram</p>
+                                    <p className="text-sm text-gray-500">8th July - Completed</p>
+                                </div>
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <Button size="sm" variant="outline">Rate Doctor</Button>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>Rate your experience with Dr. Vikram</DialogTitle>
+                                            <DialogDescription>Your feedback helps us improve.</DialogDescription>
+                                        </DialogHeader>
+                                        <div className="flex flex-col items-center justify-center py-4">
+                                            <div className="flex items-center gap-2">
+                                                {[...Array(5)].map((_, index) => {
+                                                    const starValue = index + 1;
+                                                    return (
+                                                        <Star
+                                                            key={starValue}
+                                                            className={`w-10 h-10 cursor-pointer ${starValue <= (hoverRating || rating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
+                                                            onClick={() => setRating(starValue)}
+                                                            onMouseEnter={() => setHoverRating(starValue)}
+                                                            onMouseLeave={() => setHoverRating(0)}
+                                                        />
+                                                    );
+                                                })}
+                                            </div>
+                                            <p className="mt-4 h-6 text-sm font-medium">
+                                                {hoverRating > 0 ? ratingLabels[hoverRating - 1] : rating > 0 ? ratingLabels[rating - 1] : 'Select a rating'}
+                                            </p>
+                                             <Textarea placeholder="Share your experience..." className="mt-4" />
+                                        </div>
+                                        <DialogFooter>
+                                            <DialogClose asChild>
+                                                <Button type="submit">Submit Feedback</Button>
+                                            </DialogClose>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
+                            </div>
                         </div>
                     </CardContent>
                 </Card>
                 <Card>
                     <CardHeader>
-                        <CardTitle>Give Feedback</CardTitle>
+                        <CardTitle>My Prescriptions</CardTitle>
                     </CardHeader>
-                    <CardContent className="grid grid-cols-2 gap-4">
+                    <CardContent className="grid grid-cols-1 gap-4">
+                       <div className="flex items-center justify-between p-2 rounded-lg border">
+                          <p className="text-sm font-medium">Prescription from Dr. Sharma (12th July)</p>
+                          <Button variant="ghost" size="icon" className="h-8 w-8"><Download className="h-4 w-4" /></Button>
+                       </div>
                         <Dialog>
                             <DialogTrigger asChild>
-                                <Button variant="outline" className="h-20 flex-col gap-1">
-                                    <Star className="w-6 h-6 mb-1 text-yellow-500"/>
-                                    Rate a Doctor
+                                <Button variant="outline" className="w-full">
+                                    Upload New Prescription
                                 </Button>
                             </DialogTrigger>
                             <DialogContent>
                                 <DialogHeader>
-                                    <DialogTitle>Rate your experience</DialogTitle>
+                                    <DialogTitle>Upload Prescription</DialogTitle>
                                     <DialogDescription>
-                                        Your feedback helps us improve.
-                                    </DialogDescription>
-                                </DialogHeader>
-                                <div className="flex flex-col items-center justify-center py-4">
-                                    <div className="flex items-center gap-2">
-                                        {[...Array(5)].map((_, index) => {
-                                            const starValue = index + 1;
-                                            return (
-                                                <Star
-                                                    key={starValue}
-                                                    className={`w-10 h-10 cursor-pointer ${starValue <= (hoverRating || rating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
-                                                    onClick={() => setRating(starValue)}
-                                                    onMouseEnter={() => setHoverRating(starValue)}
-                                                    onMouseLeave={() => setHoverRating(0)}
-                                                />
-                                            );
-                                        })}
-                                    </div>
-                                     <p className="mt-4 h-6 text-sm font-medium">
-                                        {hoverRating > 0 ? ratingLabels[hoverRating - 1] : rating > 0 ? ratingLabels[rating - 1] : 'Select a rating'}
-                                    </p>
-                                </div>
-                                <DialogFooter>
-                                    <DialogClose asChild>
-                                        <Button type="submit">Submit Rating</Button>
-                                    </DialogClose>
-                                </DialogFooter>
-                            </DialogContent>
-                        </Dialog>
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <Button variant="outline" className="h-20 flex-col gap-1">
-                                    <MessageSquare className="w-6 h-6 mb-1 text-blue-500"/>
-                                    Write a Review
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                                <DialogHeader>
-                                    <DialogTitle>Write a review</DialogTitle>
-                                    <DialogDescription>
-                                        Share your detailed feedback about the service.
+                                        Upload a prescription to order medicines or book lab tests.
                                     </DialogDescription>
                                 </DialogHeader>
                                 <div className="py-4">
-                                    <Textarea placeholder="Describe your experience here..." rows={5} />
+                                    <input type="file" className="w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"/>
                                 </div>
                                 <DialogFooter>
-                                     <DialogClose asChild>
-                                        <Button type="submit">Submit Review</Button>
+                                    <DialogClose asChild>
+                                        <Button type="submit">Upload</Button>
                                     </DialogClose>
                                 </DialogFooter>
                             </DialogContent>
