@@ -5,10 +5,12 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Search, Star, MapPin, Navigation, Award } from 'lucide-react';
+import { Search, Star, MapPin, Navigation } from 'lucide-react';
 import Image from 'next/image';
 import { AppLogo } from '@/components/icons';
 import { Badge } from '@/components/ui/badge';
+import { RankBadge } from '@/components/rank-badge';
+import placeholderImages from '@/lib/placeholder-images.json';
 
 const labs = [
   {
@@ -18,8 +20,7 @@ const labs = [
     distance: '1.5 km',
     rating: 4.7,
     reviews: 1500,
-    image: 'https://picsum.photos/seed/lab1/600/400',
-    imageHint: 'modern lab interior',
+    image: placeholderImages['lab-1'],
     isOpen: true,
     rank: 'gold'
   },
@@ -30,8 +31,7 @@ const labs = [
     distance: '3.2 km',
     rating: 4.8,
     reviews: 2200,
-    image: 'https://picsum.photos/seed/lab2/600/400',
-    imageHint: 'lab collection center',
+    image: placeholderImages['lab-2'],
     isOpen: true,
     rank: 'silver'
   },
@@ -42,39 +42,12 @@ const labs = [
     distance: '8.0 km',
     rating: 4.6,
     reviews: 950,
-    image: 'https://picsum.photos/seed/lab3/600/400',
-    imageHint: 'diagnostic lab building',
+    image: placeholderImages['lab-3'],
     isOpen: false,
     rank: 'bronze'
   },
 ];
 
-const RankBadge = ({ rank }: { rank: 'gold' | 'silver' | 'bronze' }) => {
-    const rankConfig = {
-        gold: {
-            label: 'Gold',
-            className: 'bg-yellow-400 text-yellow-900 border-yellow-500',
-            icon: <Award className="w-3 h-3" />
-        },
-        silver: {
-            label: 'Silver',
-            className: 'bg-slate-300 text-slate-800 border-slate-400',
-            icon: <Award className="w-3 h-3" />
-        },
-        bronze: {
-            label: 'Bronze',
-            className: 'bg-amber-600 text-white border-amber-700',
-            icon: <Award className="w-3 h-3" />
-        }
-    };
-    const { label, className, icon } = rankConfig[rank];
-    return (
-        <Badge className={`absolute top-2 right-2 text-xs z-10 ${className}`}>
-            {icon}
-            {label}
-        </Badge>
-    );
-};
 
 export default function FindLabPage() {
   return (
@@ -112,8 +85,8 @@ export default function FindLabPage() {
             {labs.map((lab) => (
               <Card key={lab.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow relative">
                 <div className="relative h-52">
-                  <Image src={lab.image} alt={`Photo of ${lab.name}`} fill style={{ objectFit: 'cover' }} data-ai-hint={lab.imageHint} />
-                  {lab.rank && <RankBadge rank={lab.rank as 'gold' | 'silver' | 'bronze'} />}
+                  <Image src={lab.image.src} alt={`Photo of ${lab.name}`} fill style={{ objectFit: 'cover' }} data-ai-hint={lab.image.hint} />
+                  {lab.rank && <RankBadge rank={lab.rank as 'gold' | 'silver' | 'bronze'} className="absolute top-2 right-2"/>}
                 </div>
                 <CardContent className="p-4">
                   <div className="flex justify-between items-start">

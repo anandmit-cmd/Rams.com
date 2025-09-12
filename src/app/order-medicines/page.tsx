@@ -11,14 +11,15 @@ import { Input } from '@/components/ui/input';
 import { Search, ShoppingCart, Truck, Store, ArrowLeft, FileUp } from 'lucide-react';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
+import placeholderImages from '@/lib/placeholder-images.json';
 
 const medicines = [
-  { name: 'Paracetamol 500mg', description: 'For fever and pain relief', price: 25.50, image: 'https://picsum.photos/seed/med1/300/200', imageHint: 'medicine tablets' },
-  { name: 'Aspirin 75mg', description: 'Blood thinner, prevents clots', price: 15.00, image: 'https://picsum.photos/seed/med2/300/200', imageHint: 'medicine pills' },
-  { name: 'Amoxicillin 250mg', description: 'Antibiotic for bacterial infections', price: 75.00, image: 'https://picsum.photos/seed/med3/300/200', imageHint: 'medicine capsules' },
-  { name: 'Cetirizine 10mg', description: 'For allergy relief', price: 30.00, image: 'https://picsum.photos/seed/med4/300/200', imageHint: 'allergy pills' },
-  { name: 'Omeprazole 20mg', description: 'For acidity and heartburn', price: 45.00, image: 'https://picsum.photos/seed/med5/300/200', imageHint: 'antacid tablets' },
-  { name: 'Multivitamin Tablets', description: 'Supports overall health', price: 150.00, image: 'https://picsum.photos/seed/med6/300/200', imageHint: 'vitamin supplements' },
+  { name: 'Paracetamol 500mg', description: 'For fever and pain relief', price: 25.50, image: placeholderImages['medicine-1'] },
+  { name: 'Aspirin 75mg', description: 'Blood thinner, prevents clots', price: 15.00, image: placeholderImages['medicine-2'] },
+  { name: 'Amoxicillin 250mg', description: 'Antibiotic for bacterial infections', price: 75.00, image: placeholderImages['medicine-3'] },
+  { name: 'Cetirizine 10mg', description: 'For allergy relief', price: 30.00, image: placeholderImages['medicine-4'] },
+  { name: 'Omeprazole 20mg', description: 'For acidity and heartburn', price: 45.00, image: placeholderImages['medicine-5'] },
+  { name: 'Multivitamin Tablets', description: 'Supports overall health', price: 150.00, image: placeholderImages['medicine-6'] },
 ];
 
 export default function OrderMedicinesPage() {
@@ -99,7 +100,7 @@ export default function OrderMedicinesPage() {
             {medicines.map((med, index) => (
               <Card key={index} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow">
                 <div className="relative h-48">
-                  <Image src={med.image} alt={med.name} fill style={{ objectFit: 'cover' }} data-ai-hint={med.imageHint} />
+                  <Image src={med.image.src} alt={med.name} fill style={{ objectFit: 'cover' }} data-ai-hint={med.image.hint} />
                 </div>
                 <CardContent className="p-4">
                   <h3 className="font-bold text-lg text-gray-800">{med.name}</h3>

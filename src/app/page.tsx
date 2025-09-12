@@ -13,13 +13,14 @@ import { IntelligentSearch } from '@/components/intelligent-search';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import Autoplay from "embla-carousel-autoplay";
 import * as React from 'react';
+import placeholderImages from '@/lib/placeholder-images.json';
 
 
 export default function LandingPage() {
   const promotions = [
-    { title: 'Free Eye Check-up Camp', description: 'Apex Hospital is organizing a free eye check-up camp from Sep 20 to Sep 30. Avail the opportunity!', image: 'https://picsum.photos/seed/promo1/1200/600', imageHint: 'eye checkup clinic', link: '/find-a-hospital' },
-    { title: '35% Off on Full Body Check-up', description: 'City Labs offers a 35% discount on their comprehensive full-body health check-up package. Limited time offer!', image: 'https://picsum.photos/seed/promo2/1200/600', imageHint: 'lab test promotion', link: '/book-lab-test' },
-    { title: '20% Off On All Medicines', description: 'Get a flat 20% discount on all medicine orders from Apollo Pharmacy this week.', image: 'https://picsum.photos/seed/promo3/1200/600', imageHint: 'pharmacy offer discount', link: '/order-medicines' },
+    { title: 'Free Eye Check-up Camp', description: 'Apex Hospital is organizing a free eye check-up camp from Sep 20 to Sep 30. Avail the opportunity!', image: placeholderImages['promo-1'], link: '/find-a-hospital' },
+    { title: '35% Off on Full Body Check-up', description: 'City Labs offers a 35% discount on their comprehensive full-body health check-up package. Limited time offer!', image: placeholderImages['promo-2'], link: '/book-lab-test' },
+    { title: '20% Off On All Medicines', description: 'Get a flat 20% discount on all medicine orders from Apollo Pharmacy this week.', image: placeholderImages['promo-3'], link: '/order-medicines' },
   ];
 
   const plugin = React.useRef(
@@ -102,7 +103,7 @@ export default function LandingPage() {
                             <CarouselItem key={index}>
                                 <Card className="overflow-hidden">
                                     <div className="relative aspect-[2.4/1]">
-                                        <Image src={promo.image} alt={promo.title} fill style={{ objectFit: 'cover' }} data-ai-hint={promo.imageHint} />
+                                        <Image src={promo.image.src} alt={promo.title} fill style={{ objectFit: 'cover' }} data-ai-hint={promo.image.hint} />
                                         <div className="absolute inset-0 bg-black/50" />
                                         <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center p-8">
                                             <h3 className="text-2xl md:text-4xl font-bold">{promo.title}</h3>
@@ -234,15 +235,15 @@ export default function LandingPage() {
             </div>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
                 {[
-                  { title: 'Yoga & Mindfulness', image: 'wellness-yoga', hint: 'yoga mindfulness', icon: Leaf, href: '/wellness' },
-                  { title: 'Fitness & Workouts', image: 'wellness-fitness', hint: 'fitness workout', icon: Dumbbell, href: '/wellness' },
-                  { title: 'Mental Wellness', image: 'wellness-mental', hint: 'mental wellness', icon: Users, href: '/wellness' },
-                  { title: 'Diet & Nutrition', image: 'wellness-diet', hint: 'diet nutrition', icon: ShieldCheck, href: '/wellness' },
+                  { title: 'Yoga & Mindfulness', image: placeholderImages['wellness-yoga'], icon: Leaf, href: '/wellness' },
+                  { title: 'Fitness & Workouts', image: placeholderImages['wellness-fitness'], icon: Dumbbell, href: '/wellness' },
+                  { title: 'Mental Wellness', image: placeholderImages['wellness-mental'], icon: Users, href: '/wellness' },
+                  { title: 'Diet & Nutrition', image: placeholderImages['wellness-diet'], icon: ShieldCheck, href: '/wellness' },
                 ].map(item => (
                   <Link href={item.href} key={item.title}>
                     <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow h-full">
                         <div className="relative h-48 bg-gray-200 flex items-center justify-center">
-                            <Image src={`https://picsum.photos/seed/${item.image}/400/300`} alt={item.title} fill style={{objectFit: 'cover'}} data-ai-hint={item.hint} />
+                            <Image src={item.image.src} alt={item.title} fill style={{objectFit: 'cover'}} data-ai-hint={item.image.hint} />
                         </div>
                         <CardContent className="p-4">
                             <h3 className="font-bold text-lg text-gray-800">{item.title}</h3>

@@ -6,12 +6,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, Star, MapPin, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Award, Twitter, Facebook, Instagram, BadgeIndianRupee } from 'lucide-react';
+import { Search, Star, MapPin, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Twitter, Facebook, Instagram, BadgeIndianRupee } from 'lucide-react';
 import Image from 'next/image';
 import { AppLogo } from '@/components/icons';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { Globe } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { RankBadge } from '@/components/rank-badge';
+import placeholderImages from '@/lib/placeholder-images.json';
 
 const doctors = [
   {
@@ -21,8 +23,7 @@ const doctors = [
     rating: 4.8,
     reviews: 120,
     availability: 'Online',
-    image: 'https://picsum.photos/seed/1/300/200',
-    imageHint: 'doctor portrait',
+    image: placeholderImages['doctor-1'],
     rank: 'gold',
     consultationFee: 1500,
   },
@@ -33,8 +34,7 @@ const doctors = [
     rating: 4.9,
     reviews: 98,
     availability: 'In-Clinic',
-    image: 'https://picsum.photos/seed/2/300/200',
-    imageHint: 'doctor smiling',
+    image: placeholderImages['doctor-2'],
     rank: 'gold',
     consultationFee: 1800,
   },
@@ -45,8 +45,7 @@ const doctors = [
     rating: 4.7,
     reviews: 210,
     availability: 'Online',
-    image: 'https://picsum.photos/seed/3/300/200',
-    imageHint: 'female doctor',
+    image: placeholderImages['doctor-3'],
     rank: 'silver',
     consultationFee: 1200,
   },
@@ -57,8 +56,7 @@ const doctors = [
     rating: 4.9,
     reviews: 150,
     availability: 'In-Clinic',
-    image: 'https://picsum.photos/seed/4/300/200',
-    imageHint: 'male doctor',
+    image: placeholderImages['doctor-4'],
     rank: 'silver',
     consultationFee: 800,
   },
@@ -69,8 +67,7 @@ const doctors = [
     rating: 4.8,
     reviews: 85,
     availability: 'Online',
-    image: 'https://picsum.photos/seed/5/300/200',
-    imageHint: 'doctor glasses',
+    image: placeholderImages['doctor-5'],
     rank: 'bronze',
     consultationFee: 1000,
   },
@@ -81,8 +78,7 @@ const doctors = [
     rating: 4.6,
     reviews: 300,
     availability: 'In-Clinic',
-    image: 'https://picsum.photos/seed/6/300/200',
-    imageHint: 'doctor friendly',
+    image: placeholderImages['doctor-6'],
     rank: 'bronze',
     consultationFee: 750,
   },
@@ -97,33 +93,6 @@ const specialties = [
   { name: 'Ophthalmology', icon: Glasses },
   { name: 'General Medicine', icon: Stethoscope },
 ];
-
-const RankBadge = ({ rank }: { rank: 'gold' | 'silver' | 'bronze' }) => {
-    const rankConfig = {
-        gold: {
-            label: 'Gold',
-            className: 'bg-yellow-400 text-yellow-900 border-yellow-500',
-            icon: <Award className="w-3 h-3" />
-        },
-        silver: {
-            label: 'Silver',
-            className: 'bg-slate-300 text-slate-800 border-slate-400',
-            icon: <Award className="w-3 h-3" />
-        },
-        bronze: {
-            label: 'Bronze',
-            className: 'bg-amber-600 text-white border-amber-700',
-            icon: <Award className="w-3 h-3" />
-        }
-    };
-    const { label, className, icon } = rankConfig[rank];
-    return (
-        <Badge className={`absolute top-2 right-2 text-xs z-10 ${className}`}>
-            {icon}
-            {label}
-        </Badge>
-    );
-};
 
 export default function FindDoctorPage() {
   return (
@@ -205,8 +174,8 @@ export default function FindDoctorPage() {
                     {doctors.map((doctor, index) => (
                         <Card key={index} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow">
                             <div className="relative h-52">
-                                <Image src={doctor.image} alt={`Photo of ${doctor.name}`} fill style={{ objectFit: 'cover' }} data-ai-hint={doctor.imageHint} />
-                                 {doctor.rank && <RankBadge rank={doctor.rank as 'gold' | 'silver' | 'bronze'} />}
+                                <Image src={doctor.image.src} alt={`Photo of ${doctor.name}`} fill style={{ objectFit: 'cover' }} data-ai-hint={doctor.image.hint} />
+                                 {doctor.rank && <RankBadge rank={doctor.rank as 'gold' | 'silver' | 'bronze'} className="absolute top-2 right-2"/>}
                             </div>
                             <CardContent className="p-4">
                                 <h3 className="font-bold text-xl text-gray-800">{doctor.name}</h3>
@@ -313,5 +282,3 @@ export default function FindDoctorPage() {
     </div>
   );
 }
-
-    

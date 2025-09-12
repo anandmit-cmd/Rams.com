@@ -12,14 +12,15 @@ import { Search, TestTube, Home, Building, ArrowLeft, Calendar as CalendarIcon, 
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { Calendar } from '@/components/ui/calendar';
+import placeholderImages from '@/lib/placeholder-images.json';
 
 const labTests = [
-  { name: 'Complete Blood Count (CBC)', description: 'Measures different components of your blood.', price: 350.00, image: 'https://picsum.photos/seed/test1/300/200', imageHint: 'blood test tube' },
-  { name: 'Lipid Profile', description: 'Measures cholesterol and triglyceride levels.', price: 600.00, image: 'https://picsum.photos/seed/test2/300/200', imageHint: 'lab analysis' },
-  { name: 'Liver Function Test (LFT)', description: 'Assesses the health of your liver.', price: 800.00, image: 'https://picsum.photos/seed/test3/300/200', imageHint: 'medical lab equipment' },
-  { name: 'Thyroid Function Test', description: 'Checks for thyroid gland problems.', price: 500.00, image: 'https://picsum.photos/seed/test4/300/200', imageHint: 'lab technician' },
-  { name: 'Diabetes Test (HbA1c)', description: 'Monitors average blood sugar levels.', price: 450.00, image: 'https://picsum.photos/seed/test5/300/200', imageHint: 'blood sugar test' },
-  { name: 'Vitamin D Test', description: 'Checks for Vitamin D deficiency.', price: 1200.00, image: 'https://picsum.photos/seed/test6/300/200', imageHint: 'health supplements' },
+  { name: 'Complete Blood Count (CBC)', description: 'Measures different components of your blood.', price: 350.00, image: placeholderImages['lab-test-1'] },
+  { name: 'Lipid Profile', description: 'Measures cholesterol and triglyceride levels.', price: 600.00, image: placeholderImages['lab-test-2'] },
+  { name: 'Liver Function Test (LFT)', description: 'Assesses the health of your liver.', price: 800.00, image: placeholderImages['lab-test-3'] },
+  { name: 'Thyroid Function Test', description: 'Checks for thyroid gland problems.', price: 500.00, image: placeholderImages['lab-test-4'] },
+  { name: 'Diabetes Test (HbA1c)', description: 'Monitors average blood sugar levels.', price: 450.00, image: placeholderImages['lab-test-5'] },
+  { name: 'Vitamin D Test', description: 'Checks for Vitamin D deficiency.', price: 1200.00, image: placeholderImages['lab-test-6'] },
 ];
 
 const timeSlots = [
@@ -118,7 +119,7 @@ export default function BookLabTestPage() {
             {labTests.map((test, index) => (
               <Card key={index} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow">
                 <div className="relative h-48">
-                  <Image src={test.image} alt={test.name} fill style={{ objectFit: 'cover' }} data-ai-hint={test.imageHint} />
+                  <Image src={test.image.src} alt={test.name} fill style={{ objectFit: 'cover' }} data-ai-hint={test.image.hint} />
                 </div>
                 <CardContent className="p-4">
                   <h3 className="font-bold text-lg text-gray-800">{test.name}</h3>

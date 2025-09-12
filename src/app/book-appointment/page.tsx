@@ -10,6 +10,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { AppLogo } from '@/components/icons';
 import { Star, MapPin } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import placeholderImages from '@/lib/placeholder-images.json';
 
 
 const timeSlots = [
@@ -21,6 +22,7 @@ export default function BookAppointmentPage() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const { toast } = useToast();
+  const doctorImage = placeholderImages['doctor-1'];
 
   const handleBooking = () => {
     if (!selectedDate || !selectedTime) {
@@ -99,7 +101,7 @@ export default function BookAppointmentPage() {
              <Card>
                 <CardHeader className="items-center text-center">
                     <Avatar className="w-24 h-24 mb-4 border-4 border-primary">
-                        <AvatarImage src="https://picsum.photos/seed/1/300/200" alt="Dr. Anjali Sharma" data-ai-hint="doctor portrait"/>
+                        <AvatarImage src={doctorImage.src} alt="Dr. Anjali Sharma" data-ai-hint={doctorImage.hint}/>
                         <AvatarFallback>AS</AvatarFallback>
                     </Avatar>
                     <CardTitle>Dr. Anjali Sharma</CardTitle>
@@ -128,4 +130,3 @@ export default function BookAppointmentPage() {
     </div>
   );
 }
-

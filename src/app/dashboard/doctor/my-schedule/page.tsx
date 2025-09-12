@@ -11,17 +11,19 @@ import { Calendar } from '@/components/ui/calendar';
 import { useState } from 'react';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import placeholderImages from '@/lib/placeholder-images.json';
 
 const appointments = [
-  { time: '10:30 AM', patient: 'Riya Singh', type: 'Video Call', status: 'Confirmed' },
-  { time: '11:00 AM', patient: 'Amit Patel', type: 'In-Clinic', status: 'Confirmed' },
-  { time: '12:00 PM', patient: 'Sunita Sharma', type: 'Video Call', status: 'Confirmed' },
-  { time: '02:00 PM', patient: 'Karan Verma', type: 'In-Clinic', status: 'Cancelled' },
+  { time: '10:30 AM', patient: 'Riya Singh', type: 'Video Call', status: 'Confirmed', avatar: placeholderImages['patient-avatar-0'] },
+  { time: '11:00 AM', patient: 'Amit Patel', type: 'In-Clinic', status: 'Confirmed', avatar: placeholderImages['patient-avatar-1'] },
+  { time: '12:00 PM', patient: 'Sunita Sharma', type: 'Video Call', status: 'Confirmed', avatar: placeholderImages['patient-avatar-2'] },
+  { time: '02:00 PM', patient: 'Karan Verma', type: 'In-Clinic', status: 'Cancelled', avatar: placeholderImages['patient-avatar-3'] },
 ];
 
 export default function DoctorSchedulePage() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [isAvailable, setIsAvailable] = useState(true);
+  const doctorAvatar = placeholderImages['doctor-avatar'];
 
   return (
     <div className="flex min-h-screen bg-secondary">
@@ -71,7 +73,7 @@ export default function DoctorSchedulePage() {
                  <span className="sr-only">Notifications</span>
             </Button>
             <Avatar>
-              <AvatarImage src="https://picsum.photos/seed/doctor/100/100" data-ai-hint="doctor portrait" alt="Doctor" />
+              <AvatarImage src={doctorAvatar.src} data-ai-hint={doctorAvatar.hint} alt="Doctor" />
               <AvatarFallback>DR</AvatarFallback>
             </Avatar>
           </div>
@@ -89,7 +91,7 @@ export default function DoctorSchedulePage() {
                             <div key={index} className="flex items-center justify-between p-4 rounded-lg bg-gray-50 border">
                                 <div className="flex items-center gap-4">
                                      <Avatar>
-                                        <AvatarImage src={`https://picsum.photos/seed/patient-${index}/100/100`} data-ai-hint="patient portrait" alt={apt.patient} />
+                                        <AvatarImage src={apt.avatar.src} data-ai-hint={apt.avatar.hint} alt={apt.patient} />
                                         <AvatarFallback>{apt.patient.charAt(0)}</AvatarFallback>
                                     </Avatar>
                                     <div>

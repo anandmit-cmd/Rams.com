@@ -11,15 +11,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AppLogo } from '@/components/icons';
 import { Star, MapPin, Phone, ShieldCheck, Wifi, Utensils, Car, Bed, BadgeIndianRupee, ArrowLeft } from 'lucide-react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import placeholderImages from '@/lib/placeholder-images.json';
 
 const hospitalData = {
     id: '1',
     name: 'Apollo Hospital, Mumbai',
     images: [
-        { src: 'https://picsum.photos/seed/apollo-gallery1/1200/800', hint: 'hospital building exterior' },
-        { src: 'https://picsum.photos/seed/apollo-gallery2/1200/800', hint: 'hospital lobby interior' },
-        { src: 'https://picsum.photos/seed/apollo-gallery3/1200/800', hint: 'patient room clean' },
-        { src: 'https://picsum.photos/seed/apollo-gallery4/1200/800', hint: 'advanced medical equipment' },
+        placeholderImages['hospital-gallery-1'],
+        placeholderImages['hospital-gallery-2'],
+        placeholderImages['hospital-gallery-3'],
+        placeholderImages['hospital-gallery-4'],
     ],
     rating: 4.9,
     reviews: 1800,
@@ -33,9 +34,9 @@ const hospitalData = {
         { name: 'Parking Available', icon: Car },
     ],
     doctors: [
-        { name: 'Dr. Anjali Sharma', specialty: 'Cardiologist', image: 'https://picsum.photos/100/100?random=doc1' },
-        { name: 'Dr. Vikram Singh', specialty: 'Neurologist', image: 'https://picsum.photos/100/100?random=doc2' },
-        { name: 'Dr. Priya Patel', specialty: 'Orthopedic Surgeon', image: 'https://picsum.photos/100/100?random=doc3' },
+        { name: 'Dr. Anjali Sharma', specialty: 'Cardiologist', image: placeholderImages['doctor-avatar-1'] },
+        { name: 'Dr. Vikram Singh', specialty: 'Neurologist', image: placeholderImages['doctor-avatar-2'] },
+        { name: 'Dr. Priya Patel', specialty: 'Orthopedic Surgeon', image: placeholderImages['doctor-avatar-3'] },
     ],
     bedOptions: [
         { type: 'General Ward', price: 2500, features: 'Shared room, basic amenities' },
@@ -140,7 +141,7 @@ export default function HospitalDetailPage({ params }: { params: { id: string } 
                                     <Card key={doctor.name}>
                                         <CardContent className="p-4 flex items-center gap-4">
                                              <Avatar className="w-16 h-16">
-                                                <AvatarImage src={doctor.image} alt={doctor.name} />
+                                                <AvatarImage src={doctor.image.src} alt={doctor.name} data-ai-hint={doctor.image.hint} />
                                                 <AvatarFallback>{doctor.name.charAt(0)}</AvatarFallback>
                                             </Avatar>
                                             <div>

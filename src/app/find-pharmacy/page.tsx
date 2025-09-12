@@ -5,10 +5,12 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Search, Star, MapPin, Navigation, Award } from 'lucide-react';
+import { Search, Star, MapPin, Navigation } from 'lucide-react';
 import Image from 'next/image';
 import { AppLogo } from '@/components/icons';
 import { Badge } from '@/components/ui/badge';
+import { RankBadge } from '@/components/rank-badge';
+import placeholderImages from '@/lib/placeholder-images.json';
 
 const pharmacies = [
   {
@@ -18,8 +20,7 @@ const pharmacies = [
     distance: '1.2 km',
     rating: 4.5,
     reviews: 250,
-    image: 'https://picsum.photos/seed/pharm1/600/400',
-    imageHint: 'pharmacy interior shelves',
+    image: placeholderImages['pharmacy-1'],
     isOpen: true,
     rank: 'gold'
   },
@@ -30,8 +31,7 @@ const pharmacies = [
     distance: '2.5 km',
     rating: 4.8,
     reviews: 800,
-    image: 'https://picsum.photos/seed/pharm2/600/400',
-    imageHint: 'modern pharmacy counter',
+    image: placeholderImages['pharmacy-2'],
     isOpen: true,
     rank: 'silver'
   },
@@ -42,39 +42,11 @@ const pharmacies = [
     distance: '4.0 km',
     rating: 4.7,
     reviews: 1200,
-    image: 'https://picsum.photos/seed/pharm3/600/400',
-    imageHint: 'pharmacy storefront bright',
+    image: placeholderImages['pharmacy-3'],
     isOpen: false,
     rank: 'bronze'
   },
 ];
-
-const RankBadge = ({ rank }: { rank: 'gold' | 'silver' | 'bronze' }) => {
-    const rankConfig = {
-        gold: {
-            label: 'Gold',
-            className: 'bg-yellow-400 text-yellow-900 border-yellow-500',
-            icon: <Award className="w-3 h-3" />
-        },
-        silver: {
-            label: 'Silver',
-            className: 'bg-slate-300 text-slate-800 border-slate-400',
-            icon: <Award className="w-3 h-3" />
-        },
-        bronze: {
-            label: 'Bronze',
-            className: 'bg-amber-600 text-white border-amber-700',
-            icon: <Award className="w-3 h-3" />
-        }
-    };
-    const { label, className, icon } = rankConfig[rank];
-    return (
-        <Badge className={`absolute top-2 right-2 text-xs z-10 ${className}`}>
-            {icon}
-            {label}
-        </Badge>
-    );
-};
 
 export default function FindPharmacyPage() {
   return (
@@ -112,8 +84,8 @@ export default function FindPharmacyPage() {
             {pharmacies.map((pharmacy) => (
               <Card key={pharmacy.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow relative">
                 <div className="relative h-52">
-                  <Image src={pharmacy.image} alt={`Photo of ${pharmacy.name}`} fill style={{ objectFit: 'cover' }} data-ai-hint={pharmacy.imageHint} />
-                   {pharmacy.rank && <RankBadge rank={pharmacy.rank as 'gold' | 'silver' | 'bronze'} />}
+                  <Image src={pharmacy.image.src} alt={`Photo of ${pharmacy.name}`} fill style={{ objectFit: 'cover' }} data-ai-hint={pharmacy.image.hint} />
+                   {pharmacy.rank && <RankBadge rank={pharmacy.rank as 'gold' | 'silver' | 'bronze'} className="absolute top-2 right-2"/>}
                 </div>
                 <CardContent className="p-4">
                   <div className="flex justify-between items-start">
