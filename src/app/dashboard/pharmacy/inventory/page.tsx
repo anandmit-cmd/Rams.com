@@ -16,6 +16,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { useState } from 'react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import placeholderImages from '@/lib/placeholder-images.json';
 
 const inventory = [
   { id: 'MED-001', name: 'Paracetamol 500mg', price: 25.50, stock: 120, expiry: '2025-12-31' },
@@ -26,6 +27,7 @@ const inventory = [
 
 export default function InventoryPage() {
   const [date, setDate] = useState<Date | undefined>();
+  const pharmacistAvatar = placeholderImages['pharmacist-avatar'];
 
   return (
     <div className="flex min-h-screen bg-secondary">
@@ -71,7 +73,7 @@ export default function InventoryPage() {
                 <span className="sr-only">Notifications</span>
             </Button>
             <Avatar>
-              <AvatarImage src="https://picsum.photos/100/100?random=pharmacist" alt="Pharmacist" />
+              <AvatarImage src={pharmacistAvatar.src} alt="Pharmacist" data-ai-hint={pharmacistAvatar.hint} />
               <AvatarFallback>PH</AvatarFallback>
             </Avatar>
           </div>
