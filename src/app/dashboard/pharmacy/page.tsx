@@ -8,6 +8,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { ShoppingCart, Package, ListOrdered, BarChart, Bell, LogOut, LayoutGrid, Star } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import placeholderImages from '@/lib/placeholder-images.json';
 
 
 export default function PharmacyDashboard() {
@@ -16,6 +17,8 @@ export default function PharmacyDashboard() {
     { id: '#ORD-002', customer: 'Priya Mehta', items: 1, status: 'Shipped', total: '₹120' },
     { id: '#ORD-003', customer: 'Anil Kapoor', items: 5, status: 'Delivered', total: '₹980' },
   ];
+
+  const pharmacistAvatar = placeholderImages['pharmacist-avatar'];
 
   return (
     <div className="flex min-h-screen bg-secondary">
@@ -61,7 +64,7 @@ export default function PharmacyDashboard() {
                 <span className="sr-only">Notifications</span>
             </Button>
             <Avatar>
-              <AvatarImage src="https://picsum.photos/100/100?random=pharmacist" alt="Pharmacist" />
+              <AvatarImage src={pharmacistAvatar.src} data-ai-hint={pharmacistAvatar.hint} alt="Pharmacist" />
               <AvatarFallback>PH</AvatarFallback>
             </Avatar>
           </div>
@@ -150,5 +153,3 @@ export default function PharmacyDashboard() {
     </div>
   );
 }
-
-    

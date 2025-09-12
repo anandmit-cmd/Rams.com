@@ -8,9 +8,13 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Map, Siren, List, Bell, LogOut, LayoutGrid, Star, BarChart2, CheckCircle, XCircle } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import Image from 'next/image';
+import placeholderImages from '@/lib/placeholder-images.json';
 
 
 export default function AmbulanceDashboard() {
+  const driverAvatar = placeholderImages['ambulance-driver-avatar'];
+  const liveMap = placeholderImages['live-map'];
+
   return (
     <div className="flex min-h-screen bg-secondary">
       <aside className="w-64 bg-white shadow-md flex-col hidden md:flex">
@@ -51,7 +55,7 @@ export default function AmbulanceDashboard() {
                 <span className="sr-only">Notifications</span>
             </Button>
             <Avatar>
-              <AvatarImage src="https://picsum.photos/seed/ambulance-driver/100/100" data-ai-hint="driver portrait" alt="Driver" />
+              <AvatarImage src={driverAvatar.src} data-ai-hint={driverAvatar.hint} alt="Driver" />
               <AvatarFallback>AD</AvatarFallback>
             </Avatar>
           </div>
@@ -100,7 +104,7 @@ export default function AmbulanceDashboard() {
                     </CardHeader>
                     <CardContent className="h-[calc(100%-4rem)]">
                         <div className="w-full h-full bg-gray-200 rounded-lg relative overflow-hidden">
-                            <Image src="https://picsum.photos/seed/map/1200/800" alt="Map" fill style={{ objectFit: 'cover' }} data-ai-hint="city map" />
+                            <Image src={liveMap.src} alt="Map" fill style={{ objectFit: 'cover' }} data-ai-hint={liveMap.hint} />
                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 bg-black/50 text-white rounded-lg">
                                 Map Area
                             </div>
@@ -160,5 +164,3 @@ export default function AmbulanceDashboard() {
     </div>
   );
 }
-
-    

@@ -8,6 +8,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { TestTube2, CalendarCheck2, FileUp, BarChart, Bell, LogOut, LayoutGrid, Star } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import placeholderImages from '@/lib/placeholder-images.json';
 
 export default function LabDashboard() {
   const bookings = [
@@ -16,6 +17,8 @@ export default function LabDashboard() {
     { id: '#BK-103', patient: 'Sonia Agarwal', test: 'Thyroid Function Test', status: 'Awaiting Sample' },
     { id: '#BK-104', patient: 'Vikram Rathod', test: 'Vitamin D Test', status: 'Sample Collected'},
   ];
+
+  const labTechAvatar = placeholderImages['lab-tech-avatar'];
 
   return (
     <div className="flex min-h-screen bg-secondary">
@@ -61,7 +64,7 @@ export default function LabDashboard() {
                 <span className="sr-only">Notifications</span>
             </Button>
             <Avatar>
-              <AvatarImage src="https://picsum.photos/100/100?random=lab-tech" alt="Lab Technician" />
+              <AvatarImage src={labTechAvatar.src} data-ai-hint={labTechAvatar.hint} alt="Lab Technician" />
               <AvatarFallback>LT</AvatarFallback>
             </Avatar>
           </div>
@@ -155,5 +158,3 @@ export default function LabDashboard() {
     </div>
   );
 }
-
-    
