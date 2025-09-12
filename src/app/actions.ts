@@ -12,7 +12,7 @@ const searchSchema = z.object({
 
 export type SearchState = {
   message: string;
-  results: IntelligentMedicalSearchOutput;
+  results?: IntelligentMedicalSearchOutput;
   errors?: {
     query?: string[];
   };
@@ -30,7 +30,6 @@ export async function handleSearch(
     return {
       message: 'Invalid query.',
       errors: validatedFields.error.flatten().fieldErrors,
-      results: [],
     };
   }
 
@@ -38,10 +37,10 @@ export async function handleSearch(
     const results = await intelligentMedicalSearch({
       query: validatedFields.data.query,
     });
-    if (results.length === 0) {
+    if (!results || !results.analysis) {
       return {
         message: 'No relevant medical services found. Please try a different search term.',
-        results: [],
+        results: undefined,
       };
     }
     return {
@@ -52,7 +51,7 @@ export async function handleSearch(
     console.error('Intelligent search failed:', error);
     return {
       message: 'An unexpected error occurred during the search. Please try again later.',
-      results: [],
+      results: undefined,
     };
   }
 }

@@ -24,6 +24,7 @@ import {
   ArrowRight,
   Beaker,
   Clock,
+  HeartPulse,
   Pill,
   Stethoscope,
 } from 'lucide-react';
@@ -33,7 +34,7 @@ import { useFormStatus } from 'react-dom';
 
 const initialState: SearchState = {
   message: '',
-  results: [],
+  results: undefined,
   errors: {},
 };
 
@@ -103,7 +104,7 @@ export function IntelligentSearch() {
         </form>
       </CardContent>
 
-      {(pending || state.results.length > 0 || (state.message && !state.errors)) && (
+      {(pending || state.results || (state.message && !state.errors)) && (
         <CardFooter className="flex-col items-start gap-4 border-t px-6 py-4">
           {pending && (
             <div className="grid w-full gap-4">
@@ -111,52 +112,84 @@ export function IntelligentSearch() {
               <Skeleton className="h-32 w-full" />
             </div>
           )}
-          {!pending && state.results.length > 0 && (
+          {!pending && state.results && state.results.analysis && (
             <>
-              <h3 className="font-semibold text-lg">Our Suggestions:</h3>
-              <div className="grid w-full gap-4">
-                {state.results.map((result, index) => (
-                  <Card
-                    key={index}
-                    className="flex flex-col sm:flex-row gap-4 p-4 transition-all hover:shadow-md"
-                  >
-                    <div className="flex items-center justify-center sm:justify-start">
-                       <div className="p-3 bg-primary/10 rounded-lg">
-                         <ResultIcon type={result.type} />
-                       </div>
+              <h3 className="font-semibold text-lg">AI Analysis:</h3>
+              <Card className={`w-full ${state.results.analysis.severity === 'high' ? 'border-destructive bg-destructive/5' : ''}`}>
+                <CardHeader>
+                    <CardTitle className={`flex items-center gap-2 ${state.results.analysis.severity === 'high' ? 'text-destructive' : ''}`}>
+                        <HeartPulse />
+                        AI Symptom Analysis
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div>
+                        <h4 className="font-semibold mb-1">Summary</h4>
+                        <p className="text-sm text-muted-foreground">{state.results.analysis.summary}</p>
                     </div>
-                    <div className="flex-1 space-y-1 text-center sm:text-left">
-                      <p className="font-bold text-base">{result.name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {result.description}
-                      </p>
-                      {result.availability && (
-                        <div className="flex items-center justify-center sm:justify-start pt-2">
-                          <Badge
-                            variant="outline"
-                            className="flex items-center gap-1.5"
-                          >
-                            <Clock className="size-3" />
-                            {result.availability}
-                          </Badge>
+                     {state.results.analysis.firstAid && (
+                        <div>
+                            <h4 className="font-semibold mb-1">Immediate Advice</h4>
+                            <p className="text-sm text-muted-foreground">{state.results.analysis.firstAid}</p>
                         </div>
-                      )}
+                    )}
+                     <div>
+                        <h4 className="font-semibold mb-1">Severity</h4>
+                        <Badge variant={state.results.analysis.severity === 'high' ? 'destructive' : 'secondary'}>
+                            {state.results.analysis.severity.charAt(0).toUpperCase() + state.results.analysis.severity.slice(1)}
+                        </Badge>
+                     </div>
+                </CardContent>
+              </Card>
+
+              {state.results.suggestions && state.results.suggestions.length > 0 && (
+                <>
+                    <h3 className="font-semibold text-lg mt-4">Our Suggestions:</h3>
+                    <div className="grid w-full gap-4">
+                        {state.results.suggestions.map((result, index) => (
+                        <Card
+                            key={index}
+                            className="flex flex-col sm:flex-row gap-4 p-4 transition-all hover:shadow-md"
+                        >
+                            <div className="flex items-center justify-center sm:justify-start">
+                            <div className="p-3 bg-primary/10 rounded-lg">
+                                <ResultIcon type={result.type} />
+                            </div>
+                            </div>
+                            <div className="flex-1 space-y-1 text-center sm:text-left">
+                            <p className="font-bold text-base">{result.name}</p>
+                            <p className="text-sm text-muted-foreground">
+                                {result.description}
+                            </p>
+                            {result.availability && (
+                                <div className="flex items-center justify-center sm:justify-start pt-2">
+                                <Badge
+                                    variant="outline"
+                                    className="flex items-center gap-1.5"
+                                >
+                                    <Clock className="size-3" />
+                                    {result.availability}
+                                </Badge>
+                                </div>
+                            )}
+                            </div>
+                            <div className="flex items-center justify-center">
+                                <Button asChild variant="outline" size="sm">
+                                    <Link href={resultLinks[result.type as keyof typeof resultLinks] || '/'}>
+                                        Go to {result.type.replace('_', ' ')} <ArrowRight className="ml-2"/>
+                                    </Link>
+                                </Button>
+                            </div>
+                        </Card>
+                        ))}
                     </div>
-                     <div className="flex items-center justify-center">
-                        <Button asChild variant="outline" size="sm">
-                            <Link href={resultLinks[result.type as keyof typeof resultLinks] || '/'}>
-                                Go to {result.type.replace('_', ' ')} <ArrowRight className="ml-2"/>
-                            </Link>
-                        </Button>
-                    </div>
-                  </Card>
-                ))}
-              </div>
+                </>
+              )}
             </>
           )}
         </CardFooter>
       )}
-      {!pending && state.message && (state.results.length === 0 || state.errors) && (
+      {!pending && state.message && (!state.results || state.errors) && (
             <CardFooter className="border-t px-6 py-4">
                 <Alert variant={state.errors ? 'destructive' : 'default'} className="w-full">
                 <AlertCircle className="h-4 w-4" />
