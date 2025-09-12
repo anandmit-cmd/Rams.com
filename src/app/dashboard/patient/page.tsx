@@ -5,16 +5,18 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Calendar, Stethoscope, FileText, Wallet, Bell, Settings, LogOut, LayoutGrid, HeartPulse, ShieldCheck, Dumbbell, Star, MessageSquare, Leaf, Users, Download } from 'lucide-react';
+import { Calendar, Stethoscope, FileText, Wallet, Bell, LogOut, LayoutGrid, HeartPulse, ShieldCheck, Dumbbell, Star, MessageSquare, Leaf, Users, Download } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { useState } from 'react';
 import { Textarea } from '@/components/ui/textarea';
+import placeholderImages from '@/lib/placeholder-images.json';
 
 export default function PatientDashboard() {
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const ratingLabels = ["Very Poor", "Poor", "Fair", "Good", "Excellent"];
+  const userAvatar = placeholderImages['patient-user-avatar'];
 
   return (
     <div className="flex min-h-screen bg-secondary">
@@ -64,7 +66,7 @@ export default function PatientDashboard() {
                 <span className="sr-only">Notifications</span>
             </Button>
             <Avatar>
-              <AvatarImage src="https://picsum.photos/seed/user/100/100" data-ai-hint="person portrait" alt="Patient" />
+              <AvatarImage src={userAvatar.src} data-ai-hint={userAvatar.hint} alt="Patient" />
               <AvatarFallback>P</AvatarFallback>
             </Avatar>
           </div>
