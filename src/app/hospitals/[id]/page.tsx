@@ -100,7 +100,7 @@ export default function HospitalDetailPage({ params }: { params: { id: string } 
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between">
                     <div>
                         <CardTitle className="text-3xl font-bold">{hospitalData.name}</CardTitle>
-                        <div className="flex items-center text-sm text-gray-500 mt-2">
+                        <div className="flex items-center text-sm text-muted-foreground mt-2">
                             <MapPin className="w-4 h-4 mr-2" />
                             {hospitalData.address}
                         </div>
