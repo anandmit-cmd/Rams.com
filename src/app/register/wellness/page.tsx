@@ -45,9 +45,7 @@ export default function WellnessRegisterPage() {
       title: "Registration Successful!",
       description: "Redirecting to your dashboard...",
     });
-    // Note: A dedicated wellness expert dashboard doesn't exist yet.
-    // We will redirect to the patient dashboard for now.
-    router.push('/dashboard/patient');
+    router.push('/dashboard/wellness');
   }
 
   return (

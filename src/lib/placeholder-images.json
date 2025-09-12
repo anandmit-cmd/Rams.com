@@ -215,5 +215,17 @@
   "promo-3": {
     "src": "https://picsum.photos/seed/promo3/1200/600",
     "hint": "pharmacy offer discount"
+  },
+  "wellness-expert-avatar": {
+    "src": "https://picsum.photos/seed/wellness-expert/100/100",
+    "hint": "expert portrait"
+  },
+  "client-avatar-1": {
+    "src": "https://picsum.photos/seed/client1/100/100",
+    "hint": "person smiling"
+  },
+  "client-avatar-2": {
+    "src": "https://picsum.photos/seed/client2/100/100",
+    "hint": "woman portrait"
   }
 }
