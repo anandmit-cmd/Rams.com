@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, Star, MapPin, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Award, Twitter, Facebook, Instagram } from 'lucide-react';
+import { Search, Star, MapPin, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Award, Twitter, Facebook, Instagram, BadgeIndianRupee } from 'lucide-react';
 import Image from 'next/image';
 import { AppLogo } from '@/components/icons';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
@@ -23,7 +23,8 @@ const doctors = [
     availability: 'Online',
     image: 'https://picsum.photos/seed/1/300/200',
     imageHint: 'doctor portrait',
-    rank: 'gold'
+    rank: 'gold',
+    consultationFee: 1500,
   },
   {
     name: 'Dr. Vikram Singh',
@@ -34,7 +35,8 @@ const doctors = [
     availability: 'In-Clinic',
     image: 'https://picsum.photos/seed/2/300/200',
     imageHint: 'doctor smiling',
-    rank: 'gold'
+    rank: 'gold',
+    consultationFee: 1800,
   },
   {
     name: 'Dr. Priya Patel',
@@ -45,7 +47,8 @@ const doctors = [
     availability: 'Online',
     image: 'https://picsum.photos/seed/3/300/200',
     imageHint: 'female doctor',
-    rank: 'silver'
+    rank: 'silver',
+    consultationFee: 1200,
   },
    {
     name: 'Dr. Rohan Mehra',
@@ -56,7 +59,8 @@ const doctors = [
     availability: 'In-Clinic',
     image: 'https://picsum.photos/seed/4/300/200',
     imageHint: 'male doctor',
-    rank: 'silver'
+    rank: 'silver',
+    consultationFee: 800,
   },
   {
     name: 'Dr. Sunita Desai',
@@ -67,7 +71,8 @@ const doctors = [
     availability: 'Online',
     image: 'https://picsum.photos/seed/5/300/200',
     imageHint: 'doctor glasses',
-    rank: 'bronze'
+    rank: 'bronze',
+    consultationFee: 1000,
   },
   {
     name: 'Dr. Sameer Joshi',
@@ -78,7 +83,8 @@ const doctors = [
     availability: 'In-Clinic',
     image: 'https://picsum.photos/seed/6/300/200',
     imageHint: 'doctor friendly',
-    rank: 'bronze'
+    rank: 'bronze',
+    consultationFee: 750,
   },
 ];
 
@@ -219,9 +225,15 @@ export default function FindDoctorPage() {
                                         {doctor.availability}
                                     </Badge>
                                 </div>
-                                <Button asChild className="w-full mt-4 h-10">
-                                    <Link href="/book-appointment">Book Appointment</Link>
-                                </Button>
+                                 <div className="flex items-center justify-between mt-4 pt-4 border-t">
+                                    <div className="flex items-center font-bold text-lg">
+                                        <BadgeIndianRupee className="w-5 h-5 mr-1"/>
+                                        {doctor.consultationFee}
+                                    </div>
+                                    <Button asChild className="h-10">
+                                        <Link href="/book-appointment">Book Appointment</Link>
+                                    </Button>
+                                </div>
                             </CardContent>
                         </Card>
                     ))}
@@ -301,6 +313,5 @@ export default function FindDoctorPage() {
     </div>
   );
 }
-
 
     
