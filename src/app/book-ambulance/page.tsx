@@ -65,7 +65,7 @@ export default function BookAmbulancePage() {
       setIsBooking(false);
       toast({
         title: 'Ambulance Booked!',
-        description: `A ${selectedTypeData?.name} is on its way to ${pickupLocation}. ETA: 12 minutes.`,
+        description: `A ${selectedTypeData?.name} is on its way. Your registered emergency contact has also been notified.`,
       });
     }, 2000);
   };
