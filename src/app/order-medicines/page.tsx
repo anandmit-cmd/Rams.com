@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { AppLogo } from '@/components/icons';
 import { Input } from '@/components/ui/input';
-import { Search, ShoppingCart, Truck, Store, ArrowLeft } from 'lucide-react';
+import { Search, ShoppingCart, Truck, Store, ArrowLeft, FileUp } from 'lucide-react';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 
@@ -31,6 +31,13 @@ export default function OrderMedicinesPage() {
         });
     };
 
+    const handlePrescriptionUpload = () => {
+        toast({
+            title: 'Prescription Uploaded',
+            description: 'Our team will review your prescription and contact you shortly.',
+        });
+    }
+
   return (
     <div className="flex flex-col min-h-screen bg-secondary">
       <header className="container mx-auto px-4 md:px-6 py-4 flex items-center justify-between bg-white shadow-sm">
@@ -47,13 +54,43 @@ export default function OrderMedicinesPage() {
         <div className="container mx-auto px-4 md:px-6">
           <Card className="max-w-4xl mx-auto shadow-lg mb-8">
             <CardHeader>
+               <Link href="/" className="flex items-center text-sm text-primary mb-4 hover:underline">
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Back to Home
+              </Link>
               <CardTitle className="text-2xl md:text-3xl">Order Medicines Online</CardTitle>
-              <CardDescription>Search for medicines and get them delivered to your doorstep.</CardDescription>
+              <CardDescription>Search for medicines, or upload your prescription to get started.</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <Input type="search" placeholder="Search for medicines..." className="w-full pl-10 h-12" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Input type="search" placeholder="Search for medicines..." className="w-full pl-10 h-12" />
+                </div>
+                <Dialog>
+                    <DialogTrigger asChild>
+                         <Button variant="outline" className="w-full h-12 text-base border-dashed border-2">
+                            <FileUp className="mr-2 h-5 w-5" />
+                            Upload Prescription
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Upload Your Prescription</DialogTitle>
+                            <DialogDescription>
+                                Please upload a clear image of your prescription. Our experts will contact you shortly.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <div className="py-4">
+                            <Input type="file" />
+                        </div>
+                        <DialogFooter>
+                            <DialogClose asChild>
+                                <Button onClick={handlePrescriptionUpload}>Upload & Submit</Button>
+                            </DialogClose>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
               </div>
             </CardContent>
           </Card>
@@ -103,16 +140,6 @@ export default function OrderMedicinesPage() {
               </Card>
             ))}
           </div>
-
-           <div className="text-center mt-12">
-            <Button asChild variant="outline">
-                <Link href="/" className="flex items-center">
-                    <ArrowLeft className="w-4 h-4 mr-2" />
-                    Back to Home
-                </Link>
-            </Button>
-          </div>
-
         </div>
       </main>
     </div>

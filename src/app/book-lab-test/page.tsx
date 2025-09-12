@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { AppLogo } from '@/components/icons';
 import { Input } from '@/components/ui/input';
-import { Search, TestTube, Home, Building, ArrowLeft, Calendar as CalendarIcon } from 'lucide-react';
+import { Search, TestTube, Home, Building, ArrowLeft, Calendar as CalendarIcon, FileUp } from 'lucide-react';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { Calendar } from '@/components/ui/calendar';
@@ -50,6 +50,13 @@ export default function BookLabTestPage() {
         setSelectedTest(null);
     };
 
+    const handlePrescriptionUpload = () => {
+        toast({
+            title: 'Prescription Uploaded',
+            description: 'Our team will review your prescription and contact you shortly to book the required tests.',
+        });
+    }
+
   return (
     <div className="flex flex-col min-h-screen bg-secondary">
       <header className="container mx-auto px-4 md:px-6 py-4 flex items-center justify-between bg-white shadow-sm">
@@ -71,12 +78,38 @@ export default function BookLabTestPage() {
                     Back to Home
               </Link>
               <CardTitle className="text-2xl md:text-3xl">Book a Lab Test</CardTitle>
-              <CardDescription>Search for tests and book an appointment for home collection or a lab visit.</CardDescription>
+              <CardDescription>Search for tests, or upload your prescription to book an appointment.</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <Input type="search" placeholder="Search for a lab test..." className="w-full pl-10 h-12" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Input type="search" placeholder="Search for a lab test..." className="w-full pl-10 h-12" />
+                </div>
+                 <Dialog>
+                    <DialogTrigger asChild>
+                         <Button variant="outline" className="w-full h-12 text-base border-dashed border-2">
+                            <FileUp className="mr-2 h-5 w-5" />
+                            Upload Prescription
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Upload Your Prescription</DialogTitle>
+                            <DialogDescription>
+                                Please upload a clear image of your prescription. Our experts will contact you to book the necessary tests.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <div className="py-4">
+                            <Input type="file" />
+                        </div>
+                        <DialogFooter>
+                            <DialogClose asChild>
+                                <Button onClick={handlePrescriptionUpload}>Upload & Submit</Button>
+                            </DialogClose>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
               </div>
             </CardContent>
           </Card>
