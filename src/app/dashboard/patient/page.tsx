@@ -5,12 +5,13 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Calendar, Stethoscope, FileText, Wallet, Bell, LogOut, LayoutGrid, HeartPulse, ShieldCheck, Dumbbell, Star, MessageSquare, Leaf, Users, Download } from 'lucide-react';
+import { Calendar, Stethoscope, FileText, Wallet, Bell, LogOut, LayoutGrid, HeartPulse, ShieldCheck, Dumbbell, Star, MessageSquare, Leaf, Users, Download, Upload } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { useState } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import placeholderImages from '@/lib/placeholder-images.json';
+import { Input } from '@/components/ui/input';
 
 export default function PatientDashboard() {
   const [rating, setRating] = useState(0);
@@ -95,17 +96,17 @@ export default function PatientDashboard() {
                 </Card>
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">New Medical Records</CardTitle>
+                        <CardTitle className="text-sm font-medium">My Medical Records</CardTitle>
                         <FileText className="w-4 h-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <p className="text-sm">Blood Test Report</p>
+                          <div className="flex items-center justify-between p-2 rounded-lg bg-gray-50 border">
+                            <p className="text-sm font-medium">Blood Test Report (10th July)</p>
                             <Button variant="ghost" size="icon" className="h-8 w-8"><Download className="h-4 w-4" /></Button>
                           </div>
-                          <div className="flex items-center justify-between">
-                            <p className="text-sm">X-Ray Report</p>
+                          <div className="flex items-center justify-between p-2 rounded-lg bg-gray-50 border">
+                            <p className="text-sm font-medium">X-Ray Report (5th July)</p>
                             <Button variant="ghost" size="icon" className="h-8 w-8"><Download className="h-4 w-4" /></Button>
                           </div>
                        </div>
@@ -132,21 +133,21 @@ export default function PatientDashboard() {
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">
-                            <div className="flex items-center justify-between p-2 rounded-lg bg-gray-50">
+                            <div className="flex items-center justify-between p-2 rounded-lg bg-gray-50 border">
                                 <div>
                                     <p className="font-semibold">Consultation with Dr. Sharma</p>
                                     <p className="text-sm text-gray-500">12th July - Technical Issue</p>
                                 </div>
                                 <Button size="sm" variant="destructive">Request Refund</Button>
                             </div>
-                             <div className="flex items-center justify-between p-2 rounded-lg bg-gray-50">
+                             <div className="flex items-center justify-between p-2 rounded-lg bg-gray-50 border">
                                 <div>
                                     <p className="font-semibold">Lab Test from City Labs</p>
                                     <p className="text-sm text-gray-500">10th July - Completed</p>
                                 </div>
                                 <Button size="sm" variant="outline">Give Feedback</Button>
                             </div>
-                            <div className="flex items-center justify-between p-2 rounded-lg bg-gray-50">
+                            <div className="flex items-center justify-between p-2 rounded-lg bg-gray-50 border">
                                 <div>
                                     <p className="font-semibold">Appointment with Dr. Vikram</p>
                                     <p className="text-sm text-gray-500">8th July - Completed</p>
@@ -200,9 +201,14 @@ export default function PatientDashboard() {
                           <p className="text-sm font-medium">Prescription from Dr. Sharma (12th July)</p>
                           <Button variant="ghost" size="icon" className="h-8 w-8"><Download className="h-4 w-4" /></Button>
                        </div>
+                        <div className="flex items-center justify-between p-2 rounded-lg border">
+                          <p className="text-sm font-medium">Uploaded Prescription (9th July)</p>
+                          <Button variant="ghost" size="icon" className="h-8 w-8"><Download className="h-4 w-4" /></Button>
+                       </div>
                         <Dialog>
                             <DialogTrigger asChild>
-                                <Button variant="outline" className="w-full">
+                                <Button variant="outline" className="w-full h-11">
+                                    <Upload className="mr-2 h-4 w-4" />
                                     Upload New Prescription
                                 </Button>
                             </DialogTrigger>
@@ -214,7 +220,7 @@ export default function PatientDashboard() {
                                     </DialogDescription>
                                 </DialogHeader>
                                 <div className="py-4">
-                                    <input type="file" className="w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"/>
+                                    <Input type="file" className="w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"/>
                                 </div>
                                 <DialogFooter>
                                     <DialogClose asChild>
