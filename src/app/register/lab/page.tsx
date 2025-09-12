@@ -43,11 +43,10 @@ function LabRegisterPage() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("Lab registration submitted", values);
     toast({
-      title: "Registration Temporarily Disabled",
-      description: "This feature is not yet available.",
-      variant: "destructive",
+      title: "Registration Successful!",
+      description: "Redirecting to your dashboard...",
     });
-    // router.push('/dashboard/lab');
+    router.push('/dashboard/lab');
   }
 
   return (

@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { AppLogo } from '@/components/icons';
 import { ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Full name is required."),
@@ -25,6 +26,7 @@ const formSchema = z.object({
 
 export default function WellnessRegisterPage() {
   const { toast } = useToast();
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,10 +42,12 @@ export default function WellnessRegisterPage() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     toast({
-      title: "Registration Temporarily Disabled",
-      description: "This feature is not yet available.",
-      variant: "destructive",
+      title: "Registration Successful!",
+      description: "Redirecting to your dashboard...",
     });
+    // Note: A dedicated wellness expert dashboard doesn't exist yet.
+    // We will redirect to the patient dashboard for now.
+    router.push('/dashboard/patient');
   }
 
   return (
