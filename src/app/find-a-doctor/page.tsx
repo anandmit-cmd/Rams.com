@@ -112,7 +112,7 @@ export default function FindDoctorPage() {
             <Link href="/wellness" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
                 Wellness
             </Link>
-            <Link href="#" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
+            <Link href="/for-providers" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
                 For Providers
             </Link>
             </nav>
@@ -243,7 +243,7 @@ export default function FindDoctorPage() {
                             <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>About Us</Link></li>
                             <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Careers</Link></li>
                             <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Press</Link></li>
-                            <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>For Providers</Link></li>
+                            <li><Link href="/for-providers" className="text-gray-400 hover:text-white" prefetch={false}>For Providers</Link></li>
                         </ul>
                     </div>
                      <div>

@@ -227,5 +227,25 @@
   "client-avatar-2": {
     "src": "https://picsum.photos/seed/client2/100/100",
     "hint": "woman portrait"
+  },
+  "provider-hero": {
+    "src": "https://picsum.photos/seed/provider-hero/800/600",
+    "hint": "doctor team smiling"
+  },
+  "provider-doctor": {
+    "src": "https://picsum.photos/seed/provider-doc/400/300",
+    "hint": "doctor laptop"
+  },
+  "provider-pharmacy": {
+    "src": "https://picsum.photos/seed/provider-pharm/400/300",
+    "hint": "pharmacist counter"
+  },
+  "provider-lab": {
+    "src": "https://picsum.photos/seed/provider-lab/400/300",
+    "hint": "lab technician"
+  },
+  "provider-ambulance": {
+    "src": "https://picsum.photos/seed/provider-amb/400/300",
+    "hint": "ambulance vehicle"
   }
 }

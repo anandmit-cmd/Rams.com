@@ -61,8 +61,8 @@ export default function RegisterPage() {
           <Link href="/wellness" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
             Wellness
           </Link>
-          <Link href="#" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
-            For Doctors
+          <Link href="/for-providers" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
+            For Providers
           </Link>
         </nav>
         <div className="flex items-center gap-4">
@@ -131,7 +131,7 @@ export default function RegisterPage() {
                         <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>About Us</Link></li>
                         <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Careers</Link></li>
                         <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Press</Link></li>
-                        <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>For Doctors</Link></li>
+                        <li><Link href="/for-providers" className="text-gray-400 hover:text-white" prefetch={false}>For Providers</Link></li>
                     </ul>
                 </div>
                 <div>
