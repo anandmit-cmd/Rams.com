@@ -9,14 +9,20 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { Globe } from 'lucide-react';
 import { IntelligentSearch } from '@/components/intelligent-search';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import Autoplay from "embla-carousel-autoplay";
+import * as React from 'react';
 
 
 export default function LandingPage() {
   const promotions = [
-    { title: 'Free Eye Check-up Camp', description: 'Apollo Hospital is organizing a free eye check-up camp this Sunday. Avail the opportunity!', image: 'https://picsum.photos/seed/promo1/1200/600', imageHint: 'eye checkup clinic', link: '/find-a-hospital' },
-    { title: '50% Off on Full Body Check-up', description: 'Metropolis Labs offers a 50% discount on their comprehensive full-body health check-up package. Limited time offer!', image: 'https://picsum.photos/seed/promo2/1200/600', imageHint: 'lab test promotion', link: '/book-lab-test' },
-    { title: 'New Cardiac Wing at Fortis', description: 'Fortis Hospital has inaugurated a new state-of-the-art cardiac wing with the latest technology.', image: 'https://picsum.photos/seed/promo3/1200/600', imageHint: 'hospital cardiac wing', link: '/find-a-hospital' },
+    { title: 'Free Eye Check-up Camp', description: 'Apex Hospital is organizing a free eye check-up camp from Sep 20 to Sep 30. Avail the opportunity!', image: 'https://picsum.photos/seed/promo1/1200/600', imageHint: 'eye checkup clinic', link: '/find-a-hospital' },
+    { title: '35% Off on Full Body Check-up', description: 'City Labs offers a 35% discount on their comprehensive full-body health check-up package. Limited time offer!', image: 'https://picsum.photos/seed/promo2/1200/600', imageHint: 'lab test promotion', link: '/book-lab-test' },
+    { title: '20% Off On All Medicines', description: 'Get a flat 20% discount on all medicine orders from Apollo Pharmacy this week.', image: 'https://picsum.photos/seed/promo3/1200/600', imageHint: 'pharmacy offer discount', link: '/order-medicines' },
   ];
+
+  const plugin = React.useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: true })
+  )
 
   return (
     <div className="flex flex-col min-h-screen bg-secondary">
@@ -73,6 +79,47 @@ export default function LandingPage() {
           </div>
         </section>
 
+        <section className="py-12 md:py-24 lg:py-32 bg-white">
+            <div className="container mx-auto px-4 md:px-6">
+                <div className="text-center mb-12">
+                    <h2 className="text-3xl font-bold tracking-tighter text-gray-800">Discover Health Offers &amp; Events</h2>
+                    <p className="mt-2 text-gray-500">Check out the latest offers and health camps from our partners.</p>
+                </div>
+                <Carousel
+                    plugins={[plugin.current]}
+                    opts={{
+                        align: "start",
+                        loop: true,
+                    }}
+                    className="w-full max-w-5xl mx-auto"
+                    onMouseEnter={plugin.current.stop}
+                    onMouseLeave={plugin.current.reset}
+                >
+                    <CarouselContent>
+                        {promotions.map((promo, index) => (
+                            <CarouselItem key={index}>
+                                <Card className="overflow-hidden">
+                                    <div className="relative aspect-[2.4/1]">
+                                        <Image src={promo.image} alt={promo.title} fill style={{ objectFit: 'cover' }} data-ai-hint={promo.imageHint} />
+                                        <div className="absolute inset-0 bg-black/50" />
+                                        <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center p-8">
+                                            <h3 className="text-2xl md:text-4xl font-bold">{promo.title}</h3>
+                                            <p className="mt-2 max-w-2xl">{promo.description}</p>
+                                            <Button asChild className="mt-6">
+                                                <Link href={promo.link}>Learn More <ArrowRight className="ml-2" /></Link>
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </Card>
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                    <CarouselPrevious className="hidden sm:flex" />
+                    <CarouselNext className="hidden sm:flex" />
+                </Carousel>
+            </div>
+        </section>
+
         <section className="py-12 md:py-24 lg:py-32 bg-secondary">
           <div className="container mx-auto px-4 md:px-6">
             <div className="text-center">
@@ -103,46 +150,8 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-
-        <section className="py-12 md:py-24 lg:py-32 bg-white">
-            <div className="container mx-auto px-4 md:px-6">
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold tracking-tighter text-gray-800">Special Promotions & Events</h2>
-                    <p className="mt-2 text-gray-500">Check out the latest offers and health camps from our partners.</p>
-                </div>
-                <Carousel
-                    opts={{
-                        align: "start",
-                        loop: true,
-                    }}
-                    className="w-full max-w-5xl mx-auto"
-                >
-                    <CarouselContent>
-                        {promotions.map((promo, index) => (
-                            <CarouselItem key={index}>
-                                <Card className="overflow-hidden">
-                                    <div className="relative aspect-[2.4/1]">
-                                        <Image src={promo.image} alt={promo.title} fill style={{ objectFit: 'cover' }} data-ai-hint={promo.imageHint} />
-                                        <div className="absolute inset-0 bg-black/50" />
-                                        <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center p-8">
-                                            <h3 className="text-2xl md:text-4xl font-bold">{promo.title}</h3>
-                                            <p className="mt-2 max-w-2xl">{promo.description}</p>
-                                            <Button asChild className="mt-6">
-                                                <Link href={promo.link}>Learn More <ArrowRight className="ml-2" /></Link>
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </Card>
-                            </CarouselItem>
-                        ))}
-                    </CarouselContent>
-                    <CarouselPrevious className="hidden sm:flex" />
-                    <CarouselNext className="hidden sm:flex" />
-                </Carousel>
-            </div>
-        </section>
         
-        <section className="py-12 md:py-24 lg:py-32 bg-secondary">
+        <section className="py-12 md:py-24 lg:py-32 bg-white">
           <div className="container mx-auto px-4 md:px-6">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold tracking-tighter text-gray-800">Explore Our Core Services</h2>
@@ -188,7 +197,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="py-12 md:py-24 lg:py-32 bg-white">
+        <section className="py-12 md:py-24 lg:py-32 bg-secondary">
           <div className="container mx-auto px-4 md:px-6">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold tracking-tighter text-gray-800">Browse by Specialty</h2>
@@ -216,7 +225,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="py-12 md:py-24 lg:py-32 bg-secondary">
+        <section className="py-12 md:py-24 lg:py-32 bg-white">
           <div className="container mx-auto px-4 md:px-6">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold tracking-tighter text-gray-800">Wellness Zone</h2>
@@ -299,5 +308,3 @@ export default function LandingPage() {
     </div>
   );
 }
-
-    
