@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { AppLogo } from '@/components/icons';
-import { Globe, User, Stethoscope, Pill, TestTube2, Ambulance, Sparkles, ArrowRight, Twitter, Facebook, Instagram } from 'lucide-react';
+import { Globe, User, Stethoscope, Pill, TestTube2, Ambulance, Sparkles, ArrowRight, Twitter, Facebook, Instagram, Hospital } from 'lucide-react';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 
 
@@ -19,6 +19,12 @@ const roles = [
     title: 'Doctor',
     description: 'Provide consultations and manage patients.',
     href: '/register/doctor',
+  },
+   {
+    icon: Hospital,
+    title: 'Hospital',
+    description: 'Manage facilities, doctors, and admissions.',
+    href: '/register/hospital',
   },
   {
     icon: Pill,
