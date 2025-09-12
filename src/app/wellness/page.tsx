@@ -12,6 +12,7 @@ const wellnessCategories = [
     description: 'Find inner peace and improve flexibility with our curated yoga sessions.',
     icon: Leaf,
     image: 'wellness-yoga',
+    hint: 'yoga mindfulness',
     href: '#',
   },
   {
@@ -19,6 +20,7 @@ const wellnessCategories = [
     description: 'Get stronger and healthier with personalized workout plans.',
     icon: Dumbbell,
     image: 'wellness-fitness',
+    hint: 'fitness workout',
     href: '#',
   },
   {
@@ -26,6 +28,7 @@ const wellnessCategories = [
     description: 'Connect with therapists and access resources for mental peace.',
     icon: Users,
     image: 'wellness-mental',
+    hint: 'mental wellness',
     href: '#',
   },
   {
@@ -33,6 +36,7 @@ const wellnessCategories = [
     description: 'Get custom diet plans from expert nutritionists for a healthier lifestyle.',
     icon: ShieldCheck,
     image: 'wellness-diet',
+    hint: 'diet nutrition',
     href: '#',
   },
 ];
@@ -105,7 +109,7 @@ export default function WellnessPage() {
                 <Link href={category.href} key={category.title}>
                   <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow h-full">
                      <div className="relative h-48">
-                        <Image src={`https://picsum.photos/seed/${category.image}/400/300`} alt={category.title} fill style={{objectFit: 'cover'}} data-ai-hint={category.image} />
+                        <Image src={`https://picsum.photos/seed/${category.image}/400/300`} alt={category.title} fill style={{objectFit: 'cover'}} data-ai-hint={category.hint} />
                      </div>
                     <CardHeader>
                       <div className="flex items-center gap-3">
@@ -160,3 +164,5 @@ export default function WellnessPage() {
     </div>
   );
 }
+
+    

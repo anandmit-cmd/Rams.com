@@ -136,9 +136,21 @@
     "src": "https://picsum.photos/seed/doctor/100/100",
     "hint": "doctor portrait"
   },
-  "patient-avatar": {
-    "src": "https://picsum.photos/seed/patient/100/100",
-    "hint": "person portrait"
+  "patient-avatar-0": {
+    "src": "https://picsum.photos/seed/patient-0/100/100",
+    "hint": "patient portrait"
+  },
+  "patient-avatar-1": {
+    "src": "https://picsum.photos/seed/patient-1/100/100",
+    "hint": "patient portrait"
+  },
+  "patient-avatar-2": {
+    "src": "https://picsum.photos/seed/patient-2/100/100",
+    "hint": "patient portrait"
+  },
+  "patient-avatar-3": {
+    "src": "https://picsum.photos/seed/patient-3/100/100",
+    "hint": "patient portrait"
   },
   "lab-tech-avatar": {
     "src": "https://picsum.photos/seed/lab-tech/100/100",
@@ -192,20 +204,18 @@
     "src": "https://picsum.photos/seed/counselor/300/200",
     "hint": "counselor portrait"
   },
-  "patient-avatar-0": {
-    "src": "https://picsum.photos/seed/patient-0/100/100",
-    "hint": "patient portrait"
+  "promo-1": {
+    "src": "https://picsum.photos/seed/promo1/1200/600",
+    "hint": "eye checkup clinic"
   },
-  "patient-avatar-1": {
-    "src": "https://picsum.photos/seed/patient-1/100/100",
-    "hint": "patient portrait"
+  "promo-2": {
+    "src": "https://picsum.photos/seed/promo2/1200/600",
+    "hint": "lab test promotion"
   },
-  "patient-avatar-2": {
-    "src": "https://picsum.photos/seed/patient-2/100/100",
-    "hint": "patient portrait"
-  },
-  "patient-avatar-3": {
-    "src": "https://picsum.photos/seed/patient-3/100/100",
-    "hint": "patient portrait"
+  "promo-3": {
+    "src": "https://picsum.photos/seed/promo3/1200/600",
+    "hint": "hospital cardiac wing"
   }
 }
+
+    
