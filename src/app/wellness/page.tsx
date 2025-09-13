@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AppLogo } from '@/components/icons';
-import { Leaf, Dumbbell, Users, ShieldCheck, ArrowRight, Star } from 'lucide-react';
+import { Leaf, Dumbbell, Users, ShieldCheck, ArrowRight, Star, Twitter, Facebook, Instagram } from 'lucide-react';
 import Image from 'next/image';
 import placeholderImages from '@/lib/placeholder-images.json';
 
@@ -77,8 +77,8 @@ export default function WellnessPage() {
           <Link href="/wellness" className="text-sm font-medium text-primary" prefetch={false}>
             Wellness
           </Link>
-          <Link href="#" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
-            For Doctors
+          <Link href="/for-providers" className="text-sm font-medium text-gray-600 hover:text-primary" prefetch={false}>
+            For Providers
           </Link>
         </nav>
         <Button asChild>
@@ -155,6 +155,56 @@ export default function WellnessPage() {
         </section>
 
       </main>
+
+       <footer className="bg-gray-800 text-white">
+        <div className="container mx-auto px-4 md:px-6 py-12">
+            <div className="grid gap-8 grid-cols-2 md:grid-cols-5">
+                <div className="col-span-2 md:col-span-1">
+                    <h3 className="font-bold text-lg mb-2">RAMS.com</h3>
+                    <p className="text-gray-400 text-sm">Your health companion.</p>
+                </div>
+                <div>
+                    <h4 className="font-semibold mb-3">Company</h4>
+                    <ul className="space-y-2 text-sm">
+                        <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>About Us</Link></li>
+                        <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Careers</Link></li>
+                        <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Press</Link></li>
+                        <li><Link href="/for-providers" className="text-gray-400 hover:text-white" prefetch={false}>For Providers</Link></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 className="font-semibold mb-3">Resources</h4>
+                    <ul className="space-y-2 text-sm">
+                        <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Blog</Link></li>
+                        <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Help Center</Link></li>
+                        <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Contact Us</Link></li>
+                        <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Privacy Policy</Link></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 className="font-semibold mb-3">Services</h4>
+                    <ul className="space-y-2 text-sm">
+                        <li><Link href="/" className="text-gray-400 hover:text-white" prefetch={false}>AI Checker</Link></li>
+                        <li><Link href="/find-a-doctor" className="text-gray-400 hover:text-white" prefetch={false}>Find a Doctor</Link></li>
+                         <li><Link href="/find-a-hospital" className="text-gray-400 hover:text-white" prefetch={false}>Find a Hospital</Link></li>
+                        <li><Link href="/wellness" className="text-gray-400 hover:text-white" prefetch={false}>Wellness</Link></li>
+                        <li><Link href="/book-ambulance" className="text-gray-400 hover:text-white" prefetch={false}>Emergency</Link></li>
+                    </ul>
+                </div>
+                 <div className="col-span-2 md:col-span-1">
+                    <h4 className="font-semibold mb-3">Follow Us</h4>
+                    <div className="flex gap-4">
+                        <Link href="#" className="text-gray-400 hover:text-white" prefetch={false}><Twitter /></Link>
+                        <Link href="#" className="text-gray-400 hover:text-white" prefetch={false}><Facebook /></Link>
+                        <Link href="#" className="text-gray-400 hover:text-white" prefetch={false}><Instagram /></Link>
+                    </div>
+                </div>
+            </div>
+            <div className="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400 text-sm">
+                <p>© 2025 RAMS.com. All rights reserved.</p>
+            </div>
+        </div>
+      </footer>
     </div>
   );
 }
