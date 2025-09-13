@@ -10,6 +10,7 @@ import { AppLogo } from '@/components/icons';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import placeholderImages from '@/lib/placeholder-images.json';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
 const tripHistory = [
   { id: '#TR-701', patient: 'Aarav Sharma', date: '2024-07-22 10:30 AM', pickup: 'Andheri Station', dropoff: 'Apollo Hospital, Andheri', fare: 850, status: 'Completed' },
@@ -112,8 +113,8 @@ export default function AmbulanceTripHistoryPage() {
                                     <TableCell>₹{trip.fare.toFixed(2)}</TableCell>
                                     <TableCell>
                                         <Badge variant={getStatusVariant(trip.status)} className={cn(
-                                            trip.status === 'Completed' && 'bg-green-100 text-green-800 border-green-200 hover:bg-green-200',
-                                            trip.status === 'Cancelled' && 'bg-red-100 text-red-800 border-red-200 hover:bg-red-200'
+                                            trip.status === 'Completed' && 'bg-green-100 text-green-800 border-green-200 hover:bg-green-100',
+                                            trip.status === 'Cancelled' && 'bg-red-100 text-red-800 border-red-200 hover:bg-red-100'
                                             )}>
                                             {trip.status}
                                         </Badge>
