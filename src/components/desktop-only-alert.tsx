@@ -24,14 +24,17 @@ export function DesktopOnlyAlert() {
       }
     };
 
+    // Run check on mount and on resize
     checkMobile();
     window.addEventListener('resize', checkMobile);
 
+    // Cleanup listener
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   const handleDismiss = () => {
     setIsVisible(false);
+    // This will only run on the client, so it's safe
     sessionStorage.setItem('dismissedMobileAlert', 'true');
   };
 
