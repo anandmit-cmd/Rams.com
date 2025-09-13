@@ -8,10 +8,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { AppLogo } from '@/components/icons';
 import { Input } from '@/components/ui/input';
-import { Search, ShoppingCart, Truck, Store, ArrowLeft, FileUp } from 'lucide-react';
+import { Search, ShoppingCart, Truck, Store, ArrowLeft, FileUp, X, Minus, Plus } from 'lucide-react';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import placeholderImages from '@/lib/placeholder-images.json';
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from '@/components/ui/sheet';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 
 const medicines = [
   { name: 'Paracetamol 500mg', description: 'For fever and pain relief', price: 25.50, image: placeholderImages['medicine-1'] },
@@ -22,15 +25,46 @@ const medicines = [
   { name: 'Multivitamin Tablets', description: 'Supports overall health', price: 150.00, image: placeholderImages['medicine-6'] },
 ];
 
+type CartItem = {
+  name: string;
+  price: number;
+  quantity: number;
+  image: { src: string; hint: string };
+};
+
+
 export default function OrderMedicinesPage() {
     const { toast } = useToast();
+    const [cart, setCart] = useState<CartItem[]>([]);
 
-    const handleHomeDelivery = (medicineName: string) => {
-        toast({
-            title: 'Selection Confirmed',
-            description: `You chose Home Delivery for ${medicineName}. The item has been added to your cart.`,
-        });
+    const handleAddToCart = (medicine: typeof medicines[0]) => {
+      setCart((prevCart) => {
+        const existingItem = prevCart.find((item) => item.name === medicine.name);
+        if (existingItem) {
+          return prevCart.map((item) =>
+            item.name === medicine.name ? { ...item, quantity: item.quantity + 1 } : item
+          );
+        } else {
+          return [...prevCart, { ...medicine, quantity: 1 }];
+        }
+      });
+      toast({
+        title: `${medicine.name} added to cart!`,
+        description: 'Your item has been successfully added.',
+      });
     };
+    
+    const updateQuantity = (name: string, quantity: number) => {
+        if (quantity < 1) {
+            setCart(cart.filter(item => item.name !== name));
+        } else {
+            setCart(cart.map(item => item.name === name ? {...item, quantity} : item));
+        }
+    }
+
+    const totalCartItems = cart.reduce((total, item) => total + item.quantity, 0);
+    const cartTotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+
 
     const handlePrescriptionUpload = () => {
         toast({
@@ -46,9 +80,65 @@ export default function OrderMedicinesPage() {
           <AppLogo className="w-8 h-8 text-primary" />
           <span className="font-bold text-xl text-gray-800">RAMS.com</span>
         </Link>
-        <Button asChild>
-          <Link href="/dashboard/patient">My Dashboard</Link>
-        </Button>
+         <div className="flex items-center gap-4">
+            <Sheet>
+                <SheetTrigger asChild>
+                    <Button variant="outline" size="icon" className="relative">
+                        <ShoppingCart className="w-5 h-5" />
+                        {totalCartItems > 0 && <Badge className="absolute -top-2 -right-2 h-5 w-5 justify-center p-0">{totalCartItems}</Badge>}
+                        <span className="sr-only">Open Cart</span>
+                    </Button>
+                </SheetTrigger>
+                <SheetContent>
+                    <SheetHeader>
+                        <SheetTitle>Your Shopping Cart</SheetTitle>
+                        <SheetDescription>Review your items before checking out.</SheetDescription>
+                    </SheetHeader>
+                    {cart.length > 0 ? (
+                        <div className="flex flex-col h-full">
+                            <div className="flex-1 overflow-y-auto -mx-6 px-6 divide-y">
+                            {cart.map((item) => (
+                                <div key={item.name} className="flex items-center gap-4 py-4">
+                                     <Image src={item.image.src} alt={item.name} width={64} height={64} className="rounded-md" />
+                                    <div className="flex-1">
+                                        <p className="font-semibold">{item.name}</p>
+                                        <p className="text-sm text-muted-foreground">₹{item.price.toFixed(2)}</p>
+                                         <div className="flex items-center gap-2 mt-2">
+                                            <Button variant="outline" size="icon" className="h-6 w-6" onClick={() => updateQuantity(item.name, item.quantity - 1)}>
+                                                <Minus className="w-3 h-3"/>
+                                            </Button>
+                                            <span>{item.quantity}</span>
+                                             <Button variant="outline" size="icon" className="h-6 w-6" onClick={() => updateQuantity(item.name, item.quantity + 1)}>
+                                                <Plus className="w-3 h-3"/>
+                                            </Button>
+                                        </div>
+                                    </div>
+                                    <p className="font-bold">₹{(item.price * item.quantity).toFixed(2)}</p>
+                                </div>
+                            ))}
+                            </div>
+                            <Separator className="my-4" />
+                            <SheetFooter className="flex flex-col gap-4">
+                                 <div className="flex justify-between font-bold text-lg">
+                                    <span>Total</span>
+                                    <span>₹{cartTotal.toFixed(2)}</span>
+                                </div>
+                                <Button size="lg" className="w-full">Proceed to Checkout</Button>
+                            </SheetFooter>
+                        </div>
+                    ) : (
+                        <div className="flex flex-col items-center justify-center h-full text-center">
+                            <ShoppingCart className="w-16 h-16 text-muted-foreground mb-4" />
+                            <p className="font-semibold">Your cart is empty.</p>
+                            <p className="text-sm text-muted-foreground">Add some items to get started.</p>
+                        </div>
+                    )}
+                </SheetContent>
+            </Sheet>
+            <Button asChild>
+            <Link href="/dashboard/patient">My Dashboard</Link>
+            </Button>
+        </div>
       </header>
 
       <main className="flex-1 py-12">
@@ -121,7 +211,7 @@ export default function OrderMedicinesPage() {
                       </DialogHeader>
                       <div className="grid grid-cols-2 gap-4 py-4">
                         <DialogClose asChild>
-                            <Button variant="outline" className="h-24 flex-col gap-2" onClick={() => handleHomeDelivery(med.name)}>
+                            <Button variant="outline" className="h-24 flex-col gap-2" onClick={() => handleAddToCart(med)}>
                                 <Truck className="w-8 h-8 text-primary"/>
                                 Home Delivery
                             </Button>
