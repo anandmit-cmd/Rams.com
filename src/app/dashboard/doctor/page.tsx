@@ -7,8 +7,30 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Calendar, User, FileText, BarChart2, Bell, LogOut, LayoutGrid, Video, Star } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
+import placeholderImages from '@/lib/placeholder-images.json';
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { Bar, BarChart as RechartsBarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
+
+const chartData = [
+  { date: 'Mon', revenue: Math.floor(Math.random() * 15000) + 5000 },
+  { date: 'Tue', revenue: Math.floor(Math.random() * 15000) + 5000 },
+  { date: 'Wed', revenue: Math.floor(Math.random() * 15000) + 5000 },
+  { date: 'Thu', revenue: Math.floor(Math.random() * 15000) + 5000 },
+  { date: 'Fri', revenue: Math.floor(Math.random() * 15000) + 5000 },
+  { date: 'Sat', revenue: Math.floor(Math.random() * 15000) + 5000 },
+  { date: 'Sun', revenue: Math.floor(Math.random() * 15000) + 5000 },
+];
+
+const chartConfig = {
+  revenue: {
+    label: 'Revenue',
+    color: 'hsl(var(--primary))',
+  },
+} satisfies ChartConfig;
+
 
 export default function DoctorDashboard() {
+  const doctorAvatar = placeholderImages['doctor-avatar'];
 
   return (
     <div className="flex min-h-screen bg-secondary">
@@ -54,14 +76,14 @@ export default function DoctorDashboard() {
                 <span className="sr-only">Notifications</span>
             </Button>
             <Avatar>
-              <AvatarImage src="https://picsum.photos/seed/doctor/100/100" data-ai-hint="doctor portrait" alt="Doctor" />
+              <AvatarImage src={doctorAvatar.src} data-ai-hint={doctorAvatar.hint} alt="Doctor" />
               <AvatarFallback>DR</AvatarFallback>
             </Avatar>
           </div>
         </header>
 
         <main className="flex-1 p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
                         <CardTitle className="text-sm font-medium">Today's Appointments</CardTitle>
@@ -80,16 +102,6 @@ export default function DoctorDashboard() {
                     <CardContent>
                         <div className="text-2xl font-bold">5 New</div>
                         <p className="text-xs text-muted-foreground">Pending approval for consultation.</p>
-                    </CardContent>
-                </Card>
-                 <Card>
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium">Earnings (This Month)</CardTitle>
-                        <BarChart2 className="w-4 h-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">₹85,500</div>
-                        <p className="text-xs text-muted-foreground">+15% from last month</p>
                     </CardContent>
                 </Card>
                 <Card>
@@ -145,21 +157,47 @@ export default function DoctorDashboard() {
                         </div>
                     </CardContent>
                 </Card>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Quick Actions</CardTitle>
-                    </CardHeader>
-                     <CardContent className="grid grid-cols-1 gap-4">
-                        <Button variant="outline" className="h-16 flex-col gap-1">
-                            <FileText className="w-5 h-5 mb-1"/>
-                            Create E-Prescription
-                        </Button>
-                        <Button variant="outline" className="h-16 flex-col gap-1">
-                            <Video className="w-5 h-5 mb-1"/>
-                            Start Unscheduled Call
-                        </Button>
-                     </CardContent>
-                </Card>
+                <div className="flex flex-col gap-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Weekly Revenue</CardTitle>
+                            <CardDescription>Total earnings over the last 7 days.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                           <ChartContainer config={chartConfig} className="min-h-[150px] w-full">
+                              <RechartsBarChart accessibilityLayer data={chartData}>
+                                <CartesianGrid vertical={false} />
+                                <XAxis
+                                  dataKey="date"
+                                  tickLine={false}
+                                  tickMargin={10}
+                                  axisLine={false}
+                                  tickFormatter={(value) => value.slice(0, 3)}
+                                />
+                                <YAxis
+                                  tickFormatter={(value) => `₹${value / 1000}k`}
+                                  tickLine={false}
+                                  axisLine={false}
+                                  tickMargin={10}
+                                />
+                                <ChartTooltip content={<ChartTooltipContent />} />
+                                <Bar dataKey="revenue" fill="var(--color-revenue)" radius={4} />
+                              </RechartsBarChart>
+                            </ChartContainer>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Quick Actions</CardTitle>
+                        </CardHeader>
+                         <CardContent className="grid grid-cols-1 gap-4">
+                            <Button variant="outline" className="h-16 flex-col gap-1">
+                                <FileText className="w-5 h-5 mb-1"/>
+                                Create E-Prescription
+                            </Button>
+                         </CardContent>
+                    </Card>
+                </div>
             </div>
         </main>
       </div>

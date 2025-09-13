@@ -133,7 +133,7 @@
     "hint": "city map"
   },
   "doctor-avatar": {
-    "src": "https://picsum.photos/seed/doctor/100/100",
+    "src": "https://picsum.photos/seed/doctor-avatar/100/100",
     "hint": "doctor portrait"
   },
   "patient-avatar-0": {
