@@ -83,16 +83,9 @@ export default function RegisterPage() {
               <DropdownMenuItem>English</DropdownMenuItem>
               <DropdownMenuItem>हिन्दी</DropdownMenuItem>
               <DropdownMenuItem>मराठी</DropdownMenuItem>
-              <DropdownMenuItem>বাংলা</DropdownMenuItem>
-              <DropdownMenuItem>தமிழ்</DropdownMenuItem>
-              <DropdownMenuItem>తెలుగు</DropdownMenuItem>
-              <DropdownMenuItem>Other</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button asChild>
-            <Link href="/register">Register</Link>
-          </Button>
-          <Button variant="outline" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
+          <Button variant="outline" asChild>
             <Link href="/login">Login</Link>
           </Button>
         </div>

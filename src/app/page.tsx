@@ -60,10 +60,6 @@ export default function LandingPage() {
               <DropdownMenuItem>English</DropdownMenuItem>
               <DropdownMenuItem>हिन्दी</DropdownMenuItem>
               <DropdownMenuItem>मराठी</DropdownMenuItem>
-              <DropdownMenuItem>বাংলা</DropdownMenuItem>
-              <DropdownMenuItem>தமிழ்</DropdownMenuItem>
-              <DropdownMenuItem>తెలుగు</DropdownMenuItem>
-              <DropdownMenuItem>Other</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           <Button asChild>
