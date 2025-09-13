@@ -200,6 +200,10 @@
     "src": "https://picsum.photos/seed/provider-doctor/400/300",
     "hint": "doctor smiling"
   },
+   "provider-hospital": {
+    "src": "https://picsum.photos/seed/provider-hospital/400/300",
+    "hint": "hospital building"
+  },
   "provider-pharmacy": {
     "src": "https://picsum.photos/seed/provider-pharmacy/400/300",
     "hint": "pharmacy interior"
@@ -253,5 +257,3 @@
     "hint": "counselor portrait"
   }
 }
-
-    

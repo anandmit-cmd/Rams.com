@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AppLogo } from '@/components/icons';
-import { ArrowRight, BarChart2, Calendar, DollarSign, Globe, Stethoscope, Users, Video, Twitter, Facebook, Instagram } from 'lucide-react';
+import { ArrowRight, BarChart2, Calendar, DollarSign, Globe, Stethoscope, Users, Video, Twitter, Facebook, Instagram, Hospital, Pill, TestTube2, Ambulance } from 'lucide-react';
 import placeholderImages from '@/lib/placeholder-images.json';
 
 const providerBenefits = [
@@ -37,25 +37,36 @@ const providerRoles = [
     title: 'Doctors & Specialists',
     description: 'Offer consultations, manage your schedule, and build your online presence.',
     href: '/register/doctor',
-    image: placeholderImages['provider-doctor']
+    image: placeholderImages['provider-doctor'],
+    icon: Stethoscope
+  },
+   {
+    title: 'Hospitals',
+    description: 'Manage admissions, bed availability, and hospital-wide services.',
+    href: '/register/hospital',
+    image: placeholderImages['provider-hospital'],
+    icon: Hospital
   },
   {
     title: 'Pharmacies',
     description: 'Sell medicines, manage inventory, and process online orders seamlessly.',
     href: '/register/pharmacy',
-    image: placeholderImages['provider-pharmacy']
+    image: placeholderImages['provider-pharmacy'],
+    icon: Pill
   },
   {
     title: 'Labs & Diagnostics',
     description: 'Accept online bookings for tests, manage samples, and upload digital reports.',
     href: '/register/lab',
-    image: placeholderImages['provider-lab']
+    image: placeholderImages['provider-lab'],
+    icon: TestTube2
   },
   {
     title: 'Ambulance Services',
     description: 'Receive real-time emergency requests and manage your fleet efficiently.',
     href: '/register/ambulance',
-    image: placeholderImages['provider-ambulance']
+    image: placeholderImages['provider-ambulance'],
+    icon: Ambulance
   }
 ];
 
@@ -135,17 +146,20 @@ export default function ForProvidersPage() {
                             <h2 className="text-3xl font-bold tracking-tighter text-gray-800">Who Can Join?</h2>
                             <p className="mt-2 text-gray-500">We welcome a wide range of healthcare professionals and services.</p>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
                             {providerRoles.map(role => (
-                                <Card key={role.title} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                                <Card key={role.title} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow flex flex-col">
                                     <div className="relative h-48">
                                          <Image src={role.image.src} alt={role.title} fill style={{ objectFit: 'cover' }} data-ai-hint={role.image.hint} />
                                     </div>
-                                    <CardContent className="p-6">
-                                        <h3 className="text-xl font-bold">{role.title}</h3>
-                                        <p className="mt-2 text-muted-foreground h-16">{role.description}</p>
+                                    <CardContent className="p-6 flex flex-col flex-1">
+                                        <div className="flex items-center gap-3 mb-2">
+                                            <role.icon className="w-6 h-6 text-primary" />
+                                            <h3 className="text-xl font-bold">{role.title.replace(' & Specialists','')}</h3>
+                                        </div>
+                                        <p className="mt-2 text-muted-foreground flex-1">{role.description}</p>
                                         <Button asChild variant="outline" className="w-full mt-4">
-                                            <Link href={role.href}>Join as a {role.title.replace(' & Specialists', '')} <ArrowRight className="ml-2 w-4 h-4"/></Link>
+                                            <Link href={role.href}>Register as a {role.title.replace(' & Specialists', '')} <ArrowRight className="ml-2 w-4 h-4"/></Link>
                                         </Button>
                                     </CardContent>
                                 </Card>
@@ -216,5 +230,3 @@ export default function ForProvidersPage() {
         </div>
     );
 }
-
-    
