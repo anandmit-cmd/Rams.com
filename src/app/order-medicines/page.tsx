@@ -99,7 +99,7 @@ export default function OrderMedicinesPage() {
                             <div className="flex-1 overflow-y-auto -mx-6 px-6 divide-y">
                             {cart.map((item) => (
                                 <div key={item.name} className="flex items-center gap-4 py-4">
-                                     <Image src={item.image.src} alt={item.name} width={64} height={64} className="rounded-md" />
+                                     <Image src={item.image.src} alt={item.name} width={64} height={64} className="rounded-md" data-ai-hint={item.image.hint} />
                                     <div className="flex-1">
                                         <p className="font-semibold">{item.name}</p>
                                         <p className="text-sm text-muted-foreground">₹{item.price.toFixed(2)}</p>
@@ -198,34 +198,10 @@ export default function OrderMedicinesPage() {
                   <p className="font-bold text-xl my-2">₹{med.price.toFixed(2)}</p>
                   <Dialog>
                     <DialogTrigger asChild>
-                       <Button className="w-full mt-2">
+                       <Button className="w-full mt-2" onClick={() => handleAddToCart(med)}>
                         <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
                       </Button>
                     </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Choose Your Preference</DialogTitle>
-                        <DialogDescription>
-                          How would you like to receive {med.name}?
-                        </DialogDescription>
-                      </DialogHeader>
-                      <div className="grid grid-cols-2 gap-4 py-4">
-                        <DialogClose asChild>
-                            <Button variant="outline" className="h-24 flex-col gap-2" onClick={() => handleAddToCart(med)}>
-                                <Truck className="w-8 h-8 text-primary"/>
-                                Home Delivery
-                            </Button>
-                        </DialogClose>
-                         <DialogClose asChild>
-                            <Link href="/find-pharmacy" passHref>
-                                <Button variant="outline" className="h-24 flex-col gap-2 w-full">
-                                    <Store className="w-8 h-8 text-primary"/>
-                                    In-Store Pickup
-                                </Button>
-                            </Link>
-                        </DialogClose>
-                      </div>
-                    </DialogContent>
                   </Dialog>
                 </CardContent>
               </Card>
@@ -236,3 +212,5 @@ export default function OrderMedicinesPage() {
     </div>
   );
 }
+
+    
