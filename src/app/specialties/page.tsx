@@ -108,7 +108,7 @@ export default function SpecialtiesPage() {
                     <div>
                         <h4 className="font-semibold mb-3">Company</h4>
                         <ul className="space-y-2 text-sm">
-                            <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>About Us</Link></li>
+                            <li><Link href="/about" className="text-gray-400 hover:text-white" prefetch={false}>About Us</Link></li>
                             <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Careers</Link></li>
                             <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Press</Link></li>
                             <li><Link href="/for-providers" className="text-gray-400 hover:text-white" prefetch={false}>For Providers</Link></li>
