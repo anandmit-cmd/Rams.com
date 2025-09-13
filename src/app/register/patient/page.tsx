@@ -60,9 +60,9 @@ function PatientRegisterPage() {
         <div className="container mx-auto px-4 md:px-6">
           <Card className="max-w-xl mx-auto">
             <CardHeader>
-              <Button asChild variant="ghost" className="absolute top-6 left-6">
+              <Button asChild variant="ghost" className="absolute top-6 left-6 h-auto p-1">
                 <Link href="/register">
-                  <span className="flex items-center">
+                  <span className="flex items-center text-sm">
                     <ArrowLeft className="w-4 h-4 mr-2" />
                     Back
                   </span>
