@@ -85,7 +85,7 @@ export default function RegisterPage() {
               <DropdownMenuItem>मराठी</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button variant="link" asChild>
+          <Button asChild>
             <Link href="/login">Login</Link>
           </Button>
         </div>
@@ -169,3 +169,5 @@ export default function RegisterPage() {
     </div>
   );
 }
+
+    
