@@ -192,18 +192,6 @@
     "src": "https://picsum.photos/seed/user/100/100",
     "hint": "person portrait"
   },
-  "yoga-instructor-avatar": {
-    "src": "https://picsum.photos/seed/yoga-instructor/300/200",
-    "hint": "yoga instructor"
-  },
-  "fitness-coach-avatar": {
-    "src": "https://picsum.photos/seed/fitness-coach/300/200",
-    "hint": "fitness coach"
-  },
-  "counselor-avatar": {
-    "src": "https://picsum.photos/seed/counselor/300/200",
-    "hint": "counselor portrait"
-  },
   "provider-hero": {
     "src": "https://picsum.photos/seed/provider-hero/800/600",
     "hint": "doctors team"
@@ -251,5 +239,19 @@
   "promo-3": {
     "src": "https://picsum.photos/seed/promo3/1200/500",
     "hint": "medicine discount"
+  },
+  "yoga-instructor-avatar": {
+    "src": "https://picsum.photos/seed/yoga-instructor/300/200",
+    "hint": "yoga instructor"
+  },
+  "fitness-coach-avatar": {
+    "src": "https://picsum.photos/seed/fitness-coach/300/200",
+    "hint": "fitness coach"
+  },
+  "counselor-avatar": {
+    "src": "https://picsum.photos/seed/counselor/300/200",
+    "hint": "counselor portrait"
   }
 }
+
+    
