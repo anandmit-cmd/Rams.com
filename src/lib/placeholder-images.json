@@ -136,6 +136,10 @@
     "src": "https://picsum.photos/seed/doctor/100/100",
     "hint": "doctor portrait"
   },
+  "patient-avatar": {
+    "src": "https://picsum.photos/seed/patient/100/100",
+    "hint": "person portrait"
+  },
   "patient-avatar-0": {
     "src": "https://picsum.photos/seed/patient0/100/100",
     "hint": "person portrait"

@@ -28,6 +28,13 @@ export default function PatientDashboard() {
     });
     setRating(0);
   };
+  
+  const handleUpload = () => {
+    toast({
+        title: "File Uploaded!",
+        description: "Your prescription has been successfully uploaded.",
+    });
+  };
 
   return (
     <div className="flex min-h-screen bg-secondary">
@@ -234,7 +241,7 @@ export default function PatientDashboard() {
                                 </div>
                                 <DialogFooter>
                                     <DialogClose asChild>
-                                        <Button type="submit">Upload</Button>
+                                        <Button type="submit" onClick={handleUpload}>Upload</Button>
                                     </DialogClose>
                                 </DialogFooter>
                             </DialogContent>
@@ -286,5 +293,3 @@ export default function PatientDashboard() {
     </div>
   );
 }
-
-    
