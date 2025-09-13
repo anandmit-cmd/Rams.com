@@ -82,7 +82,7 @@ export default function ForProvidersPage() {
                 </Link>
                 </nav>
                 <div className="flex items-center gap-4">
-                    <Button asChild>
+                    <Button asChild className="bg-accent hover:bg-accent/90">
                         <Link href="/register">Register</Link>
                     </Button>
                     <Button variant="link" asChild className="text-primary">

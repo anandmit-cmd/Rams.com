@@ -62,7 +62,7 @@ export default function LandingPage() {
               <DropdownMenuItem>मराठी</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button asChild>
+          <Button asChild className="bg-accent hover:bg-accent/90">
             <Link href="/register">Register</Link>
           </Button>
           <Button variant="link" asChild className="text-primary">

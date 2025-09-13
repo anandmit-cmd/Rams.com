@@ -85,7 +85,7 @@ export default function RegisterPage() {
               <DropdownMenuItem>मराठी</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button variant="outline" asChild>
+          <Button variant="link" asChild>
             <Link href="/login">Login</Link>
           </Button>
         </div>

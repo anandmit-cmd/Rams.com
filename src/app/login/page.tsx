@@ -62,7 +62,7 @@ function LoginPage() {
           <AppLogo className="w-8 h-8 text-primary" />
           <span className="font-bold text-xl text-gray-800">RAMS.com</span>
         </Link>
-        <Button asChild>
+        <Button asChild className="bg-accent hover:bg-accent/90">
             <Link href="/register">Register</Link>
         </Button>
       </header>
