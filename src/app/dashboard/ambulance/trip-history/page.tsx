@@ -23,7 +23,7 @@ const tripHistory = [
 export default function AmbulanceTripHistoryPage() {
     const driverAvatar = placeholderImages['ambulance-driver-avatar'];
 
-    const getStatusVariant = (status: string) => {
+    const getStatusVariant = (status: string): 'default' | 'destructive' | 'secondary' | 'outline' | null | undefined => {
         switch (status) {
             case 'Completed': return 'default';
             case 'Cancelled': return 'destructive';
@@ -111,7 +111,10 @@ export default function AmbulanceTripHistoryPage() {
                                     <TableCell>{trip.dropoff}</TableCell>
                                     <TableCell>₹{trip.fare.toFixed(2)}</TableCell>
                                     <TableCell>
-                                        <Badge variant={getStatusVariant(trip.status)} className={trip.status === 'Completed' ? 'bg-green-100 text-green-800' : ''}>
+                                        <Badge variant={getStatusVariant(trip.status)} className={cn(
+                                            trip.status === 'Completed' && 'bg-green-100 text-green-800 border-green-200 hover:bg-green-200',
+                                            trip.status === 'Cancelled' && 'bg-red-100 text-red-800 border-red-200 hover:bg-red-200'
+                                            )}>
                                             {trip.status}
                                         </Badge>
                                     </TableCell>
@@ -126,4 +129,3 @@ export default function AmbulanceTripHistoryPage() {
     </div>
   );
 }
-
