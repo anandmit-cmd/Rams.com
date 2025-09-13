@@ -5,12 +5,40 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { LayoutGrid, Users, BedDouble, BarChart2, Bell, LogOut, FilePlus, Settings, Siren } from 'lucide-react';
+import { LayoutGrid, Users, BedDouble, BarChart2, Bell, LogOut, FilePlus, Settings, Siren, Loader2 } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import placeholderImages from '@/lib/placeholder-images.json';
+import { useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
 
 export default function HospitalDashboard() {
+  const [showEmergencyRequest, setShowEmergencyRequest] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [admissionStatus, setAdmissionStatus] = useState<'pending' | 'accepted' | 'declined'>('pending');
+  const { toast } = useToast();
+    
+  const handleAdmissionAction = (action: 'accepted' | 'declined') => {
+    setIsLoading(true);
+    setTimeout(() => {
+        setAdmissionStatus(action);
+        setIsLoading(false);
+        if (action === 'accepted') {
+            toast({
+                title: 'Admission Accepted!',
+                description: 'Patient Anjali Verma has been admitted. A notification has been sent.',
+            });
+        } else {
+             setShowEmergencyRequest(false);
+             toast({
+                title: 'Admission Declined',
+                description: 'The emergency admission request has been declined.',
+                variant: 'destructive'
+            });
+        }
+    }, 1500);
+  };
+
   const recentAdmissions = [
     { id: '#AD-501', patient: 'Ravi Kumar', room: 'Private 302', status: 'Admitted' },
     { id: '#AD-502', patient: 'Sunita Devi', room: 'Semi-Private 101-B', status: 'Admitted' },
@@ -116,37 +144,50 @@ export default function HospitalDashboard() {
                     </CardContent>
                 </Card>
             </div>
+            {showEmergencyRequest && (
             <Card className="mb-6">
                 <CardHeader>
                     <CardTitle className="flex items-center text-red-600">
                         <Siren className="w-6 h-6 mr-2" />
                         Emergency Admission Request
                     </CardTitle>
-                    <CardDescription>A patient has booked an emergency admission. Please review and take action.</CardDescription>
+                     {admissionStatus === 'pending' && <CardDescription>A patient has booked an emergency admission. Please review and take action.</CardDescription>}
+                     {admissionStatus === 'accepted' && <CardDescription className="text-green-600 font-semibold">Admission Accepted for Anjali Verma. A bed has been allocated in the ICU.</CardDescription>}
                 </CardHeader>
-                <CardContent>
-                    <div className="grid md:grid-cols-3 gap-4 text-sm">
-                        <div>
-                            <p className="font-semibold">Patient Name</p>
-                            <p>Anjali Verma</p>
+                {admissionStatus !== 'accepted' && (
+                    <CardContent>
+                        <div className="grid md:grid-cols-3 gap-4 text-sm">
+                            <div>
+                                <p className="font-semibold">Patient Name</p>
+                                <p>Anjali Verma</p>
+                            </div>
+                            <div>
+                                <p className="font-semibold">Age / Gender</p>
+                                <p>58 / Female</p>
+                            </div>
+                            <div>
+                                <p className="font-semibold">Reported Condition</p>
+                                <p>Severe chest pain and difficulty breathing.</p>
+                            </div>
                         </div>
-                        <div>
-                            <p className="font-semibold">Age / Gender</p>
-                            <p>58 / Female</p>
+                    </CardContent>
+                )}
+                 {admissionStatus === 'pending' && (
+                    <CardHeader>
+                        <div className="flex gap-4">
+                            <Button className="w-full" size="lg" onClick={() => handleAdmissionAction('accepted')} disabled={isLoading}>
+                                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                Accept Admission
+                            </Button>
+                            <Button className="w-full" variant="destructive" size="lg" onClick={() => handleAdmissionAction('declined')} disabled={isLoading}>
+                                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                Decline
+                            </Button>
                         </div>
-                        <div>
-                            <p className="font-semibold">Reported Condition</p>
-                            <p>Severe chest pain and difficulty breathing.</p>
-                        </div>
-                    </div>
-                </CardContent>
-                <CardHeader>
-                    <div className="flex gap-4">
-                        <Button className="w-full" size="lg">Accept Admission</Button>
-                        <Button className="w-full" variant="destructive" size="lg">Decline</Button>
-                    </div>
-                </CardHeader>
+                    </CardHeader>
+                )}
             </Card>
+            )}
 
 
             <Card>

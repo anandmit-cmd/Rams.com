@@ -136,10 +136,6 @@
     "src": "https://picsum.photos/seed/doctor/100/100",
     "hint": "doctor portrait"
   },
-  "patient-avatar": {
-    "src": "https://picsum.photos/seed/patient/100/100",
-    "hint": "person portrait"
-  },
   "patient-avatar-0": {
     "src": "https://picsum.photos/seed/patient0/100/100",
     "hint": "person portrait"
@@ -223,18 +219,6 @@
   "hospital-admin-avatar": {
     "src": "https://picsum.photos/seed/hospital-admin/100/100",
     "hint": "professional person"
-  },
-  "wellness-expert-avatar": {
-    "src": "https://picsum.photos/seed/wellness-expert/100/100",
-    "hint": "friendly person"
-  },
-  "client-avatar-1": {
-    "src": "https://picsum.photos/seed/client1/100/100",
-    "hint": "woman portrait"
-  },
-  "client-avatar-2": {
-    "src": "https://picsum.photos/seed/client2/100/100",
-    "hint": "man portrait"
   },
   "promo-1": {
     "src": "https://picsum.photos/seed/promo1/1200/500",
