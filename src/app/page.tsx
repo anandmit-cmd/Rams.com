@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Search, Calendar, MessageSquare, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Leaf, Users, ShieldCheck, Dumbbell, Hospital, Ambulance, Pill, TestTube2, ArrowRight } from 'lucide-react';
+import { Search, Calendar, MessageSquare, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Leaf, Users, ShieldCheck, Dumbbell, Hospital, Ambulance, Pill, TestTube2, ArrowRight, Twitter, Facebook, Instagram } from 'lucide-react';
 import Image from 'next/image';
 import { AppLogo } from '@/components/icons';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
@@ -284,18 +284,19 @@ export default function LandingPage() {
                 <div>
                     <h4 className="font-semibold mb-3">Services</h4>
                     <ul className="space-y-2 text-sm">
-                        <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>AI Checker</Link></li>
+                        <li><Link href="/" className="text-gray-400 hover:text-white" prefetch={false}>AI Checker</Link></li>
                         <li><Link href="/find-a-doctor" className="text-gray-400 hover:text-white" prefetch={false}>Find a Doctor</Link></li>
+                         <li><Link href="/find-a-hospital" className="text-gray-400 hover:text-white" prefetch={false}>Find a Hospital</Link></li>
                         <li><Link href="/wellness" className="text-gray-400 hover:text-white" prefetch={false}>Wellness</Link></li>
-                        <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Emergency</Link></li>
+                        <li><Link href="/book-ambulance" className="text-gray-400 hover:text-white" prefetch={false}>Emergency</Link></li>
                     </ul>
                 </div>
                  <div className="col-span-2 md:col-span-1">
                     <h4 className="font-semibold mb-3">Follow Us</h4>
                     <div className="flex gap-4">
-                        <Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Twitter</Link>
-                        <Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Facebook</Link>
-                        <Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Instagram</Link>
+                        <Link href="#" className="text-gray-400 hover:text-white" prefetch={false}><Twitter /></Link>
+                        <Link href="#" className="text-gray-400 hover:text-white" prefetch={false}><Facebook /></Link>
+                        <Link href="#" className="text-gray-400 hover:text-white" prefetch={false}><Instagram /></Link>
                     </div>
                 </div>
             </div>
@@ -307,3 +308,5 @@ export default function LandingPage() {
     </div>
   );
 }
+
+    
