@@ -25,7 +25,7 @@ export default function AmbulanceDashboard() {
             </Link>
         </div>
         <nav className="flex-1 px-4 space-y-2">
-          <Link href="#" className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg bg-accent text-accent-foreground" prefetch={false}>
+          <Link href="/dashboard/ambulance" className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg bg-accent text-accent-foreground" prefetch={false}>
             <LayoutGrid className="h-5 w-5" />
             Dashboard
           </Link>
@@ -33,7 +33,7 @@ export default function AmbulanceDashboard() {
             <Siren className="h-5 w-5" />
             Active Alerts
           </Link>
-           <Link href="#" className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100" prefetch={false}>
+           <Link href="/dashboard/ambulance/trip-history" className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100" prefetch={false}>
             <List className="h-5 w-5" />
             Trip History
           </Link>

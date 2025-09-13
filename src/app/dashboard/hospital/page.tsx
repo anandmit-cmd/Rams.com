@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { LayoutGrid, Users, BedDouble, BarChart2, Bell, LogOut, FilePlus, Settings } from 'lucide-react';
+import { LayoutGrid, Users, BedDouble, BarChart2, Bell, LogOut, FilePlus, Settings, Siren } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import placeholderImages from '@/lib/placeholder-images.json';
@@ -116,6 +116,38 @@ export default function HospitalDashboard() {
                     </CardContent>
                 </Card>
             </div>
+            <Card className="mb-6">
+                <CardHeader>
+                    <CardTitle className="flex items-center text-red-600">
+                        <Siren className="w-6 h-6 mr-2" />
+                        Emergency Admission Request
+                    </CardTitle>
+                    <CardDescription>A patient has booked an emergency admission. Please review and take action.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="grid md:grid-cols-3 gap-4 text-sm">
+                        <div>
+                            <p className="font-semibold">Patient Name</p>
+                            <p>Anjali Verma</p>
+                        </div>
+                        <div>
+                            <p className="font-semibold">Age / Gender</p>
+                            <p>58 / Female</p>
+                        </div>
+                        <div>
+                            <p className="font-semibold">Reported Condition</p>
+                            <p>Severe chest pain and difficulty breathing.</p>
+                        </div>
+                    </div>
+                </CardContent>
+                <CardHeader>
+                    <div className="flex gap-4">
+                        <Button className="w-full" size="lg">Accept Admission</Button>
+                        <Button className="w-full" variant="destructive" size="lg">Decline</Button>
+                    </div>
+                </CardHeader>
+            </Card>
+
 
             <Card>
                 <CardHeader>
