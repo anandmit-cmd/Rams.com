@@ -136,9 +136,21 @@
     "src": "https://picsum.photos/seed/doctor/100/100",
     "hint": "doctor portrait"
   },
-  "patient-avatar": {
-    "src": "https://picsum.photos/seed/patient/100/100",
+  "patient-avatar-0": {
+    "src": "https://picsum.photos/seed/patient0/100/100",
     "hint": "person portrait"
+  },
+  "patient-avatar-1": {
+    "src": "https://picsum.photos/seed/patient1/100/100",
+    "hint": "smiling person"
+  },
+  "patient-avatar-2": {
+    "src": "https://picsum.photos/seed/patient2/100/100",
+    "hint": "woman portrait"
+  },
+  "patient-avatar-3": {
+    "src": "https://picsum.photos/seed/patient3/100/100",
+    "hint": "man portrait"
   },
   "lab-tech-avatar": {
     "src": "https://picsum.photos/seed/lab-tech/100/100",
@@ -191,7 +203,53 @@
   "counselor-avatar": {
     "src": "https://picsum.photos/seed/counselor/300/200",
     "hint": "counselor portrait"
+  },
+  "provider-hero": {
+    "src": "https://picsum.photos/seed/provider-hero/800/600",
+    "hint": "doctors team"
+  },
+  "provider-doctor": {
+    "src": "https://picsum.photos/seed/provider-doctor/400/300",
+    "hint": "doctor smiling"
+  },
+  "provider-pharmacy": {
+    "src": "https://picsum.photos/seed/provider-pharmacy/400/300",
+    "hint": "pharmacy interior"
+  },
+  "provider-lab": {
+    "src": "https://picsum.photos/seed/provider-lab/400/300",
+    "hint": "lab equipment"
+  },
+  "provider-ambulance": {
+    "src": "https://picsum.photos/seed/provider-ambulance/400/300",
+    "hint": "ambulance van"
+  },
+  "hospital-admin-avatar": {
+    "src": "https://picsum.photos/seed/hospital-admin/100/100",
+    "hint": "professional person"
+  },
+  "wellness-expert-avatar": {
+    "src": "https://picsum.photos/seed/wellness-expert/100/100",
+    "hint": "friendly person"
+  },
+  "client-avatar-1": {
+    "src": "https://picsum.photos/seed/client1/100/100",
+    "hint": "woman portrait"
+  },
+  "client-avatar-2": {
+    "src": "https://picsum.photos/seed/client2/100/100",
+    "hint": "man portrait"
+  },
+  "promo-1": {
+    "src": "https://picsum.photos/seed/promo1/1200/500",
+    "hint": "eye checkup"
+  },
+  "promo-2": {
+    "src": "https://picsum.photos/seed/promo2/1200/500",
+    "hint": "health checkup"
+  },
+  "promo-3": {
+    "src": "https://picsum.photos/seed/promo3/1200/500",
+    "hint": "medicine discount"
   }
 }
-
-    
