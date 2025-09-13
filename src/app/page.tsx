@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Search, Calendar, MessageSquare, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Leaf, Users, ShieldCheck, Dumbbell, Hospital, Ambulance, Pill, TestTube2, ArrowRight, Twitter, Facebook, Instagram } from 'lucide-react';
+import { Search, Calendar, MessageSquare, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Leaf, Users, ShieldCheck, Dumbbell, Hospital, Ambulance, Pill, TestTube2, ArrowRight, Twitter, Facebook, Instagram, HeartHandshake, ShieldPlus } from 'lucide-react';
 import Image from 'next/image';
 import { AppLogo } from '@/components/icons';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
@@ -156,7 +156,7 @@ export default function LandingPage() {
               <h2 className="text-3xl font-bold tracking-tighter text-gray-800">Explore Our Core Services</h2>
               <p className="mt-2 text-gray-500">Comprehensive healthcare at your fingertips.</p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-6 max-w-7xl mx-auto">
               <Link href="/find-a-doctor" className="flex">
                 <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-shadow w-full">
                   <Stethoscope className="w-12 h-12 text-primary mb-4" />
@@ -190,6 +190,20 @@ export default function LandingPage() {
                   <Ambulance className="w-12 h-12 text-destructive mb-4" />
                   <h3 className="text-xl font-bold text-gray-800">Book an Ambulance</h3>
                   <p className="text-gray-500 mt-2 text-sm">Get immediate emergency assistance.</p>
+                </Card>
+              </Link>
+               <Link href="/health-loan" className="flex">
+                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-shadow w-full">
+                  <HeartHandshake className="w-12 h-12 text-primary mb-4" />
+                  <h3 className="text-xl font-bold text-gray-800">Get Health Loan</h3>
+                  <p className="text-gray-500 mt-2 text-sm">Instant loans for medical expenses.</p>
+                </Card>
+              </Link>
+               <Link href="/rams-health-card" className="flex">
+                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-shadow w-full">
+                  <ShieldPlus className="w-12 h-12 text-primary mb-4" />
+                  <h3 className="text-xl font-bold text-gray-800">Health Card</h3>
+                  <p className="text-gray-500 mt-2 text-sm">Get health insurance coverage.</p>
                 </Card>
               </Link>
             </div>
