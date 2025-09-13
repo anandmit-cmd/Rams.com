@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Calendar, Stethoscope, FileText, Wallet, Bell, LogOut, LayoutGrid, HeartPulse, ShieldCheck, Dumbbell, Star, MessageSquare, Leaf, Users, Download, Upload } from 'lucide-react';
+import { Calendar, Stethoscope, FileText, Wallet, Bell, LogOut, LayoutGrid, HeartPulse, ShieldPlus, HeartHandshake, Star, MessageSquare, Leaf, Users, Download, Upload } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { useState } from 'react';
@@ -235,7 +235,7 @@ export default function PatientDashboard() {
 
 
             <div className="mt-8">
-                <h2 className="text-xl font-semibold mb-4">Explore Wellness</h2>
+                <h2 className="text-xl font-semibold mb-4">Explore More Services</h2>
                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <Link href="/" className="block hover:shadow-lg transition-shadow rounded-lg">
                         <Card className="text-center h-full">
@@ -253,19 +253,19 @@ export default function PatientDashboard() {
                             </CardContent>
                         </Card>
                     </Link>
-                    <Link href="/find-a-doctor" className="block hover:shadow-lg transition-shadow rounded-lg">
+                    <Link href="/health-loan" className="block hover:shadow-lg transition-shadow rounded-lg">
                         <Card className="text-center h-full">
                             <CardContent className="p-6 flex flex-col items-center justify-center">
-                                <Stethoscope className="w-10 h-10 text-primary mx-auto mb-2"/>
-                                <h3 className="font-semibold">Find a New Doctor</h3>
+                                <HeartHandshake className="w-10 h-10 text-primary mx-auto mb-2"/>
+                                <h3 className="font-semibold">Get a Health Loan</h3>
                             </CardContent>
                         </Card>
                     </Link>
-                     <Link href="#" className="block hover:shadow-lg transition-shadow rounded-lg">
+                     <Link href="/rams-health-card" className="block hover:shadow-lg transition-shadow rounded-lg">
                          <Card className="text-center h-full">
                             <CardContent className="p-6 flex flex-col items-center justify-center">
-                                <ShieldCheck className="w-10 h-10 text-primary mx-auto mb-2"/>
-                                <h3 className="font-semibold">Health Insurance</h3>
+                                <ShieldPlus className="w-10 h-10 text-primary mx-auto mb-2"/>
+                                <h3 className="font-semibold">RAMS Health Card</h3>
                             </CardContent>
                         </Card>
                     </Link>
@@ -276,7 +276,3 @@ export default function PatientDashboard() {
     </div>
   );
 }
-
-    
-    
-    

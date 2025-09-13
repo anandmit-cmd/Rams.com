@@ -255,5 +255,13 @@
   "counselor-avatar": {
     "src": "https://picsum.photos/seed/counselor/300/200",
     "hint": "counselor portrait"
+  },
+  "health-loan-hero": {
+    "src": "https://picsum.photos/seed/loan-hero/800/600",
+    "hint": "financial support"
+  },
+  "health-card-hero": {
+    "src": "https://picsum.photos/seed/card-hero/800/600",
+    "hint": "health card"
   }
 }
