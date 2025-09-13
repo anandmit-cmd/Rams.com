@@ -133,24 +133,12 @@
     "hint": "city map"
   },
   "doctor-avatar": {
-    "src": "https://picsum.photos/seed/doctor-avatar/100/100",
+    "src": "https://picsum.photos/seed/doctor/100/100",
     "hint": "doctor portrait"
   },
-  "patient-avatar-0": {
-    "src": "https://picsum.photos/seed/patient-0/100/100",
-    "hint": "patient portrait"
-  },
-  "patient-avatar-1": {
-    "src": "https://picsum.photos/seed/patient-1/100/100",
-    "hint": "patient portrait"
-  },
-  "patient-avatar-2": {
-    "src": "https://picsum.photos/seed/patient-2/100/100",
-    "hint": "patient portrait"
-  },
-  "patient-avatar-3": {
-    "src": "https://picsum.photos/seed/patient-3/100/100",
-    "hint": "patient portrait"
+  "patient-avatar": {
+    "src": "https://picsum.photos/seed/patient/100/100",
+    "hint": "person portrait"
   },
   "lab-tech-avatar": {
     "src": "https://picsum.photos/seed/lab-tech/100/100",
@@ -159,70 +147,6 @@
   "pharmacist-avatar": {
     "src": "https://picsum.photos/seed/pharmacist/100/100",
     "hint": "pharmacist portrait"
-  },
-  "hospital-admin-avatar": {
-    "src": "https://picsum.photos/seed/h-admin/100/100",
-    "hint": "admin portrait"
-  },
-  "patient-user-avatar": {
-    "src": "https://picsum.photos/seed/user/100/100",
-    "hint": "person portrait"
-  },
-  "promo-1": {
-    "src": "https://picsum.photos/seed/promo1/1200/600",
-    "hint": "eye checkup clinic"
-  },
-  "promo-2": {
-    "src": "https://picsum.photos/seed/promo2/1200/600",
-    "hint": "lab test promotion"
-  },
-  "promo-3": {
-    "src": "https://picsum.photos/seed/promo3/1200/600",
-    "hint": "pharmacy offer discount"
-  },
-  "wellness-expert-avatar": {
-    "src": "https://picsum.photos/seed/wellness-expert/100/100",
-    "hint": "expert portrait"
-  },
-  "client-avatar-1": {
-    "src": "https://picsum.photos/seed/client1/100/100",
-    "hint": "person smiling"
-  },
-  "client-avatar-2": {
-    "src": "https://picsum.photos/seed/client2/100/100",
-    "hint": "woman portrait"
-  },
-  "provider-hero": {
-    "src": "https://picsum.photos/seed/provider-hero/800/600",
-    "hint": "doctor team smiling"
-  },
-  "provider-doctor": {
-    "src": "https://picsum.photos/seed/provider-doc/400/300",
-    "hint": "doctor laptop"
-  },
-  "provider-pharmacy": {
-    "src": "https://picsum.photos/seed/provider-pharm/400/300",
-    "hint": "pharmacist counter"
-  },
-  "provider-lab": {
-    "src": "https://picsum.photos/seed/provider-lab/400/300",
-    "hint": "lab technician"
-  },
-  "provider-ambulance": {
-    "src": "https://picsum.photos/seed/provider-amb/400/300",
-    "hint": "ambulance vehicle"
-  },
-  "yoga-instructor-avatar": {
-    "src": "https://picsum.photos/seed/yoga-instructor/300/200",
-    "hint": "yoga instructor"
-  },
-  "fitness-coach-avatar": {
-    "src": "https://picsum.photos/seed/fitness-coach/300/200",
-    "hint": "fitness coach"
-  },
-  "counselor-avatar": {
-    "src": "https://picsum.photos/seed/counselor/300/200",
-    "hint": "counselor portrait"
   },
   "hospital-gallery-1": {
     "src": "https://picsum.photos/seed/apollo-gallery1/1200/800",
@@ -251,5 +175,23 @@
   "doctor-avatar-3": {
     "src": "https://picsum.photos/seed/doc3/100/100",
     "hint": "female doctor"
+  },
+  "patient-user-avatar": {
+    "src": "https://picsum.photos/seed/user/100/100",
+    "hint": "person portrait"
+  },
+  "yoga-instructor-avatar": {
+    "src": "https://picsum.photos/seed/yoga-instructor/300/200",
+    "hint": "yoga instructor"
+  },
+  "fitness-coach-avatar": {
+    "src": "https://picsum.photos/seed/fitness-coach/300/200",
+    "hint": "fitness coach"
+  },
+  "counselor-avatar": {
+    "src": "https://picsum.photos/seed/counselor/300/200",
+    "hint": "counselor portrait"
   }
 }
+
+    
