@@ -174,7 +174,7 @@ export default function FindDoctorPage() {
                     {doctors.map((doctor, index) => (
                         <Card key={index} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow">
                             <div className="relative h-52">
-                                <Image src={doctor.image.src} alt={`Photo of ${doctor.name}`} fill style={{ objectFit: 'cover' }} data-ai-hint={doctor.image.hint} />
+                                <Image src={doctor.image.src} alt={`Photo of ${'doctor.name'}`} fill style={{ objectFit: 'cover' }} data-ai-hint={doctor.image.hint} />
                                  {doctor.rank && <RankBadge rank={doctor.rank as 'gold' | 'silver' | 'bronze'} className="absolute top-2 right-2"/>}
                             </div>
                             <CardContent className="p-4">
@@ -282,5 +282,3 @@ export default function FindDoctorPage() {
     </div>
   );
 }
-
-    
