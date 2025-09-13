@@ -160,49 +160,13 @@
     "src": "https://picsum.photos/seed/pharmacist/100/100",
     "hint": "pharmacist portrait"
   },
-  "hospital-gallery-1": {
-    "src": "https://picsum.photos/seed/apollo-gallery1/1200/800",
-    "hint": "hospital building exterior"
-  },
-  "hospital-gallery-2": {
-    "src": "https://picsum.photos/seed/apollo-gallery2/1200/800",
-    "hint": "hospital lobby interior"
-  },
-  "hospital-gallery-3": {
-    "src": "https://picsum.photos/seed/apollo-gallery3/1200/800",
-    "hint": "patient room clean"
-  },
-  "hospital-gallery-4": {
-    "src": "https://picsum.photos/seed/apollo-gallery4/1200/800",
-    "hint": "advanced medical equipment"
-  },
-  "doctor-avatar-1": {
-    "src": "https://picsum.photos/seed/doc1/100/100",
-    "hint": "doctor portrait"
-  },
-  "doctor-avatar-2": {
-    "src": "https://picsum.photos/seed/doc2/100/100",
-    "hint": "doctor smiling"
-  },
-  "doctor-avatar-3": {
-    "src": "https://picsum.photos/seed/doc3/100/100",
-    "hint": "female doctor"
+  "hospital-admin-avatar": {
+    "src": "https://picsum.photos/seed/h-admin/100/100",
+    "hint": "admin portrait"
   },
   "patient-user-avatar": {
     "src": "https://picsum.photos/seed/user/100/100",
     "hint": "person portrait"
-  },
-  "yoga-instructor-avatar": {
-    "src": "https://picsum.photos/seed/yoga-instructor/300/200",
-    "hint": "yoga instructor"
-  },
-  "fitness-coach-avatar": {
-    "src": "https://picsum.photos/seed/fitness-coach/300/200",
-    "hint": "fitness coach"
-  },
-  "counselor-avatar": {
-    "src": "https://picsum.photos/seed/counselor/300/200",
-    "hint": "counselor portrait"
   },
   "promo-1": {
     "src": "https://picsum.photos/seed/promo1/1200/600",
@@ -248,8 +212,44 @@
     "src": "https://picsum.photos/seed/provider-amb/400/300",
     "hint": "ambulance vehicle"
   },
-  "hospital-admin-avatar": {
-    "src": "https://picsum.photos/seed/h-admin/100/100",
-    "hint": "admin portrait"
+  "yoga-instructor-avatar": {
+    "src": "https://picsum.photos/seed/yoga-instructor/300/200",
+    "hint": "yoga instructor"
+  },
+  "fitness-coach-avatar": {
+    "src": "https://picsum.photos/seed/fitness-coach/300/200",
+    "hint": "fitness coach"
+  },
+  "counselor-avatar": {
+    "src": "https://picsum.photos/seed/counselor/300/200",
+    "hint": "counselor portrait"
+  },
+  "hospital-gallery-1": {
+    "src": "https://picsum.photos/seed/apollo-gallery1/1200/800",
+    "hint": "hospital building exterior"
+  },
+  "hospital-gallery-2": {
+    "src": "https://picsum.photos/seed/apollo-gallery2/1200/800",
+    "hint": "hospital lobby interior"
+  },
+  "hospital-gallery-3": {
+    "src": "https://picsum.photos/seed/apollo-gallery3/1200/800",
+    "hint": "patient room clean"
+  },
+  "hospital-gallery-4": {
+    "src": "https://picsum.photos/seed/apollo-gallery4/1200/800",
+    "hint": "advanced medical equipment"
+  },
+  "doctor-avatar-1": {
+    "src": "https://picsum.photos/seed/doc1/100/100",
+    "hint": "doctor portrait"
+  },
+  "doctor-avatar-2": {
+    "src": "https://picsum.photos/seed/doc2/100/100",
+    "hint": "doctor smiling"
+  },
+  "doctor-avatar-3": {
+    "src": "https://picsum.photos/seed/doc3/100/100",
+    "hint": "female doctor"
   }
 }
