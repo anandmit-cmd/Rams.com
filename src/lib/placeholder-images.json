@@ -152,6 +152,18 @@
     "src": "https://picsum.photos/seed/patient3/100/100",
     "hint": "man portrait"
   },
+  "client-avatar-1": {
+    "src": "https://picsum.photos/seed/client1/100/100",
+    "hint": "woman smiling"
+  },
+  "client-avatar-2": {
+    "src": "https://picsum.photos/seed/client2/100/100",
+    "hint": "man outdoor"
+  },
+  "wellness-expert-avatar": {
+    "src": "https://picsum.photos/seed/expert/100/100",
+    "hint": "professional person"
+  },
   "lab-tech-avatar": {
     "src": "https://picsum.photos/seed/lab-tech/100/100",
     "hint": "technician portrait"
@@ -251,5 +263,9 @@
   "health-card-hero": {
     "src": "https://picsum.photos/seed/card-hero/800/600",
     "hint": "health card"
+  },
+  "contact-hero": {
+    "src": "https://picsum.photos/seed/contact-hero/1200/400",
+    "hint": "customer support"
   }
 }

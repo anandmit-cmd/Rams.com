@@ -55,3 +55,51 @@ export async function handleSearch(
     };
   }
 }
+
+
+const contactSchema = z.object({
+  name: z.string().min(2, 'Name is required.'),
+  email: z.string().email('Invalid email address.'),
+  subject: z.string().min(3, 'Subject is required.'),
+  message: z.string().min(10, 'Message must be at least 10 characters long.'),
+});
+
+export type ContactState = {
+  message: string;
+  errors?: {
+    name?: string[];
+    email?: string[];
+    subject?: string[];
+    message?: string[];
+  };
+  isSuccess: boolean;
+};
+
+
+export async function handleContactUs(
+  prevState: ContactState,
+  formData: FormData
+): Promise<ContactState> {
+  const validatedFields = contactSchema.safeParse({
+    name: formData.get('name'),
+    email: formData.get('email'),
+    subject: formData.get('subject'),
+    message: formData.get('message'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      message: 'Invalid form data.',
+      errors: validatedFields.error.flatten().fieldErrors,
+      isSuccess: false,
+    };
+  }
+  
+  // Simulate sending the message
+  console.log('Contact form submitted:', validatedFields.data);
+
+  return {
+    message: 'Your message has been sent successfully! We will get back to you soon.',
+    isSuccess: true,
+  };
+}
