@@ -12,12 +12,22 @@ import { useState } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import placeholderImages from '@/lib/placeholder-images.json';
 import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
 
 export default function PatientDashboard() {
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
+  const { toast } = useToast();
   const ratingLabels = ["Very Poor", "Poor", "Fair", "Good", "Excellent"];
   const userAvatar = placeholderImages['patient-user-avatar'];
+
+  const handleFeedbackSubmit = () => {
+    toast({
+        title: "Feedback Submitted!",
+        description: "Thank you for sharing your experience.",
+    });
+    setRating(0);
+  };
 
   return (
     <div className="flex min-h-screen bg-secondary">
@@ -183,7 +193,7 @@ export default function PatientDashboard() {
                                         </div>
                                         <DialogFooter>
                                             <DialogClose asChild>
-                                                <Button type="submit">Submit Feedback</Button>
+                                                <Button type="submit" onClick={handleFeedbackSubmit}>Submit Feedback</Button>
                                             </DialogClose>
                                         </DialogFooter>
                                     </DialogContent>
@@ -276,3 +286,5 @@ export default function PatientDashboard() {
     </div>
   );
 }
+
+    
