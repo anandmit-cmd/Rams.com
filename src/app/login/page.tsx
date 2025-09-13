@@ -13,11 +13,24 @@ import { AppLogo } from '@/components/icons';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import React from 'react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address."),
   password: z.string().min(1, "Password is required."),
+  role: z.string().min(1, "Please select a role."),
 });
+
+const roleDashboards: Record<string, string> = {
+    patient: '/dashboard/patient',
+    doctor: '/dashboard/doctor',
+    hospital: '/dashboard/hospital',
+    pharmacy: '/dashboard/pharmacy',
+    lab: '/dashboard/lab',
+    ambulance: '/dashboard/ambulance',
+    wellness: '/dashboard/wellness'
+};
+
 
 function LoginPage() {
   const router = useRouter();
@@ -28,18 +41,18 @@ function LoginPage() {
     defaultValues: {
       email: "",
       password: "",
+      role: "patient",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("Login submitted", values);
-    // This is a temporary login handler
-    // It will redirect to the patient dashboard for any credentials
     toast({
       title: "Login Successful",
       description: "Redirecting to your dashboard...",
     });
-    router.push('/dashboard/patient');
+    const dashboardUrl = roleDashboards[values.role] || '/';
+    router.push(dashboardUrl);
   }
 
   return (
@@ -63,6 +76,32 @@ function LoginPage() {
             <CardContent>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <FormField
+                        control={form.control}
+                        name="role"
+                        render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Login as</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select a role to login as" />
+                                    </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                    <SelectItem value="patient">Patient</SelectItem>
+                                    <SelectItem value="doctor">Doctor</SelectItem>
+                                    <SelectItem value="hospital">Hospital</SelectItem>
+                                    <SelectItem value="pharmacy">Pharmacy</SelectItem>
+                                    <SelectItem value="lab">Lab / Diagnostics</SelectItem>
+                                    <SelectItem value="ambulance">Ambulance Service</SelectItem>
+                                    <SelectItem value="wellness">Wellness Expert</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <FormMessage />
+                        </FormItem>
+                        )}
+                    />
                   <FormField
                     control={form.control}
                     name="email"
