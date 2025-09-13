@@ -14,11 +14,20 @@ import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
-import { useState } from 'react';
+import { useState }from 'react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import placeholderImages from '@/lib/placeholder-images.json';
+import { useToast } from '@/hooks/use-toast';
 
-const inventory = [
+type Medicine = {
+    id: string;
+    name: string;
+    price: number;
+    stock: number;
+    expiry: string;
+};
+
+const initialInventory: Medicine[] = [
   { id: 'MED-001', name: 'Paracetamol 500mg', price: 25.50, stock: 120, expiry: '2025-12-31' },
   { id: 'MED-002', name: 'Aspirin 75mg', price: 15.00, stock: 80, expiry: '2026-06-30' },
   { id: 'MED-003', name: 'Amoxicillin 250mg', price: 75.00, stock: 50, expiry: '2025-08-15' },
@@ -26,8 +35,50 @@ const inventory = [
 ];
 
 export default function InventoryPage() {
-  const [date, setDate] = useState<Date | undefined>();
-  const pharmacistAvatar = placeholderImages['pharmacist-avatar'];
+    const [inventory, setInventory] = useState<Medicine[]>(initialInventory);
+    const [newMedName, setNewMedName] = useState('');
+    const [newMedPrice, setNewMedPrice] = useState('');
+    const [newMedStock, setNewMedStock] = useState('');
+    const [newMedExpiry, setNewMedExpiry] = useState<Date | undefined>();
+    const { toast } = useToast();
+
+    const pharmacistAvatar = placeholderImages['pharmacist-avatar'];
+
+    const handleAddMedicine = () => {
+        if (!newMedName || !newMedPrice || !newMedStock || !newMedExpiry) {
+            toast({
+                title: 'Error',
+                description: 'Please fill all the fields to add a new medicine.',
+                variant: 'destructive',
+            });
+            return;
+        }
+        const newMedicine: Medicine = {
+            id: `MED-${String(inventory.length + 1).padStart(3, '0')}`,
+            name: newMedName,
+            price: parseFloat(newMedPrice),
+            stock: parseInt(newMedStock),
+            expiry: format(newMedExpiry, 'yyyy-MM-dd'),
+        };
+        setInventory([...inventory, newMedicine]);
+        // Reset form
+        setNewMedName('');
+        setNewMedPrice('');
+        setNewMedStock('');
+        setNewMedExpiry(undefined);
+        toast({
+            title: 'Success!',
+            description: `${newMedicine.name} has been added to the inventory.`,
+        });
+    };
+    
+    const handleDeleteMedicine = (id: string) => {
+        setInventory(inventory.filter(med => med.id !== id));
+        toast({
+            title: 'Medicine Removed',
+            description: 'The selected medicine has been removed from the inventory.',
+        });
+    };
 
   return (
     <div className="flex min-h-screen bg-secondary">
@@ -100,15 +151,15 @@ export default function InventoryPage() {
                             <div className="grid gap-4 py-4">
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label htmlFor="name" className="text-right">Name</Label>
-                                    <Input id="name" placeholder="e.g., Paracetamol 500mg" className="col-span-3" />
+                                    <Input id="name" placeholder="e.g., Paracetamol 500mg" className="col-span-3" value={newMedName} onChange={(e) => setNewMedName(e.target.value)} />
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label htmlFor="price" className="text-right">Price (₹)</Label>
-                                    <Input id="price" type="number" placeholder="25.50" className="col-span-3" />
+                                    <Input id="price" type="number" placeholder="25.50" className="col-span-3" value={newMedPrice} onChange={(e) => setNewMedPrice(e.target.value)} />
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label htmlFor="stock" className="text-right">Stock</Label>
-                                    <Input id="stock" type="number" placeholder="100" className="col-span-3" />
+                                    <Input id="stock" type="number" placeholder="100" className="col-span-3" value={newMedStock} onChange={(e) => setNewMedStock(e.target.value)} />
                                 </div>
                                  <div className="grid grid-cols-4 items-center gap-4">
                                     <Label className="text-right">Expiry Date</Label>
@@ -116,18 +167,18 @@ export default function InventoryPage() {
                                         <PopoverTrigger asChild>
                                             <Button variant="outline" className="col-span-3 justify-start font-normal">
                                                 <CalendarIcon className="mr-2 h-4 w-4" />
-                                                {date ? format(date, 'PPP') : <span>Pick a date</span>}
+                                                {newMedExpiry ? format(newMedExpiry, 'PPP') : <span>Pick a date</span>}
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
-                                            <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+                                            <Calendar mode="single" selected={newMedExpiry} onSelect={setNewMedExpiry} initialFocus />
                                         </PopoverContent>
                                     </Popover>
                                 </div>
                             </div>
                             <DialogFooter>
                                 <DialogClose asChild>
-                                    <Button type="submit">Add Medicine</Button>
+                                    <Button type="submit" onClick={handleAddMedicine}>Add Medicine</Button>
                                 </DialogClose>
                             </DialogFooter>
                         </DialogContent>
@@ -166,7 +217,7 @@ export default function InventoryPage() {
                                                     <Pencil className="mr-2 h-4 w-4" />
                                                     Edit
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem className="text-red-600">
+                                                <DropdownMenuItem className="text-red-600 focus:bg-red-50 focus:text-red-600" onClick={() => handleDeleteMedicine(med.id)}>
                                                      <Trash2 className="mr-2 h-4 w-4" />
                                                     Delete
                                                 </DropdownMenuItem>
