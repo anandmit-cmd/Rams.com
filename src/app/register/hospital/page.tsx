@@ -62,15 +62,11 @@ function HospitalRegisterPage() {
         <div className="container mx-auto px-4 md:px-6">
           <Card className="max-w-xl mx-auto">
             <CardHeader>
-              <Button asChild variant="ghost" className="absolute top-6 left-6 h-auto p-1">
-                <Link href="/register">
-                  <span className="flex items-center text-sm">
+                <Link href="/register" className="flex items-center text-sm text-primary mb-4 hover:underline">
                     <ArrowLeft className="w-4 h-4 mr-2" />
-                    Back
-                  </span>
+                    Back to registration options
                 </Link>
-              </Button>
-              <CardTitle className="text-2xl font-bold text-center pt-8">Hospital Registration</CardTitle>
+              <CardTitle className="text-2xl font-bold text-center">Hospital Registration</CardTitle>
               <CardDescription className="text-center">Join our network to manage your hospital services.</CardDescription>
             </CardHeader>
             <CardContent>
