@@ -37,6 +37,10 @@ const allUsers = [
     { id: 2, name: 'Dr. Vikram Singh', role: 'Doctor', registered: '2024-07-18', avatar: placeholderImages['doctor-avatar'] },
     { id: 3, name: 'Apollo Hospital', role: 'Hospital', registered: '2024-07-15', avatar: placeholderImages['hospital-1'] },
     { id: 4, name: 'City Medicals', role: 'Pharmacy', registered: '2024-07-12', avatar: placeholderImages['pharmacy-1'] },
+    { id: 5, name: 'Metropolis Lab', role: 'Lab', registered: '2024-07-11', avatar: placeholderImages['lab-tech-avatar'] },
+    { id: 6, name: 'Ramesh Kumar', role: 'Ambulance', registered: '2024-07-10', avatar: placeholderImages['ambulance-driver-avatar'] },
+    { id: 7, name: 'Aarav Sharma', role: 'Wellness Expert', registered: '2024-07-09', avatar: placeholderImages['wellness-expert-avatar'] },
+    { id: 8, name: 'Anand Mishra', role: 'Admin', registered: '2024-07-01', avatar: placeholderImages['admin-avatar'] },
 ]
 
 export default function AdminDashboard() {
@@ -224,3 +228,5 @@ export default function AdminDashboard() {
     </div>
   );
 }
+
+    
