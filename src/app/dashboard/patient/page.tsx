@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Calendar, Stethoscope, FileText, Wallet, Bell, LogOut, LayoutGrid, HeartPulse, ShieldPlus, HeartHandshake, Star, MessageSquare, Leaf, Users, Download, Upload, Camera } from 'lucide-react';
+import { Calendar, Stethoscope, FileText, Wallet, Bell, LogOut, LayoutGrid, HeartPulse, ShieldPlus, HeartHandshake, Star, MessageSquare, Leaf, Users, Download, Upload, Camera, Loader2 } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { useState, useEffect, useRef } from 'react';
@@ -15,8 +15,17 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { auth, db } from '@/lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
+import { doc, onSnapshot, updateDoc, collection, query, where, getDocs, DocumentData } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
+interface Appointment {
+    id: string;
+    doctorName: string;
+    date: string;
+    time: string;
+    type: string;
+    status: 'Confirmed' | 'Completed' | 'Cancelled';
+}
 
 export default function PatientDashboard() {
   const [rating, setRating] = useState(0);
@@ -29,6 +38,8 @@ export default function PatientDashboard() {
   const [userData, setUserData] = useState<any>(null);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
@@ -39,6 +50,7 @@ export default function PatientDashboard() {
 
   useEffect(() => {
     if (currentUser) {
+      setLoading(true);
       const unsubDoc = onSnapshot(doc(db, "users", currentUser.uid), (doc) => {
         if (doc.exists()) {
           setUserData(doc.data());
@@ -46,7 +58,20 @@ export default function PatientDashboard() {
           console.log("No such document!");
         }
       });
-      return () => unsubDoc();
+      
+      const q = query(collection(db, "appointments"), where("patientId", "==", currentUser.uid));
+      const unsubAppointments = onSnapshot(q, (snapshot) => {
+        const appsData: Appointment[] = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()} as Appointment));
+        setAppointments(appsData);
+        setLoading(false);
+      });
+
+      return () => {
+          unsubDoc();
+          unsubAppointments();
+      };
+    } else {
+      setLoading(false);
     }
   }, [currentUser]);
 
@@ -107,6 +132,7 @@ export default function PatientDashboard() {
 
   const userAvatarSrc = userData?.avatar || defaultUserAvatar.src;
   const userAvatarHint = userData?.avatar ? "user profile picture" : defaultUserAvatar.hint;
+  const upcomingAppointment = appointments.find(a => a.status === 'Confirmed');
 
   return (
     <div className="flex min-h-screen bg-secondary">
@@ -178,12 +204,21 @@ export default function PatientDashboard() {
         </header>
 
         <main className="flex-1 p-6">
+           {loading ? (
+             <Card className="mb-8 bg-gradient-to-r from-primary/10 to-accent/10">
+                <CardHeader>
+                    <CardTitle>Loading your dashboard...</CardTitle>
+                    <CardDescription>Please wait a moment.</CardDescription>
+                </CardHeader>
+            </Card>
+           ) : (
             <Card className="mb-8 bg-gradient-to-r from-primary/10 to-accent/10">
                 <CardHeader>
                     <CardTitle>Welcome back, {userData?.fullName || 'Guest'}!</CardTitle>
                     <CardDescription>Here's a quick overview of your health dashboard.</CardDescription>
                 </CardHeader>
             </Card>
+           )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <Card>
@@ -192,9 +227,15 @@ export default function PatientDashboard() {
                         <Calendar className="w-4 h-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <p className="text-lg font-bold">Dr. Anjali Sharma</p>
-                        <p className="text-sm text-muted-foreground">Cardiologist</p>
-                        <p className="text-sm font-semibold mt-2">Tomorrow at 10:30 AM</p>
+                       {loading ? <Loader2 className='animate-spin' /> : upcomingAppointment ? (
+                            <>
+                                <p className="text-lg font-bold">{upcomingAppointment.doctorName}</p>
+                                <p className="text-sm text-muted-foreground">{new Date(upcomingAppointment.date).toLocaleDateString()}</p>
+                                <p className="text-sm font-semibold mt-2">{upcomingAppointment.time}</p>
+                            </>
+                        ) : (
+                            <p className="text-sm text-muted-foreground">No upcoming appointments.</p>
+                        )}
                          <Button className="mt-4 w-full" variant="outline">View Appointments</Button>
                     </CardContent>
                 </Card>
@@ -204,6 +245,7 @@ export default function PatientDashboard() {
                         <FileText className="w-4 h-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
+                        {loading ? <Loader2 className='animate-spin' /> : (
                        <div className="space-y-2">
                           <div className="flex items-center justify-between p-2 rounded-lg bg-gray-50 border">
                             <p className="text-sm font-medium">Blood Test Report (10th July)</p>
@@ -214,6 +256,7 @@ export default function PatientDashboard() {
                             <Button variant="ghost" size="icon" className="h-8 w-8"><Download className="h-4 w-4" /></Button>
                           </div>
                        </div>
+                        )}
                          <Button className="mt-4 w-full" variant="outline">View All Records</Button>
                     </CardContent>
                 </Card>
@@ -224,7 +267,7 @@ export default function PatientDashboard() {
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">₹1,250.00</div>
-                        <p className="text-xs text-muted-foreground">Due for recent consultation with Dr. Sharma.</p>
+                        <p className="text-xs text-muted-foreground">Due for recent consultation.</p>
                         <Button className="mt-4 w-full bg-accent hover:bg-accent/90">Pay Now</Button>
                     </CardContent>
                 </Card>
