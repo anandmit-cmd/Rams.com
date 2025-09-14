@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, Star, MapPin, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Twitter, Facebook, Instagram, BadgeIndianRupee } from 'lucide-react';
+import { Search, Star, MapPin, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Twitter, Facebook, Instagram, BadgeIndianRupee, Award } from 'lucide-react';
 import Image from 'next/image';
 import { AppLogo } from '@/components/icons';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
@@ -14,75 +14,22 @@ import { Globe } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { RankBadge } from '@/components/rank-badge';
 import placeholderImages from '@/lib/placeholder-images.json';
+import { db } from '@/lib/firebase';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 
-const doctors = [
-  {
-    name: 'Dr. Anjali Sharma',
-    specialty: 'Cardiologist',
-    location: 'Mumbai, IN',
-    rating: 4.8,
-    reviews: 120,
-    availability: 'Online',
-    image: placeholderImages['doctor-1'],
-    rank: 'gold',
-    consultationFee: 1500,
-  },
-  {
-    name: 'Dr. Vikram Singh',
-    specialty: 'Neurologist',
-    location: 'Delhi, IN',
-    rating: 4.9,
-    reviews: 98,
-    availability: 'In-Clinic',
-    image: placeholderImages['doctor-2'],
-    rank: 'gold',
-    consultationFee: 1800,
-  },
-  {
-    name: 'Dr. Priya Patel',
-    specialty: 'Orthopedic Surgeon',
-    location: 'Bangalore, IN',
-    rating: 4.7,
-    reviews: 210,
-    availability: 'Online',
-    image: placeholderImages['doctor-3'],
-    rank: 'silver',
-    consultationFee: 1200,
-  },
-   {
-    name: 'Dr. Rohan Mehra',
-    specialty: 'Pediatrician',
-    location: 'Chennai, IN',
-    rating: 4.9,
-    reviews: 150,
-    availability: 'In-Clinic',
-    image: placeholderImages['doctor-4'],
-    rank: 'silver',
-    consultationFee: 800,
-  },
-  {
-    name: 'Dr. Sunita Desai',
-    specialty: 'Ophthalmologist',
-    location: 'Pune, IN',
-    rating: 4.8,
-    reviews: 85,
-    availability: 'Online',
-    image: placeholderImages['doctor-5'],
-    rank: 'bronze',
-    consultationFee: 1000,
-  },
-  {
-    name: 'Dr. Sameer Joshi',
-    specialty: 'General Medicine',
-    location: 'Hyderabad, IN',
-    rating: 4.6,
-    reviews: 300,
-    availability: 'In-Clinic',
-    image: placeholderImages['doctor-6'],
-    rank: 'bronze',
-    consultationFee: 750,
-  },
-];
+type Doctor = {
+    id: string;
+    fullName: string;
+    specialty: string;
+    location: string;
+    rating: number;
+    reviews: number;
+    availability: string;
+    image: { src: string; hint: string; };
+    rank: 'gold' | 'silver' | 'bronze';
+    consultationFee: number;
+};
 
 
 const specialties = [
@@ -95,6 +42,45 @@ const specialties = [
 ];
 
 export default function FindDoctorPage() {
+    const [featuredDoctors, setFeaturedDoctors] = useState<Doctor[]>([]);
+    const [allDoctors, setAllDoctors] = useState<Doctor[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchDoctors = async () => {
+            setLoading(true);
+            try {
+                // Fetch featured (gold) doctors
+                const featuredQuery = query(collection(db, "users"), where("role", "==", "doctor"), where("rank", "==", "gold"));
+                const featuredSnapshot = await getDocs(featuredQuery);
+                const featuredData = featuredSnapshot.docs.map((doc, index) => ({
+                    id: doc.id,
+                    ...(doc.data() as any),
+                    // Assign placeholder image sequentially for demo
+                    image: placeholderImages[`doctor-${index + 1}` as keyof typeof placeholderImages] || placeholderImages['doctor-1'],
+                })) as Doctor[];
+                setFeaturedDoctors(featuredData);
+
+                // Fetch all doctors
+                const allQuery = query(collection(db, "users"), where("role", "==", "doctor"));
+                const allSnapshot = await getDocs(allQuery);
+                const allData = allSnapshot.docs.map((doc, index) => ({
+                    id: doc.id,
+                    ...(doc.data() as any),
+                     image: placeholderImages[`doctor-${index + 1}` as keyof typeof placeholderImages] || placeholderImages['doctor-1'],
+                })) as Doctor[];
+                setAllDoctors(allData);
+
+            } catch (error) {
+                console.error("Error fetching doctors:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchDoctors();
+    }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-secondary">
         <header className="container mx-auto px-4 md:px-6 py-4 flex items-center justify-between bg-white shadow-sm">
@@ -170,43 +156,103 @@ export default function FindDoctorPage() {
                     </div>
                 </Card>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {doctors.map((doctor, index) => (
-                        <Card key={index} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow">
-                            <div className="relative h-52">
-                                <Image src={doctor.image.src} alt={`Photo of ${'doctor.name'}`} fill style={{ objectFit: 'cover' }} data-ai-hint={doctor.image.hint} />
-                                 {doctor.rank && <RankBadge rank={doctor.rank as 'gold' | 'silver' | 'bronze'} className="absolute top-2 right-2"/>}
+                 {loading ? (
+                    <p>Loading doctors...</p>
+                 ) : (
+                    <>
+                        {featuredDoctors.length > 0 && (
+                            <section className="mb-16">
+                                <div className="text-center mb-8">
+                                    <h2 className="text-3xl font-bold tracking-tighter text-gray-800 flex items-center justify-center gap-3">
+                                        <Award className="w-8 h-8 text-yellow-500" />
+                                        Featured Doctors
+                                    </h2>
+                                    <p className="mt-2 text-gray-500">Our top-rated and most experienced specialists.</p>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                    {featuredDoctors.map((doctor) => (
+                                         <Card key={doctor.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow">
+                                            <div className="relative h-52">
+                                                <Image src={doctor.image.src} alt={`Photo of ${doctor.fullName}`} fill style={{ objectFit: 'cover' }} data-ai-hint={doctor.image.hint} />
+                                                 {doctor.rank && <RankBadge rank={doctor.rank} className="absolute top-2 right-2"/>}
+                                            </div>
+                                            <CardContent className="p-4">
+                                                <h3 className="font-bold text-xl text-gray-800">{doctor.fullName}</h3>
+                                                <p className="text-primary font-semibold">{doctor.specialty}</p>
+                                                <div className="flex items-center text-sm text-gray-500 my-2">
+                                                    <MapPin className="w-4 h-4 mr-1" />
+                                                    {doctor.location || 'Mumbai, IN'}
+                                                </div>
+                                                <div className="flex items-center gap-4 my-3">
+                                                    <div className="flex items-center gap-1">
+                                                        <Star className="w-5 h-5 text-yellow-400 fill-current" />
+                                                        <span className="font-bold">{doctor.rating || 4.8}</span>
+                                                        <span className="text-xs text-gray-500">({doctor.reviews || 100+}+ reviews)</span>
+                                                    </div>
+                                                    <Badge variant={doctor.availability === 'Online' ? 'default' : 'secondary'} className={`${doctor.availability === 'Online' ? 'bg-green-100 text-green-800' : ''}`}>
+                                                        {doctor.availability || 'Online'}
+                                                    </Badge>
+                                                </div>
+                                                 <div className="flex items-center justify-between mt-4 pt-4 border-t">
+                                                    <div className="flex items-center font-bold text-lg">
+                                                        <BadgeIndianRupee className="w-5 h-5 mr-1"/>
+                                                        {doctor.consultationFee || '1500'}
+                                                    </div>
+                                                    <Button asChild className="h-10">
+                                                        <Link href="/book-appointment">Book Appointment</Link>
+                                                    </Button>
+                                                </div>
+                                            </CardContent>
+                                        </Card>
+                                    ))}
+                                </div>
+                            </section>
+                        )}
+                        
+                        <section>
+                            <div className="text-center mb-8">
+                                <h2 className="text-3xl font-bold tracking-tighter text-gray-800">All Doctors</h2>
                             </div>
-                            <CardContent className="p-4">
-                                <h3 className="font-bold text-xl text-gray-800">{doctor.name}</h3>
-                                <p className="text-primary font-semibold">{doctor.specialty}</p>
-                                <div className="flex items-center text-sm text-gray-500 my-2">
-                                    <MapPin className="w-4 h-4 mr-1" />
-                                    {doctor.location}
-                                </div>
-                                <div className="flex items-center gap-4 my-3">
-                                    <div className="flex items-center gap-1">
-                                        <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                                        <span className="font-bold">{doctor.rating}</span>
-                                        <span className="text-xs text-gray-500">({doctor.reviews} reviews)</span>
-                                    </div>
-                                    <Badge variant={doctor.availability === 'Online' ? 'default' : 'secondary'} className={`${doctor.availability === 'Online' ? 'bg-green-100 text-green-800' : ''}`}>
-                                        {doctor.availability}
-                                    </Badge>
-                                </div>
-                                 <div className="flex items-center justify-between mt-4 pt-4 border-t">
-                                    <div className="flex items-center font-bold text-lg">
-                                        <BadgeIndianRupee className="w-5 h-5 mr-1"/>
-                                        {doctor.consultationFee}
-                                    </div>
-                                    <Button asChild className="h-10">
-                                        <Link href="/book-appointment">Book Appointment</Link>
-                                    </Button>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {allDoctors.map((doctor) => (
+                                     <Card key={doctor.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow">
+                                        <div className="relative h-52">
+                                            <Image src={doctor.image.src} alt={`Photo of ${doctor.fullName}`} fill style={{ objectFit: 'cover' }} data-ai-hint={doctor.image.hint} />
+                                             {doctor.rank && <RankBadge rank={doctor.rank} className="absolute top-2 right-2"/>}
+                                        </div>
+                                        <CardContent className="p-4">
+                                            <h3 className="font-bold text-xl text-gray-800">{doctor.fullName}</h3>
+                                            <p className="text-primary font-semibold">{doctor.specialty}</p>
+                                            <div className="flex items-center text-sm text-gray-500 my-2">
+                                                <MapPin className="w-4 h-4 mr-1" />
+                                                {doctor.location || 'Mumbai, IN'}
+                                            </div>
+                                            <div className="flex items-center gap-4 my-3">
+                                                <div className="flex items-center gap-1">
+                                                    <Star className="w-5 h-5 text-yellow-400 fill-current" />
+                                                    <span className="font-bold">{doctor.rating || 4.7}</span>
+                                                    <span className="text-xs text-gray-500">({doctor.reviews || 50+}+ reviews)</span>
+                                                </div>
+                                                <Badge variant={doctor.availability === 'Online' ? 'default' : 'secondary'} className={`${doctor.availability === 'Online' ? 'bg-green-100 text-green-800' : ''}`}>
+                                                    {doctor.availability || 'In-Clinic'}
+                                                </Badge>
+                                            </div>
+                                             <div className="flex items-center justify-between mt-4 pt-4 border-t">
+                                                <div className="flex items-center font-bold text-lg">
+                                                    <BadgeIndianRupee className="w-5 h-5 mr-1"/>
+                                                    {doctor.consultationFee || 1000}
+                                                </div>
+                                                <Button asChild className="h-10">
+                                                    <Link href="/book-appointment">Book Appointment</Link>
+                                                </Button>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                ))}
+                            </div>
+                        </section>
+                    </>
+                 )}
 
                 <section className="py-16 mt-12">
                     <div className="text-center mb-12">
@@ -282,3 +328,5 @@ export default function FindDoctorPage() {
     </div>
   );
 }
+
+    
