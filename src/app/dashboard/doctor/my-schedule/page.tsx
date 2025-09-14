@@ -5,25 +5,72 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Calendar as CalendarIcon, User, BarChart2, Bell, LogOut, LayoutGrid, Video, Clock, CheckCircle2, XCircle } from 'lucide-react';
+import { Calendar as CalendarIcon, User, BarChart2, Bell, LogOut, LayoutGrid, Video, Clock, CheckCircle2, XCircle, Loader2 } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import { Calendar } from '@/components/ui/calendar';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import placeholderImages from '@/lib/placeholder-images.json';
+import { auth, db } from '@/lib/firebase';
+import { collection, query, where, onSnapshot, DocumentData } from 'firebase/firestore';
+import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 
-const appointments = [
-  { time: '10:30 AM', patient: 'Riya Singh', type: 'Video Call', status: 'Confirmed', avatar: placeholderImages['patient-avatar-0'] },
-  { time: '11:00 AM', patient: 'Amit Patel', type: 'In-Clinic', status: 'Confirmed', avatar: placeholderImages['patient-avatar-1'] },
-  { time: '12:00 PM', patient: 'Sunita Sharma', type: 'Video Call', status: 'Confirmed', avatar: placeholderImages['patient-avatar-2'] },
-  { time: '02:00 PM', patient: 'Karan Verma', type: 'In-Clinic', status: 'Cancelled', avatar: placeholderImages['patient-avatar-3'] },
-];
+interface Appointment {
+  id: string;
+  time: string;
+  patientName: string;
+  patientAvatar: { src: string; hint: string; };
+  type: 'Video Call' | 'In-Clinic';
+  status: 'Confirmed' | 'Cancelled' | 'Completed';
+}
 
 export default function DoctorSchedulePage() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [isAvailable, setIsAvailable] = useState(true);
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
+
   const doctorAvatar = placeholderImages['doctor-avatar'];
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (currentUser && selectedDate) {
+      setIsLoading(true);
+      const q = query(
+        collection(db, "appointments"),
+        where("doctorId", "==", currentUser.uid),
+        where("date", "==", selectedDate.toISOString().split('T')[0])
+      );
+
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const apps: Appointment[] = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Appointment));
+        // Note: The patientAvatar is hardcoded for now. In a real app, you'd fetch patient details.
+        const appointmentsWithAvatars = apps.map((app, index) => ({
+            ...app,
+            patientAvatar: placeholderImages[`patient-avatar-${index % 4}` as keyof typeof placeholderImages] || placeholderImages['patient-avatar-0']
+        }))
+        setAppointments(appointmentsWithAvatars);
+        setIsLoading(false);
+      }, (error) => {
+          console.error("Error fetching appointments: ", error);
+          setIsLoading(false);
+      });
+
+      return () => unsubscribe();
+    } else {
+        setAppointments([]);
+        setIsLoading(false);
+    }
+  }, [currentUser, selectedDate]);
+
 
   return (
     <div className="flex min-h-screen bg-secondary">
@@ -86,34 +133,48 @@ export default function DoctorSchedulePage() {
                     <CardTitle>Appointments for {selectedDate ? selectedDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : 'Today'}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className="space-y-4">
-                        {appointments.map((apt, index) => (
-                            <div key={index} className="flex items-center justify-between p-4 rounded-lg bg-gray-50 border">
-                                <div className="flex items-center gap-4">
-                                     <Avatar>
-                                        <AvatarImage src={apt.avatar.src} data-ai-hint={apt.avatar.hint} alt={apt.patient} />
-                                        <AvatarFallback>{apt.patient.charAt(0)}</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <p className="font-semibold">{apt.patient}</p>
-                                        <p className="text-sm text-muted-foreground flex items-center gap-2">
-                                            <Clock className="w-4 h-4" /> {apt.time}
-                                            <span className="mx-1">|</span>
-                                            {apt.type === 'Video Call' ? <Video className="w-4 h-4"/> : <User className="w-4 h-4"/>} {apt.type}
-                                        </p>
+                    {isLoading ? (
+                         <div className="flex justify-center items-center h-64">
+                            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                        </div>
+                    ) : appointments.length > 0 ? (
+                        <div className="space-y-4">
+                            {appointments.map((apt) => (
+                                <div key={apt.id} className="flex items-center justify-between p-4 rounded-lg bg-gray-50 border">
+                                    <div className="flex items-center gap-4">
+                                        <Avatar>
+                                            <AvatarImage src={apt.patientAvatar.src} data-ai-hint={apt.patientAvatar.hint} alt={apt.patientName} />
+                                            <AvatarFallback>{apt.patientName.charAt(0)}</AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                            <p className="font-semibold">{apt.patientName}</p>
+                                            <p className="text-sm text-muted-foreground flex items-center gap-2">
+                                                <Clock className="w-4 h-4" /> {apt.time}
+                                                <span className="mx-1">|</span>
+                                                {apt.type === 'Video Call' ? <Video className="w-4 h-4"/> : <User className="w-4 h-4"/>} {apt.type}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        {apt.status === 'Confirmed' ? (
+                                            <span className="text-sm font-medium text-green-600 flex items-center gap-1"><CheckCircle2 className="w-4 h-4" /> {apt.status}</span>
+                                        ) : apt.status === 'Cancelled' ? (
+                                            <span className="text-sm font-medium text-red-600 flex items-center gap-1"><XCircle className="w-4 h-4" /> {apt.status}</span>
+                                        ) : (
+                                            <span className="text-sm font-medium text-gray-600 flex items-center gap-1"><CheckCircle2 className="w-4 h-4" /> {apt.status}</span>
+                                        )}
+                                    {apt.type === 'Video Call' && apt.status === 'Confirmed' && <Button size="sm">Start Call</Button>}
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    {apt.status === 'Confirmed' ? (
-                                        <span className="text-sm font-medium text-green-600 flex items-center gap-1"><CheckCircle2 className="w-4 h-4" /> {apt.status}</span>
-                                    ) : (
-                                        <span className="text-sm font-medium text-red-600 flex items-center gap-1"><XCircle className="w-4 h-4" /> {apt.status}</span>
-                                    )}
-                                  {apt.type === 'Video Call' && apt.status === 'Confirmed' && <Button size="sm">Start Call</Button>}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    ) : (
+                         <div className="text-center py-16">
+                            <CalendarIcon className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+                            <p className="text-lg font-semibold">No appointments scheduled for this day.</p>
+                            <p className="text-sm text-muted-foreground">Select another date to view other appointments.</p>
+                        </div>
+                    )}
                 </CardContent>
             </Card>
           </div>
