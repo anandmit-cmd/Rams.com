@@ -14,6 +14,9 @@ import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import React from 'react';
+import { auth, db } from '@/lib/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters."),
@@ -28,19 +31,43 @@ function AdminRegisterPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullName: "",
+      fullName: "Anand Mishra",
       email: "anandmit9@gmail.com",
       password: "Anand@2213",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Admin registration submitted", values);
-    toast({
-      title: "Registration Successful!",
-      description: "Redirecting to the admin dashboard...",
-    });
-    router.push('/dashboard/admin');
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+        const user = userCredential.user;
+
+        await setDoc(doc(db, "users", user.uid), {
+            uid: user.uid,
+            fullName: values.fullName,
+            email: values.email,
+            role: 'admin',
+            createdAt: new Date(),
+        });
+
+        toast({
+            title: "Registration Successful!",
+            description: "Redirecting to the admin dashboard...",
+        });
+        router.push('/dashboard/admin');
+
+    } catch (error: any) {
+        console.error("Registration failed:", error);
+        let errorMessage = "An unexpected error occurred. Please try again.";
+        if (error.code === 'auth/email-already-in-use') {
+            errorMessage = "This email address is already in use. Please try another one.";
+        }
+        toast({
+            title: "Registration Failed",
+            description: errorMessage,
+            variant: "destructive",
+        });
+    }
   }
 
   return (

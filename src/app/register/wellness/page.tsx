@@ -14,6 +14,9 @@ import { AppLogo } from '@/components/icons';
 import { ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import { auth, db } from '@/lib/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Full name is required."),
@@ -39,13 +42,39 @@ export default function WellnessRegisterPage() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    toast({
-      title: "Registration Successful!",
-      description: "Redirecting to your dashboard...",
-    });
-    router.push('/dashboard/wellness');
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+        const user = userCredential.user;
+
+        await setDoc(doc(db, "users", user.uid), {
+            uid: user.uid,
+            fullName: values.fullName,
+            email: values.email,
+            phone: values.phone,
+            areaOfExpertise: values.areaOfExpertise,
+            experience: values.experience,
+            role: 'wellness',
+            createdAt: new Date(),
+        });
+
+        toast({
+            title: "Registration Successful!",
+            description: "Redirecting to your dashboard...",
+        });
+        router.push('/dashboard/wellness');
+    } catch (error: any) {
+        console.error("Registration failed:", error);
+        let errorMessage = "An unexpected error occurred. Please try again.";
+        if (error.code === 'auth/email-already-in-use') {
+            errorMessage = "This email address is already in use. Please try another one.";
+        }
+        toast({
+            title: "Registration Failed",
+            description: errorMessage,
+            variant: "destructive",
+        });
+    }
   }
 
   return (

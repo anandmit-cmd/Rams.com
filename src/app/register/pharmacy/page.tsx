@@ -14,6 +14,9 @@ import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import React from 'react';
+import { auth, db } from '@/lib/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 
 const formSchema = z.object({
   pharmacyName: z.string().min(2, "Pharmacy name is required."),
@@ -41,12 +44,38 @@ function PharmacyRegisterPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Pharmacy registration submitted", values);
-    toast({
-      title: "Registration Successful!",
-      description: "Redirecting to your dashboard...",
-    });
-    router.push('/dashboard/pharmacy');
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+        const user = userCredential.user;
+
+        await setDoc(doc(db, "users", user.uid), {
+            uid: user.uid,
+            pharmacyName: values.pharmacyName,
+            email: values.email,
+            phone: values.phone,
+            address: values.address,
+            licenseNumber: values.licenseNumber,
+            role: 'pharmacy',
+            createdAt: new Date(),
+        });
+
+        toast({
+            title: "Registration Successful!",
+            description: "Redirecting to your dashboard...",
+        });
+        router.push('/dashboard/pharmacy');
+    } catch (error: any) {
+        console.error("Registration failed:", error);
+        let errorMessage = "An unexpected error occurred. Please try again.";
+        if (error.code === 'auth/email-already-in-use') {
+            errorMessage = "This email address is already in use. Please try another one.";
+        }
+        toast({
+            title: "Registration Failed",
+            description: errorMessage,
+            variant: "destructive",
+        });
+    }
   }
 
   return (
