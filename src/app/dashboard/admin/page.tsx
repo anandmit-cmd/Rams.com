@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { LayoutGrid, Users, Hospital, Stethoscope, BarChart2, Bell, LogOut, Settings, PlusCircle, Trash2, Pencil, MoreHorizontal, FileText, BadgePercent, Loader2 } from 'lucide-react';
+import { LayoutGrid, Users, Hospital, Stethoscope, BarChart2, Bell, LogOut, Settings, PlusCircle, Trash2, Pencil, MoreHorizontal, FileText, BadgePercent } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import placeholderImages from '@/lib/placeholder-images.json';
@@ -15,6 +15,7 @@ import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid } from '
 import { db } from '@/lib/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 
 const chartData = [
@@ -170,7 +171,7 @@ export default function AdminDashboard() {
                         <Users className="w-4 h-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{loading ? <Skeleton className="h-8 w-20" /> : allUsers.length}</div>
+                        {loading ? <Skeleton className="h-8 w-20" /> : <div className="text-2xl font-bold">{allUsers.length}</div>}
                         <p className="text-xs text-muted-foreground">All registered users</p>
                     </CardContent>
                 </Card>
@@ -180,7 +181,7 @@ export default function AdminDashboard() {
                         <Stethoscope className="w-4 h-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold"> {loading ? <Skeleton className="h-8 w-16" /> : allUsers.filter(u => u.role === 'doctor').length}</div>
+                        {loading ? <Skeleton className="h-8 w-16" /> : <div className="text-2xl font-bold">{allUsers.filter(u => u.role === 'doctor').length}</div>}
                          <p className="text-xs text-muted-foreground">Verified doctors</p>
                     </CardContent>
                 </Card>
@@ -190,7 +191,7 @@ export default function AdminDashboard() {
                         <Hospital className="w-4 h-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{loading ? <Skeleton className="h-8 w-16" /> : allUsers.filter(u => u.role === 'hospital').length}</div>
+                        {loading ? <Skeleton className="h-8 w-16" /> : <div className="text-2xl font-bold">{allUsers.filter(u => u.role === 'hospital').length}</div>}
                         <p className="text-xs text-muted-foreground">Partnered hospitals</p>
                     </CardContent>
                 </Card>
