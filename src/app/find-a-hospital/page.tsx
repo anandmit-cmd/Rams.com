@@ -165,5 +165,3 @@ export default function FindHospitalPage() {
     </div>
   );
 }
-
-    
