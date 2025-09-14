@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, Star, MapPin, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Twitter, Facebook, Instagram, BadgeIndianRupee, Award } from 'lucide-react';
+import { Search, Star, MapPin, HeartPulse, BrainCircuit, Bone, Baby, Glasses, Stethoscope, Twitter, Facebook, Instagram, BadgeIndianRupee, Award, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { AppLogo } from '@/components/icons';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
@@ -150,7 +150,10 @@ export default function FindDoctorPage() {
                 </Card>
 
                  {loading ? (
-                    <p>Loading doctors...</p>
+                    <div className="flex justify-center items-center py-16">
+                        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                        <p className="ml-4">Loading doctors...</p>
+                    </div>
                  ) : (
                     <>
                         {featuredDoctors.length > 0 && (
@@ -192,7 +195,7 @@ export default function FindDoctorPage() {
                                                         {doctor.consultationFee || '1500'}
                                                     </div>
                                                     <Button asChild className="h-10">
-                                                        <Link href="/book-appointment">Book Appointment</Link>
+                                                        <Link href={`/book-appointment?doctorId=${doctor.id}`}>Book Appointment</Link>
                                                     </Button>
                                                 </div>
                                             </CardContent>
@@ -237,7 +240,7 @@ export default function FindDoctorPage() {
                                                     {doctor.consultationFee || 1000}
                                                 </div>
                                                 <Button asChild className="h-10">
-                                                    <Link href="/book-appointment">Book Appointment</Link>
+                                                    <Link href={`/book-appointment?doctorId=${doctor.id}`}>Book Appointment</Link>
                                                 </Button>
                                             </div>
                                         </CardContent>

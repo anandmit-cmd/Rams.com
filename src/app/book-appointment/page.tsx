@@ -1,8 +1,9 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
@@ -12,8 +13,7 @@ import { Star, MapPin, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import placeholderImages from '@/lib/placeholder-images.json';
 import { db } from '@/lib/firebase';
-import { collection, addDoc } from "firebase/firestore"; 
-
+import { collection, addDoc, doc, getDoc, DocumentData } from "firebase/firestore"; 
 
 const timeSlots = [
   '09:00 AM', '09:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM',
@@ -24,8 +24,38 @@ export default function BookAppointmentPage() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [isBooking, setIsBooking] = useState(false);
+  const [doctor, setDoctor] = useState<DocumentData | null>(null);
+  const [loadingDoctor, setLoadingDoctor] = useState(true);
   const { toast } = useToast();
-  const doctorImage = placeholderImages['doctor-1'];
+  
+  const searchParams = useSearchParams();
+  const doctorId = searchParams.get('doctorId');
+
+  useEffect(() => {
+    const fetchDoctor = async () => {
+      if (!doctorId) {
+        setLoadingDoctor(false);
+        return;
+      }
+      try {
+        const docRef = doc(db, "users", doctorId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setDoctor(docSnap.data());
+        } else {
+          console.log("No such doctor!");
+          toast({ title: "Doctor not found", variant: "destructive" });
+        }
+      } catch (error) {
+        console.error("Error fetching doctor:", error);
+        toast({ title: "Failed to load doctor details", variant: "destructive" });
+      } finally {
+        setLoadingDoctor(false);
+      }
+    };
+    fetchDoctor();
+  }, [doctorId, toast]);
+
 
   const handleBooking = async () => {
     if (!selectedDate || !selectedTime) {
@@ -36,15 +66,23 @@ export default function BookAppointmentPage() {
       });
       return;
     }
+     if (!doctorId || !doctor) {
+      toast({
+        title: 'Doctor Not Found',
+        description: 'Cannot book appointment without a valid doctor.',
+        variant: 'destructive',
+      });
+      return;
+    }
     
     setIsBooking(true);
 
     try {
-        // In a real app, doctorId and patientId would be dynamic
+        // In a real app, patientId would come from auth
         const appointmentData = {
-            doctorId: 'some-doctor-id', // Example doctor ID
-            patientId: 'some-patient-id', // Example patient ID, would come from auth
-            doctorName: 'Dr. Anjali Sharma',
+            doctorId: doctorId,
+            patientId: 'some-patient-id', // Example patient ID
+            doctorName: doctor.fullName,
             patientName: 'Guest User', // Example patient name
             date: selectedDate.toISOString().split('T')[0], // Store date as YYYY-MM-DD
             time: selectedTime,
@@ -56,7 +94,7 @@ export default function BookAppointmentPage() {
 
         toast({
             title: 'Appointment Booked!',
-            description: `Your appointment with Dr. Anjali Sharma is confirmed for ${selectedDate.toLocaleDateString()} at ${selectedTime}.`,
+            description: `Your appointment with ${doctor.fullName} is confirmed for ${selectedDate.toLocaleDateString()} at ${selectedTime}.`,
         });
 
     } catch (error) {
@@ -70,6 +108,8 @@ export default function BookAppointmentPage() {
         setIsBooking(false);
     }
   };
+
+  const doctorImage = doctor?.image || placeholderImages['doctor-1'];
 
   return (
     <div className="flex flex-col min-h-screen bg-secondary">
@@ -123,7 +163,7 @@ export default function BookAppointmentPage() {
               </CardContent>
             </Card>
              <div className="mt-8 flex justify-end">
-                <Button size="lg" className="bg-accent hover:bg-accent/90 h-12 text-lg" onClick={handleBooking} disabled={isBooking}>
+                <Button size="lg" className="bg-accent hover:bg-accent/90 h-12 text-lg" onClick={handleBooking} disabled={isBooking || loadingDoctor || !doctorId}>
                     {isBooking ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -137,30 +177,44 @@ export default function BookAppointmentPage() {
           </div>
           <div className="lg:col-span-1">
              <Card>
-                <CardHeader className="items-center text-center">
-                    <Avatar className="w-24 h-24 mb-4 border-4 border-primary">
-                        <AvatarImage src={doctorImage.src} alt="Dr. Anjali Sharma" data-ai-hint={doctorImage.hint}/>
-                        <AvatarFallback>AS</AvatarFallback>
-                    </Avatar>
-                    <CardTitle>Dr. Anjali Sharma</CardTitle>
-                    <CardDescription>Cardiologist</CardDescription>
-                </CardHeader>
-                <CardContent className="text-sm">
-                   <div className="flex items-center justify-center text-gray-500 my-2">
-                        <MapPin className="w-4 h-4 mr-1" />
-                        Mumbai, IN
-                    </div>
-                    <div className="flex items-center justify-center gap-4 my-4">
-                        <div className="flex items-center gap-1">
-                            <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                            <span className="font-bold">4.8</span>
-                            <span className="text-xs text-gray-500">(120 reviews)</span>
+                {loadingDoctor ? (
+                     <CardContent className="p-6 text-center">
+                        <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+                        <p className="mt-2 text-sm text-muted-foreground">Loading doctor details...</p>
+                    </CardContent>
+                ) : doctor ? (
+                    <>
+                    <CardHeader className="items-center text-center">
+                        <Avatar className="w-24 h-24 mb-4 border-4 border-primary">
+                            <AvatarImage src={doctorImage.src} alt={doctor.fullName} data-ai-hint={doctorImage.hint}/>
+                            <AvatarFallback>{doctor.fullName?.charAt(0) || 'D'}</AvatarFallback>
+                        </Avatar>
+                        <CardTitle>{doctor.fullName}</CardTitle>
+                        <CardDescription>{doctor.specialty}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="text-sm">
+                    <div className="flex items-center justify-center text-gray-500 my-2">
+                            <MapPin className="w-4 h-4 mr-1" />
+                            {doctor.location || 'Mumbai, IN'}
                         </div>
-                    </div>
-                    <p className="text-center text-muted-foreground">
-                        Dr. Anjali Sharma is a renowned cardiologist with over 15 years of experience in treating heart conditions.
-                    </p>
-                </CardContent>
+                        <div className="flex items-center justify-center gap-4 my-4">
+                            <div className="flex items-center gap-1">
+                                <Star className="w-5 h-5 text-yellow-400 fill-current" />
+                                <span className="font-bold">{doctor.rating || 4.8}</span>
+                                <span className="text-xs text-gray-500">({doctor.reviews || 120}+ reviews)</span>
+                            </div>
+                        </div>
+                        <p className="text-center text-muted-foreground">
+                            {doctor.bio || `A specialist in ${doctor.specialty} with several years of experience.`}
+                        </p>
+                    </CardContent>
+                    </>
+                ) : (
+                     <CardContent className="p-6 text-center">
+                        <p className="text-destructive">Could not load doctor details.</p>
+                        <p className="text-sm text-muted-foreground">Please go back and select a doctor again.</p>
+                    </CardContent>
+                )}
             </Card>
           </div>
         </div>
@@ -168,3 +222,11 @@ export default function BookAppointmentPage() {
     </div>
   );
 }
+
+const BookAppointmentPageWrapper = () => (
+  <React.Suspense fallback={<div>Loading...</div>}>
+    <BookAppointmentPage />
+  </React.Suspense>
+);
+
+export default BookAppointmentPageWrapper;
