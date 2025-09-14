@@ -131,10 +131,10 @@ export default function WellnessRegisterPage() {
                           <SelectTrigger><SelectValue placeholder="Select your expertise" /></SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="yoga">Yoga & Mindfulness</SelectItem>
-                          <SelectItem value="fitness">Fitness & Workouts</SelectItem>
-                          <SelectItem value="nutrition">Diet & Nutrition</SelectItem>
-                          <SelectItem value="mental-wellness">Mental Wellness</SelectItem>
+                          <SelectItem value="Yoga">Yoga & Mindfulness</SelectItem>
+                          <SelectItem value="Fitness">Fitness & Workouts</SelectItem>
+                          <SelectItem value="Nutrition">Diet & Nutrition</SelectItem>
+                          <SelectItem value="Mental Wellness">Mental Wellness</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />

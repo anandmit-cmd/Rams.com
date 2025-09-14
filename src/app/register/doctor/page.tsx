@@ -133,12 +133,12 @@ function DoctorRegisterPage() {
                           <SelectTrigger><SelectValue placeholder="Select a specialty" /></SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="cardiology">Cardiology</SelectItem>
-                          <SelectItem value="neurology">Neurology</SelectItem>
-                          <SelectItem value="dermatology">Dermatology</SelectItem>
-                          <SelectItem value="orthopedics">Orthopedics</SelectItem>
-                          <SelectItem value="pediatrics">Pediatrics</SelectItem>
-                          <SelectItem value="general-medicine">General Medicine</SelectItem>
+                          <SelectItem value="Cardiology">Cardiology</SelectItem>
+                          <SelectItem value="Neurology">Neurology</SelectItem>
+                          <SelectItem value="Dermatology">Dermatology</SelectItem>
+                          <SelectItem value="Orthopedics">Orthopedics</SelectItem>
+                          <SelectItem value="Pediatrics">Pediatrics</SelectItem>
+                          <SelectItem value="General Medicine">General Medicine</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />

@@ -31,9 +31,9 @@ function AdminRegisterPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullName: "Anand Mishra",
-      email: "anandmit9@gmail.com",
-      password: "Anand@2213",
+      fullName: "",
+      email: "",
+      password: "",
     },
   });
 
