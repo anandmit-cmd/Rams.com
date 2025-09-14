@@ -171,7 +171,7 @@ export default function OrderMedicinesPage() {
                             <DialogDescription>
                                 Please upload a clear image of your prescription. Our experts will contact you shortly.
                             </DialogDescription>
-                        </DialogHeader>
+                        </Header>
                         <div className="py-4">
                             <Input type="file" />
                         </div>
@@ -196,13 +196,11 @@ export default function OrderMedicinesPage() {
                   <h3 className="font-bold text-lg text-gray-800">{med.name}</h3>
                   <p className="text-sm text-muted-foreground h-10">{med.description}</p>
                   <p className="font-bold text-xl my-2">₹{med.price.toFixed(2)}</p>
-                  <Dialog>
-                    <DialogTrigger asChild>
+                  
                        <Button className="w-full mt-2" onClick={() => handleAddToCart(med)}>
                         <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
                       </Button>
-                    </DialogTrigger>
-                  </Dialog>
+                  
                 </CardContent>
               </Card>
             ))}
@@ -213,4 +211,3 @@ export default function OrderMedicinesPage() {
   );
 }
 
-    
