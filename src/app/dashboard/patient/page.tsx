@@ -168,10 +168,10 @@ export default function PatientDashboard() {
           </Link>
         </nav>
         <div className="p-4 mt-auto">
-             <Link href="/" onClick={() => auth.signOut()} className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100" prefetch={false}>
-                <LogOut className="h-5 w-5" />
+             <Button variant="ghost" onClick={() => auth.signOut()} className="w-full justify-start">
+                <LogOut className="h-5 w-5 mr-3" />
                 Logout
-            </Link>
+            </Button>
         </div>
       </aside>
 
@@ -427,5 +427,3 @@ export default function PatientDashboard() {
     </div>
   );
 }
-
-    
