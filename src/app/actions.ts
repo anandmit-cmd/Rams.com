@@ -6,6 +6,9 @@ import {
   type IntelligentMedicalSearchOutput,
 } from '@/ai/flows/intelligent-medical-search';
 import { z } from 'zod';
+import { db } from '@/lib/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+
 
 const searchSchema = z.object({
   query: z.string().min(3, 'Query must be at least 3 characters long.'),
@@ -96,12 +99,22 @@ export async function handleContactUs(
     };
   }
   
-  // Simulate sending the message
-  console.log('Contact form submitted:', validatedFields.data);
+  try {
+    await addDoc(collection(db, 'contacts'), {
+      ...validatedFields.data,
+      submittedAt: serverTimestamp(),
+    });
 
-  return {
-    message: 'Your message has been sent successfully! We will get back to you soon.',
-    isSuccess: true,
-    errors: {},
-  };
+    return {
+        message: 'Your message has been sent successfully! We will get back to you soon.',
+        isSuccess: true,
+        errors: {},
+    };
+  } catch (error) {
+     console.error('Failed to save contact message:', error);
+     return {
+        message: 'An unexpected error occurred. Could not send your message.',
+        isSuccess: false,
+     }
+  }
 }
