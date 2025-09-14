@@ -232,6 +232,10 @@
     "src": "https://picsum.photos/seed/hospital-admin/100/100",
     "hint": "professional person"
   },
+  "admin-avatar": {
+    "src": "https://picsum.photos/seed/admin-avatar/100/100",
+    "hint": "professional person"
+  },
   "promo-1": {
     "src": "https://picsum.photos/seed/promo1/1200/500",
     "hint": "eye checkup"

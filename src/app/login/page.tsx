@@ -28,7 +28,8 @@ const roleDashboards: Record<string, string> = {
     pharmacy: '/dashboard/pharmacy',
     lab: '/dashboard/lab',
     ambulance: '/dashboard/ambulance',
-    wellness: '/dashboard/wellness'
+    wellness: '/dashboard/wellness',
+    admin: '/dashboard/admin',
 };
 
 
@@ -96,6 +97,7 @@ function LoginPage() {
                                     <SelectItem value="lab">Lab / Diagnostics</SelectItem>
                                     <SelectItem value="ambulance">Ambulance Service</SelectItem>
                                     <SelectItem value="wellness">Wellness Expert</SelectItem>
+                                    <SelectItem value="admin">Admin</SelectItem>
                                 </SelectContent>
                             </Select>
                             <FormMessage />

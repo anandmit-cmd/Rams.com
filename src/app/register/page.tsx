@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { AppLogo } from '@/components/icons';
-import { Globe, User, Stethoscope, Pill, TestTube2, Ambulance, Sparkles, ArrowRight, Twitter, Facebook, Instagram, Hospital } from 'lucide-react';
+import { Globe, User, Stethoscope, Pill, TestTube2, Ambulance, Sparkles, ArrowRight, Twitter, Facebook, Instagram, Hospital, Shield } from 'lucide-react';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 
 
@@ -50,6 +50,12 @@ const roles = [
     description: 'Offer yoga, fitness, or diet plans.',
     href: '/register/wellness',
   },
+  {
+    icon: Shield,
+    title: 'Admin',
+    description: 'Manage the entire platform and users.',
+    href: '/register/admin',
+  }
 ];
 
 export default function RegisterPage() {
@@ -98,7 +104,7 @@ export default function RegisterPage() {
             Create an account to access a world of healthcare services. Choose the role that best describes you.
           </p>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto">
+          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
             {roles.map((role) => (
               <Link href={role.href} key={role.title} prefetch={false}>
                 <Card className="p-6 text-left hover:shadow-lg transition-shadow cursor-pointer flex items-center justify-between h-full">
@@ -138,8 +144,8 @@ export default function RegisterPage() {
                     <ul className="space-y-2 text-sm">
                         <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Blog</Link></li>
                         <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Help Center</Link></li>
-                        <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Contact Us</Link></li>
-                        <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Privacy Policy</Link></li>
+                        <li><Link href="/contact" className="text-gray-400 hover:text-white" prefetch={false}>Contact Us</Link></li>
+                        <li><Link href="/privacy" className="text-gray-400 hover:text-white" prefetch={false}>Privacy Policy</Link></li>
                     </ul>
                 </div>
                 <div>
