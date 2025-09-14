@@ -14,6 +14,8 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import React from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { auth } from '@/lib/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address."),
@@ -47,13 +49,40 @@ function LoginPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Login submitted", values);
-    toast({
-      title: "Login Successful",
-      description: "Redirecting to your dashboard...",
-    });
-    const dashboardUrl = roleDashboards[values.role] || '/';
-    router.push(dashboardUrl);
+    try {
+        await signInWithEmailAndPassword(auth, values.email, values.password);
+        
+        toast({
+            title: "Login Successful",
+            description: "Redirecting to your dashboard...",
+        });
+
+        const dashboardUrl = roleDashboards[values.role] || '/';
+        router.push(dashboardUrl);
+
+    } catch (error: any) {
+        console.error("Login failed:", error);
+        let errorMessage = "An unexpected error occurred. Please try again.";
+        
+        switch (error.code) {
+            case 'auth/user-not-found':
+            case 'auth/wrong-password':
+            case 'auth/invalid-credential':
+                errorMessage = "Invalid email or password. Please try again.";
+                break;
+            case 'auth/too-many-requests':
+                errorMessage = "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.";
+                break;
+            default:
+                errorMessage = "Login failed. Please check your credentials and try again.";
+        }
+
+        toast({
+            title: "Login Failed",
+            description: errorMessage,
+            variant: "destructive",
+        });
+    }
   }
 
   return (
