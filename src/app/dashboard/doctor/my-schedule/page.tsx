@@ -10,7 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import placeholderImages from '@/lib/placeholder-images.json';
 import { auth, db } from '@/lib/firebase';
-import { collection, query, where, onSnapshot, DocumentData } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, DocumentData, orderBy } from 'firebase/firestore';
 import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 import { Button } from '@/components/ui/button';
 
@@ -42,12 +42,13 @@ export default function DoctorSchedulePage() {
       const q = query(
         collection(db, "appointments"),
         where("doctorId", "==", currentUser.uid),
-        where("date", "==", selectedDate.toISOString().split('T')[0])
+        where("date", "==", selectedDate.toISOString().split('T')[0]),
+        orderBy("time")
       );
 
       const unsubscribe = onSnapshot(q, (snapshot) => {
         const apps: Appointment[] = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Appointment));
-        setAppointments(apps.sort((a, b) => a.time.localeCompare(b.time)));
+        setAppointments(apps);
         setIsLoading(false);
       }, (error) => {
           console.error("Error fetching appointments: ", error);
