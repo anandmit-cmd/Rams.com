@@ -14,18 +14,36 @@ import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Phone, Mail, MapPin, Loader2, CheckCircle } from 'lucide-react';
 import placeholderImages from '@/lib/placeholder-images.json';
 import { handleContactUs, type ContactState } from '@/app/actions';
+import { useFormStatus } from 'react-dom';
 
 
 const initialState: ContactState = {
   message: '',
   isSuccess: false,
+  errors: {},
 };
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" size="lg" className="w-full bg-accent hover:bg-accent/90" disabled={pending}>
+      {pending ? (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Sending...
+        </>
+      ) : (
+        'Send Message'
+      )}
+    </Button>
+  );
+}
 
 
 export default function ContactPage() {
     const { toast } = useToast();
     const heroImage = placeholderImages['contact-hero'];
-    const [state, formAction] = useActionState(handleContactUs, initialState);
+    const [state, formAction, isPending] = useActionState(handleContactUs, initialState);
     const formRef = useRef<HTMLFormElement>(null);
 
     useEffect(() => {
@@ -95,9 +113,7 @@ export default function ContactPage() {
                                     <Textarea id="message" name="message" placeholder="Your message here..." rows={5} required />
                                     {state?.errors?.message && <p className="text-sm text-destructive">{state.errors.message[0]}</p>}
                                 </div>
-                                <Button type="submit" size="lg" className="w-full bg-accent hover:bg-accent/90">
-                                    Send Message
-                                </Button>
+                                <SubmitButton />
                             </form>
                         </CardContent>
                     </Card>

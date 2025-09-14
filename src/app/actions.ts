@@ -1,3 +1,4 @@
+
 'use server';
 
 import {
@@ -89,7 +90,7 @@ export async function handleContactUs(
 
   if (!validatedFields.success) {
     return {
-      message: 'Invalid form data.',
+      message: 'Invalid form data. Please check the fields and try again.',
       errors: validatedFields.error.flatten().fieldErrors,
       isSuccess: false,
     };
@@ -101,5 +102,6 @@ export async function handleContactUs(
   return {
     message: 'Your message has been sent successfully! We will get back to you soon.',
     isSuccess: true,
+    errors: {},
   };
 }
