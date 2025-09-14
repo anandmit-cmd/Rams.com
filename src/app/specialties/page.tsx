@@ -119,8 +119,8 @@ export default function SpecialtiesPage() {
                         <ul className="space-y-2 text-sm">
                             <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Blog</Link></li>
                             <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Help Center</Link></li>
-                            <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Contact Us</Link></li>
-                            <li><Link href="#" className="text-gray-400 hover:text-white" prefetch={false}>Privacy Policy</Link></li>
+                            <li><Link href="/contact" className="text-gray-400 hover:text-white" prefetch={false}>Contact Us</Link></li>
+                            <li><Link href="/privacy" className="text-gray-400 hover:text-white" prefetch={false}>Privacy Policy</Link></li>
                         </ul>
                     </div>
                     <div>
