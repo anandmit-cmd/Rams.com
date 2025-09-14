@@ -19,8 +19,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import placeholderImages from '@/lib/placeholder-images.json';
 import { useToast } from '@/hooks/use-toast';
 import { auth, db } from '@/lib/firebase';
-import { collection, addDoc, onSnapshot, doc, deleteDoc, query, where, getDocs, QuerySnapshot, DocumentData } from 'firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth';
+import { collection, addDoc, onSnapshot, doc, deleteDoc, query, where, QuerySnapshot, DocumentData } from 'firebase/firestore';
+import { onAuthStateChanged, User } from 'firebase/auth';
 
 type Medicine = {
     id: string;
@@ -38,7 +38,7 @@ export default function InventoryPage() {
     const [newMedStock, setNewMedStock] = useState('');
     const [newMedExpiry, setNewMedExpiry] = useState<Date | undefined>();
     const [isLoading, setIsLoading] = useState(true);
-    const [currentUser, setCurrentUser] = useState<any>(null);
+    const [currentUser, setCurrentUser] = useState<User | null>(null);
     const { toast } = useToast();
 
     const pharmacistAvatar = placeholderImages['pharmacist-avatar'];
@@ -74,6 +74,8 @@ export default function InventoryPage() {
             });
 
             return () => unsubscribe();
+        } else {
+            setIsLoading(false);
         }
     }, [currentUser, toast]);
 
@@ -160,7 +162,7 @@ export default function InventoryPage() {
           </Link>
         </nav>
         <div className="p-4 mt-auto">
-             <Link href="#" className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100" prefetch={false}>
+             <Link href="/" onClick={() => auth.signOut()} className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100" prefetch={false}>
                 <LogOut className="h-5 w-5" />
                 Logout
             </Link>
