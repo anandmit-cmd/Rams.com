@@ -13,14 +13,15 @@ import { Star, MapPin, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import placeholderImages from '@/lib/placeholder-images.json';
 import { db } from '@/lib/firebase';
-import { collection, addDoc, doc, getDoc, DocumentData } from "firebase/firestore"; 
+import { collection, addDoc, doc, getDoc, DocumentData, serverTimestamp } from "firebase/firestore"; 
+import React from 'react';
 
 const timeSlots = [
   '09:00 AM', '09:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM',
   '02:00 PM', '02:30 PM', '03:00 PM', '03:30 PM', '04:00 PM', '04:30 PM'
 ];
 
-export default function BookAppointmentPage() {
+function BookAppointmentPage() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [isBooking, setIsBooking] = useState(false);
@@ -78,19 +79,30 @@ export default function BookAppointmentPage() {
     setIsBooking(true);
 
     try {
-        // In a real app, patientId would come from auth
+        const patientName = 'Guest User'; // In a real app, patientId and name would come from auth state
         const appointmentData = {
             doctorId: doctorId,
-            patientId: 'some-patient-id', // Example patient ID
+            patientId: 'some-patient-id', 
             doctorName: doctor.fullName,
-            patientName: 'Guest User', // Example patient name
-            date: selectedDate.toISOString().split('T')[0], // Store date as YYYY-MM-DD
+            patientName: patientName,
+            date: selectedDate.toISOString().split('T')[0],
             time: selectedTime,
-            type: 'In-Clinic', // Example type
-            status: 'Confirmed'
+            type: 'In-Clinic',
+            status: 'Confirmed',
+            createdAt: serverTimestamp()
         };
 
         await addDoc(collection(db, "appointments"), appointmentData);
+
+        // Create a notification for the doctor
+        await addDoc(collection(db, "notifications"), {
+            userId: doctorId, // The ID of the user to notify
+            title: "New Appointment Booked!",
+            body: `${patientName} has booked an appointment with you for ${selectedDate.toLocaleDateString()} at ${selectedTime}.`,
+            type: "appointment_booked",
+            isRead: false,
+            createdAt: serverTimestamp()
+        });
 
         toast({
             title: 'Appointment Booked!',
@@ -230,3 +242,5 @@ const BookAppointmentPageWrapper = () => (
 );
 
 export default BookAppointmentPageWrapper;
+
+    
