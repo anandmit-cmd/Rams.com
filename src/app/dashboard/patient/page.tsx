@@ -13,10 +13,10 @@ import { Textarea } from '@/components/ui/textarea';
 import placeholderImages from '@/lib/placeholder-images.json';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { auth, db } from '@/lib/firebase';
+import { auth, db, storage } from '@/lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { doc, onSnapshot, updateDoc, collection, query, where, getDocs, DocumentData } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 interface Appointment {
     id: string;
@@ -100,7 +100,7 @@ export default function PatientDashboard() {
     if (!file || !currentUser) return;
 
     setIsUploading(true);
-    const storage = getStorage();
+    
     const storageRef = ref(storage, `avatars/${currentUser.uid}/${file.name}`);
 
     try {
@@ -424,4 +424,3 @@ export default function PatientDashboard() {
   );
 }
 
-    
