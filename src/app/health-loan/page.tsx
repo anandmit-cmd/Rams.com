@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, BadgeIndianRupee, Percent, CheckCircle } from 'lucide-react';
 import placeholderImages from '@/lib/placeholder-images.json';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -147,7 +147,7 @@ export default function HealthLoanPage() {
                                             <FormItem>
                                                 <FormLabel>Loan Amount (₹)</FormLabel>
                                                 <FormControl>
-                                                    <Input type="number" placeholder="e.g., 50000" {...field} />
+                                                    <Input type="number" placeholder="e.g., 50000" {...field} onChange={event => field.onChange(+event.target.value)} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
