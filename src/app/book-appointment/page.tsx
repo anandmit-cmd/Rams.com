@@ -8,9 +8,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Calendar } from '@/components/ui/calendar';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { AppLogo } from '@/components/icons';
-import { Star, MapPin } from 'lucide-react';
+import { Star, MapPin, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import placeholderImages from '@/lib/placeholder-images.json';
+import { db } from '@/lib/firebase';
+import { collection, addDoc } from "firebase/firestore"; 
 
 
 const timeSlots = [
@@ -21,10 +23,11 @@ const timeSlots = [
 export default function BookAppointmentPage() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [isBooking, setIsBooking] = useState(false);
   const { toast } = useToast();
   const doctorImage = placeholderImages['doctor-1'];
 
-  const handleBooking = () => {
+  const handleBooking = async () => {
     if (!selectedDate || !selectedTime) {
       toast({
         title: 'Incomplete Selection',
@@ -34,10 +37,38 @@ export default function BookAppointmentPage() {
       return;
     }
     
-    toast({
-        title: 'Appointment Booked!',
-        description: `Your appointment with Dr. Anjali Sharma is confirmed for ${selectedDate.toLocaleDateString()} at ${selectedTime}.`,
-    });
+    setIsBooking(true);
+
+    try {
+        // In a real app, doctorId and patientId would be dynamic
+        const appointmentData = {
+            doctorId: 'some-doctor-id', // Example doctor ID
+            patientId: 'some-patient-id', // Example patient ID, would come from auth
+            doctorName: 'Dr. Anjali Sharma',
+            patientName: 'Guest User', // Example patient name
+            date: selectedDate.toISOString().split('T')[0], // Store date as YYYY-MM-DD
+            time: selectedTime,
+            type: 'In-Clinic', // Example type
+            status: 'Confirmed'
+        };
+
+        await addDoc(collection(db, "appointments"), appointmentData);
+
+        toast({
+            title: 'Appointment Booked!',
+            description: `Your appointment with Dr. Anjali Sharma is confirmed for ${selectedDate.toLocaleDateString()} at ${selectedTime}.`,
+        });
+
+    } catch (error) {
+        console.error("Error booking appointment: ", error);
+        toast({
+            title: 'Booking Failed',
+            description: 'Could not book the appointment. Please try again.',
+            variant: 'destructive'
+        });
+    } finally {
+        setIsBooking(false);
+    }
   };
 
   return (
@@ -92,8 +123,15 @@ export default function BookAppointmentPage() {
               </CardContent>
             </Card>
              <div className="mt-8 flex justify-end">
-                <Button size="lg" className="bg-accent hover:bg-accent/90 h-12 text-lg" onClick={handleBooking}>
-                    Confirm Appointment
+                <Button size="lg" className="bg-accent hover:bg-accent/90 h-12 text-lg" onClick={handleBooking} disabled={isBooking}>
+                    {isBooking ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Confirming...
+                        </>
+                    ) : (
+                        'Confirm Appointment'
+                    )}
                 </Button>
             </div>
           </div>
