@@ -50,6 +50,7 @@ export default function InventoryPage() {
             } else {
                 // Handle user not logged in
                 setCurrentUser(null);
+                setInventory([]);
             }
         });
         return () => unsubscribe();
@@ -287,7 +288,7 @@ export default function InventoryPage() {
                             )) : (
                                 <TableRow>
                                     <TableCell colSpan={6} className="h-24 text-center">
-                                        No medicines found in your inventory. Add one to get started.
+                                       {currentUser ? "No medicines found in your inventory. Add one to get started." : "Please log in to manage your inventory."}
                                     </TableCell>
                                 </TableRow>
                             )}

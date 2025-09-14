@@ -5,40 +5,24 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Calendar, User, FileText, BarChart2, Bell, LogOut, LayoutGrid, Video, Star } from 'lucide-react';
+import { Calendar, User, FileText, BarChart2, Bell, LogOut, LayoutGrid, Video, Star, Loader2 } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import placeholderImages from '@/lib/placeholder-images.json';
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Bar, BarChart as RechartsBarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { auth, db } from '@/lib/firebase';
+import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
+import { collection, query, where, onSnapshot, DocumentData } from 'firebase/firestore';
 
-const initialConsultations = [
-    { 
-        id: 1, 
-        patient: 'Riya Singh', 
-        time: '10:30 AM - Video Call', 
-        status: 'Upcoming', 
-        details: null,
-        avatar: placeholderImages['patient-avatar-0']
-    },
-    { 
-        id: 2, 
-        patient: 'Amit Patel', 
-        time: '11:00 AM - In-Clinic', 
-        status: 'Refund Requested', 
-        details: 'Patient requested a refund due to technical issues.',
-        avatar: placeholderImages['patient-avatar-1']
-    },
-    { 
-        id: 3, 
-        patient: 'Sunita Sharma', 
-        time: '12:00 PM - Video Call (Follow-up)', 
-        status: 'Upcoming', 
-        details: null,
-        avatar: placeholderImages['patient-avatar-2']
-    },
-];
-
+interface Appointment extends DocumentData {
+    id: string;
+    patientName: string;
+    time: string;
+    type: 'Video Call' | 'In-Clinic';
+    status: 'Upcoming' | 'Refund Requested' | 'Refunded';
+    details?: string | null;
+}
 
 const chartData = [
   { date: 'Mon', revenue: Math.floor(Math.random() * 15000) + 5000 },
@@ -60,9 +44,48 @@ const chartConfig = {
 
 export default function DoctorDashboard() {
   const doctorAvatar = placeholderImages['doctor-avatar'];
-  const [consultations, setConsultations] = useState(initialConsultations);
+  const [consultations, setConsultations] = useState<Appointment[]>([]);
+  const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const handleRefund = (id: number) => {
+  useEffect(() => {
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+    });
+    return () => unsubscribeAuth();
+  }, []);
+
+  useEffect(() => {
+    if (currentUser) {
+      setLoading(true);
+      const q = query(collection(db, "appointments"), where("doctorId", "==", currentUser.uid), where("status", "==", "Confirmed"));
+      
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const apps: Appointment[] = snapshot.docs.map((doc, index) => {
+            const data = doc.data();
+            return { 
+                id: doc.id,
+                ...data,
+                //This is dummy logic to create varied statuses for demonstration
+                status: index === 1 ? 'Refund Requested' : 'Upcoming',
+                details: index === 1 ? 'Patient requested a refund due to technical issues.' : null,
+            } as Appointment;
+        });
+        setConsultations(apps);
+        setLoading(false);
+      }, (error) => {
+          console.error("Error fetching appointments: ", error);
+          setLoading(false);
+      });
+
+      return () => unsubscribe();
+    } else {
+        setLoading(false);
+    }
+  }, [currentUser]);
+
+
+  const handleRefund = (id: string) => {
     setConsultations(consultations.map(c => 
       c.id === id ? { ...c, status: 'Refunded', details: 'Payment has been refunded.' } : c
     ));
@@ -97,7 +120,7 @@ export default function DoctorDashboard() {
           </Link>
         </nav>
         <div className="p-4 mt-auto">
-             <Link href="#" className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100" prefetch={false}>
+             <Link href="/" onClick={() => auth.signOut()} className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100" prefetch={false}>
                 <LogOut className="h-5 w-5" />
                 Logout
             </Link>
@@ -159,46 +182,60 @@ export default function DoctorDashboard() {
                         <CardTitle>Upcoming Consultations</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="space-y-4">
-                            {consultations.map((consultation) => (
-                                <div key={consultation.id} className="flex items-start justify-between p-3 rounded-lg bg-gray-50 border">
-                                    <div className="flex items-start gap-4">
-                                        <Avatar>
-                                            <AvatarImage src={consultation.avatar.src} data-ai-hint={consultation.avatar.hint} alt={consultation.patient} />
-                                            <AvatarFallback>{consultation.patient.charAt(0)}</AvatarFallback>
-                                        </Avatar>
-                                        <div>
-                                            <p className="font-semibold">{consultation.patient}</p>
-                                            <p className="text-sm text-gray-500">{consultation.time}</p>
-                                            {consultation.details && (
-                                                <p className={`text-xs mt-1 ${consultation.status === 'Refunded' ? 'text-green-600' : 'text-red-500'}`}>
-                                                    {consultation.details}
-                                                </p>
+                       {loading ? (
+                             <div className="flex justify-center items-center h-48">
+                                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                            </div>
+                        ) : consultations.length > 0 ? (
+                            <div className="space-y-4">
+                                {consultations.map((consultation, index) => {
+                                    const patientAvatar = placeholderImages[`patient-avatar-${index % 4}` as keyof typeof placeholderImages] || placeholderImages['patient-avatar-0'];
+                                    return(
+                                    <div key={consultation.id} className="flex items-start justify-between p-3 rounded-lg bg-gray-50 border">
+                                        <div className="flex items-start gap-4">
+                                            <Avatar>
+                                                <AvatarImage src={patientAvatar.src} data-ai-hint={patientAvatar.hint} alt={consultation.patientName} />
+                                                <AvatarFallback>{consultation.patientName.charAt(0)}</AvatarFallback>
+                                            </Avatar>
+                                            <div>
+                                                <p className="font-semibold">{consultation.patientName}</p>
+                                                <p className="text-sm text-gray-500">{consultation.time} - {consultation.type}</p>
+                                                {consultation.details && (
+                                                    <p className={`text-xs mt-1 ${consultation.status === 'Refunded' ? 'text-green-600' : 'text-red-500'}`}>
+                                                        {consultation.details}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            {consultation.status === 'Upcoming' && (
+                                                <>
+                                                    <Button size="sm"><Video className="w-4 h-4 mr-2"/>Start Call</Button>
+                                                    <Button size="sm" variant="outline">Details</Button>
+                                                </>
+                                            )}
+                                            {consultation.status === 'Refund Requested' && (
+                                                <>
+                                                    <Button size="sm" variant="destructive" onClick={() => handleRefund(consultation.id)}>Refund Payment</Button>
+                                                    <Button size="sm" variant="outline">Details</Button>
+                                                </>
+                                            )}
+                                            {consultation.status === 'Refunded' && (
+                                                <>
+                                                    <Button size="sm" variant="outline" disabled>Payment Refunded</Button>
+                                                </>
                                             )}
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-2">
-                                        {consultation.status === 'Upcoming' && (
-                                            <>
-                                                <Button size="sm"><Video className="w-4 h-4 mr-2"/>Start Call</Button>
-                                                <Button size="sm" variant="outline">Details</Button>
-                                            </>
-                                        )}
-                                        {consultation.status === 'Refund Requested' && (
-                                            <>
-                                                <Button size="sm" variant="destructive" onClick={() => handleRefund(consultation.id)}>Refund Payment</Button>
-                                                <Button size="sm" variant="outline">Details</Button>
-                                            </>
-                                        )}
-                                         {consultation.status === 'Refunded' && (
-                                            <>
-                                                <Button size="sm" variant="outline" disabled>Payment Refunded</Button>
-                                            </>
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                             <div className="text-center py-16">
+                                <Calendar className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
+                                <p className="text-lg font-semibold">{currentUser ? 'No upcoming consultations.' : 'Please log in to view consultations.'}</p>
+                            </div>
+                        )}
                     </CardContent>
                 </Card>
                 <div className="flex flex-col gap-6">
@@ -248,3 +285,5 @@ export default function DoctorDashboard() {
     </div>
   );
 }
+
+    

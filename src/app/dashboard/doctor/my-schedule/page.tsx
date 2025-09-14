@@ -20,8 +20,7 @@ interface Appointment extends DocumentData {
   id: string;
   time: string;
   patientName: string;
-  patientAvatar: { src: string; hint: string; };
-  type: 'Video Call' | 'In-Clinic';
+  type: 'In-Clinic' | 'Video Call';
   status: 'Confirmed' | 'Cancelled' | 'Completed';
 }
 
@@ -52,12 +51,7 @@ export default function DoctorSchedulePage() {
 
       const unsubscribe = onSnapshot(q, (snapshot) => {
         const apps: Appointment[] = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Appointment));
-        // Note: The patientAvatar is hardcoded for now. In a real app, you'd fetch patient details.
-        const appointmentsWithAvatars = apps.map((app, index) => ({
-            ...app,
-            patientAvatar: placeholderImages[`patient-avatar-${index % 4}` as keyof typeof placeholderImages] || placeholderImages['patient-avatar-0']
-        }))
-        setAppointments(appointmentsWithAvatars);
+        setAppointments(apps);
         setIsLoading(false);
       }, (error) => {
           console.error("Error fetching appointments: ", error);
@@ -100,7 +94,7 @@ export default function DoctorSchedulePage() {
           </Link>
         </nav>
         <div className="p-4 mt-auto">
-             <Link href="#" className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100" prefetch={false}>
+             <Link href="/" onClick={() => auth.signOut()} className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100" prefetch={false}>
                 <LogOut className="h-5 w-5" />
                 Logout
             </Link>
@@ -139,11 +133,13 @@ export default function DoctorSchedulePage() {
                         </div>
                     ) : appointments.length > 0 ? (
                         <div className="space-y-4">
-                            {appointments.map((apt) => (
+                            {appointments.map((apt, index) => {
+                                const patientAvatar = placeholderImages[`patient-avatar-${index % 4}` as keyof typeof placeholderImages] || placeholderImages['patient-avatar-0'];
+                                return (
                                 <div key={apt.id} className="flex items-center justify-between p-4 rounded-lg bg-gray-50 border">
                                     <div className="flex items-center gap-4">
                                         <Avatar>
-                                            <AvatarImage src={apt.patientAvatar.src} data-ai-hint={apt.patientAvatar.hint} alt={apt.patientName} />
+                                            <AvatarImage src={patientAvatar.src} data-ai-hint={patientAvatar.hint} alt={apt.patientName} />
                                             <AvatarFallback>{apt.patientName?.charAt(0) || 'P'}</AvatarFallback>
                                         </Avatar>
                                         <div>
@@ -166,7 +162,8 @@ export default function DoctorSchedulePage() {
                                     {apt.type === 'Video Call' && apt.status === 'Confirmed' && <Button size="sm">Start Call</Button>}
                                     </div>
                                 </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     ) : (
                          <div className="text-center py-16">
@@ -195,3 +192,5 @@ export default function DoctorSchedulePage() {
     </div>
   );
 }
+
+    

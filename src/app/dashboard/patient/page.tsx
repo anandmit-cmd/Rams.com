@@ -72,6 +72,8 @@ export default function PatientDashboard() {
       };
     } else {
       setLoading(false);
+      setUserData(null);
+      setAppointments([]);
     }
   }, [currentUser]);
 
@@ -215,7 +217,7 @@ export default function PatientDashboard() {
             <Card className="mb-8 bg-gradient-to-r from-primary/10 to-accent/10">
                 <CardHeader>
                     <CardTitle>Welcome back, {userData?.fullName || 'Guest'}!</CardTitle>
-                    <CardDescription>Here's a quick overview of your health dashboard.</CardDescription>
+                    <CardDescription>{currentUser ? 'Here\'s a quick overview of your health dashboard.' : 'Please log in to see your dashboard.'}</CardDescription>
                 </CardHeader>
             </Card>
            )}
@@ -234,7 +236,7 @@ export default function PatientDashboard() {
                                 <p className="text-sm font-semibold mt-2">{upcomingAppointment.time}</p>
                             </>
                         ) : (
-                            <p className="text-sm text-muted-foreground">No upcoming appointments.</p>
+                            <p className="text-sm text-muted-foreground">{currentUser ? 'No upcoming appointments.' : 'Log in to view.'}</p>
                         )}
                          <Button className="mt-4 w-full" variant="outline">View Appointments</Button>
                     </CardContent>
@@ -245,7 +247,7 @@ export default function PatientDashboard() {
                         <FileText className="w-4 h-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        {loading ? <Loader2 className='animate-spin' /> : (
+                        {loading ? <Loader2 className='animate-spin' /> : currentUser ? (
                        <div className="space-y-2">
                           <div className="flex items-center justify-between p-2 rounded-lg bg-gray-50 border">
                             <p className="text-sm font-medium">Blood Test Report (10th July)</p>
@@ -256,7 +258,9 @@ export default function PatientDashboard() {
                             <Button variant="ghost" size="icon" className="h-8 w-8"><Download className="h-4 w-4" /></Button>
                           </div>
                        </div>
-                        )}
+                       ) : (
+                         <p className="text-sm text-muted-foreground">Log in to view.</p>
+                       )}
                          <Button className="mt-4 w-full" variant="outline">View All Records</Button>
                     </CardContent>
                 </Card>
@@ -424,3 +428,4 @@ export default function PatientDashboard() {
   );
 }
 
+    
