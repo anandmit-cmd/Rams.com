@@ -124,6 +124,10 @@
     "src": "https://picsum.photos/seed/wellness-diet/400/300",
     "hint": "diet nutrition"
   },
+  "ambulance-driver-avatar": {
+    "src": "https://picsum.photos/seed/ambulance-driver/100/100",
+    "hint": "driver portrait"
+  },
   "live-map": {
     "src": "https://picsum.photos/seed/map/1200/800",
     "hint": "city map"
@@ -132,29 +136,17 @@
     "src": "https://picsum.photos/seed/doctor/100/100",
     "hint": "doctor portrait"
   },
-  "patient-avatar-0": {
-    "src": "https://picsum.photos/seed/patient0/100/100",
+  "patient-avatar": {
+    "src": "https://picsum.photos/seed/patient/100/100",
     "hint": "person portrait"
   },
-  "patient-avatar-1": {
-    "src": "https://picsum.photos/seed/patient1/100/100",
-    "hint": "smiling person"
+  "lab-tech-avatar": {
+    "src": "https://picsum.photos/seed/lab-tech/100/100",
+    "hint": "technician portrait"
   },
-  "patient-avatar-2": {
-    "src": "https://picsum.photos/seed/patient2/100/100",
-    "hint": "woman portrait"
-  },
-  "patient-avatar-3": {
-    "src": "https://picsum.photos/seed/patient3/100/100",
-    "hint": "man portrait"
-  },
-  "client-avatar-1": {
-    "src": "https://picsum.photos/seed/client1/100/100",
-    "hint": "woman smiling"
-  },
-  "client-avatar-2": {
-    "src": "https://picsum.photos/seed/client2/100/100",
-    "hint": "man outdoor"
+  "pharmacist-avatar": {
+    "src": "https://picsum.photos/seed/pharmacist/100/100",
+    "hint": "pharmacist portrait"
   },
   "hospital-gallery-1": {
     "src": "https://picsum.photos/seed/apollo-gallery1/1200/800",
@@ -187,6 +179,42 @@
   "patient-user-avatar": {
     "src": "https://picsum.photos/seed/user/100/100",
     "hint": "person portrait"
+  },
+  "yoga-instructor-avatar": {
+    "src": "https://picsum.photos/seed/yoga-instructor/300/200",
+    "hint": "yoga instructor"
+  },
+  "fitness-coach-avatar": {
+    "src": "https://picsum.photos/seed/fitness-coach/300/200",
+    "hint": "fitness coach"
+  },
+  "counselor-avatar": {
+    "src": "https://picsum.photos/seed/counselor/300/200",
+    "hint": "counselor portrait"
+  },
+  "patient-avatar-0": {
+    "src": "https://picsum.photos/seed/patient0/100/100",
+    "hint": "person portrait"
+  },
+  "patient-avatar-1": {
+    "src": "https://picsum.photos/seed/patient1/100/100",
+    "hint": "smiling person"
+  },
+  "patient-avatar-2": {
+    "src": "https://picsum.photos/seed/patient2/100/100",
+    "hint": "woman portrait"
+  },
+  "patient-avatar-3": {
+    "src": "https://picsum.photos/seed/patient3/100/100",
+    "hint": "man portrait"
+  },
+  "client-avatar-1": {
+    "src": "https://picsum.photos/seed/client1/100/100",
+    "hint": "woman smiling"
+  },
+  "client-avatar-2": {
+    "src": "https://picsum.photos/seed/client2/100/100",
+    "hint": "man outdoor"
   },
   "provider-hero": {
     "src": "https://picsum.photos/seed/provider-hero/800/600",
@@ -232,18 +260,6 @@
     "src": "https://picsum.photos/seed/promo3/1200/500",
     "hint": "medicine discount"
   },
-  "yoga-instructor-avatar": {
-    "src": "https://picsum.photos/seed/yoga-instructor/300/200",
-    "hint": "yoga instructor"
-  },
-  "fitness-coach-avatar": {
-    "src": "https://picsum.photos/seed/fitness-coach/300/200",
-    "hint": "fitness coach"
-  },
-  "counselor-avatar": {
-    "src": "https://picsum.photos/seed/counselor/300/200",
-    "hint": "counselor portrait"
-  },
   "health-loan-hero": {
     "src": "https://picsum.photos/seed/loan-hero/800/600",
     "hint": "financial support"
@@ -256,18 +272,8 @@
     "src": "https://picsum.photos/seed/contact-hero/1200/400",
     "hint": "customer support"
   },
-  "lab-tech-avatar": {
-    "src": "https://picsum.photos/seed/lab-tech/100/100",
-    "hint": "technician portrait"
-  },
-  "ambulance-driver-avatar": {
-    "src": "https://picsum.photos/seed/ambulance-driver/100/100",
-    "hint": "driver portrait"
-  },
   "wellness-expert-avatar": {
     "src": "https://picsum.photos/seed/expert/100/100",
     "hint": "professional person"
   }
 }
-
-    
