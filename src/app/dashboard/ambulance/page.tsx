@@ -9,11 +9,31 @@ import { Map, Siren, List, Bell, LogOut, LayoutGrid, Star, BarChart2, CheckCircl
 import { AppLogo } from '@/components/icons';
 import Image from 'next/image';
 import placeholderImages from '@/lib/placeholder-images.json';
+import { useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
 
 
 export default function AmbulanceDashboard() {
   const driverAvatar = placeholderImages['ambulance-driver-avatar'];
   const liveMap = placeholderImages['live-map'];
+  const [showSos, setShowSos] = useState(true);
+  const { toast } = useToast();
+
+  const handleSosAction = (accepted: boolean) => {
+    if (accepted) {
+        toast({
+            title: "Alert Accepted!",
+            description: "Patient and hospital have been notified. Navigate to the location immediately.",
+        });
+    } else {
+        toast({
+            title: "Alert Declined",
+            description: "The alert has been passed to the next available unit.",
+            variant: "destructive"
+        })
+    }
+    setShowSos(false);
+  }
 
   return (
     <div className="flex min-h-screen bg-secondary">
@@ -113,6 +133,7 @@ export default function AmbulanceDashboard() {
                 </Card>
             </div>
             <div className="lg:col-span-1 flex flex-col gap-6">
+               {showSos && (
                 <Card>
                     <CardHeader>
                         <CardTitle>Emergency SOS</CardTitle>
@@ -124,12 +145,13 @@ export default function AmbulanceDashboard() {
                             <p className="text-gray-600 text-sm">Near Andheri Station, Mumbai</p>
                             <p className="text-sm">ETA: 12 mins</p>
                             <div className="flex gap-2 mt-4">
-                                <Button className="w-full bg-green-600 hover:bg-green-700">Accept</Button>
-                                <Button className="w-full" variant="destructive">Decline</Button>
+                                <Button className="w-full bg-green-600 hover:bg-green-700" onClick={() => handleSosAction(true)}>Accept</Button>
+                                <Button className="w-full" variant="destructive" onClick={() => handleSosAction(false)}>Decline</Button>
                             </div>
                         </div>
                     </CardContent>
                 </Card>
+               )}
                 <Card>
                     <CardHeader>
                         <CardTitle>Ratings & Feedback</CardTitle>
