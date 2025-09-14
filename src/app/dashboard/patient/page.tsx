@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { auth, db } from '@/lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { doc, onSnapshot, collection, query, where } from 'firebase/firestore';
+import { doc, onSnapshot, collection, query, where, orderBy, limit } from 'firebase/firestore';
 
 
 interface Appointment {
@@ -39,6 +39,11 @@ export default function PatientDashboard() {
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
+      if (!user) {
+        setLoading(false);
+        setUserData(null);
+        setAppointments([]);
+      }
     });
     return () => unsubscribeAuth();
   }, []);
@@ -52,12 +57,24 @@ export default function PatientDashboard() {
         } else {
           console.log("No such document!");
         }
+      }, (error) => {
+        console.error("Error fetching user data:", error);
+        toast({ title: "Could not load user data.", variant: "destructive" });
       });
       
-      const q = query(collection(db, "appointments"), where("patientId", "==", currentUser.uid));
+      const q = query(
+          collection(db, "appointments"), 
+          where("patientId", "==", currentUser.uid),
+          orderBy("date", "desc"),
+          orderBy("time", "desc")
+      );
       const unsubAppointments = onSnapshot(q, (snapshot) => {
         const appsData: Appointment[] = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()} as Appointment));
         setAppointments(appsData);
+        setLoading(false);
+      }, (error) => {
+        console.error("Error fetching appointments:", error);
+        toast({ title: "Could not load appointments.", variant: "destructive" });
         setLoading(false);
       });
 
@@ -65,12 +82,8 @@ export default function PatientDashboard() {
           unsubDoc();
           unsubAppointments();
       };
-    } else {
-      setLoading(false);
-      setUserData(null);
-      setAppointments([]);
     }
-  }, [currentUser]);
+  }, [currentUser, toast]);
 
 
   const handleFeedbackSubmit = () => {
@@ -88,15 +101,20 @@ export default function PatientDashboard() {
     });
   };
 
-  const upcomingAppointment = appointments.find(a => a.status === 'Confirmed');
+  const upcomingAppointment = appointments.find(a => a.status === 'Confirmed' && new Date(a.date) >= new Date(new Date().toDateString()));
 
   return (
     <main className="flex-1 p-6">
         {loading ? (
             <Card className="mb-8 bg-gradient-to-r from-primary/10 to-accent/10">
             <CardHeader>
-                <CardTitle>Loading your dashboard...</CardTitle>
-                <CardDescription>Please wait a moment.</CardDescription>
+                 <div className="flex items-center gap-4">
+                    <Loader2 className='w-8 h-8 animate-spin text-primary' />
+                    <div>
+                        <CardTitle>Loading your dashboard...</CardTitle>
+                        <CardDescription>Please wait a moment.</CardDescription>
+                    </div>
+                </div>
             </CardHeader>
         </Card>
         ) : (
@@ -255,7 +273,7 @@ export default function PatientDashboard() {
                                 <DialogDescription>
                                     Upload a prescription to order medicines or book lab tests.
                                 </DialogDescription>
-                            </DialogHeader>
+                            </Header>
                             <div className="py-4">
                                 <Input type="file" className="w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"/>
                             </div>
@@ -311,3 +329,5 @@ export default function PatientDashboard() {
     </main>
   );
 }
+
+    
