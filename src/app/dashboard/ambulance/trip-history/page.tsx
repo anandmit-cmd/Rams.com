@@ -24,7 +24,7 @@ const tripHistory = [
 export default function AmbulanceTripHistoryPage() {
     const driverAvatar = placeholderImages['ambulance-driver-avatar'];
 
-    const getStatusVariant = (status: string): 'default' | 'destructive' | 'secondary' | 'outline' | null | undefined => {
+    const getStatusVariant = (status: string) => {
         switch (status) {
             case 'Completed': return 'default';
             case 'Cancelled': return 'destructive';
@@ -98,8 +98,8 @@ export default function AmbulanceTripHistoryPage() {
                                 <TableHead>Date & Time</TableHead>
                                 <TableHead>Pickup</TableHead>
                                 <TableHead>Dropoff</TableHead>
-                                <TableHead>Fare</TableHead>
-                                <TableHead>Status</TableHead>
+                                <TableHead className="text-right">Fare</TableHead>
+                                <TableHead className="text-center">Status</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -110,9 +110,10 @@ export default function AmbulanceTripHistoryPage() {
                                     <TableCell>{trip.date}</TableCell>
                                     <TableCell>{trip.pickup}</TableCell>
                                     <TableCell>{trip.dropoff}</TableCell>
-                                    <TableCell>₹{trip.fare.toFixed(2)}</TableCell>
-                                    <TableCell>
+                                    <TableCell className="text-right">₹{trip.fare.toFixed(2)}</TableCell>
+                                    <TableCell className="text-center">
                                         <Badge variant={getStatusVariant(trip.status)} className={cn(
+                                            'font-semibold',
                                             trip.status === 'Completed' && 'bg-green-100 text-green-800 border-green-200 hover:bg-green-100',
                                             trip.status === 'Cancelled' && 'bg-red-100 text-red-800 border-red-200 hover:bg-red-100'
                                             )}>
@@ -130,3 +131,4 @@ export default function AmbulanceTripHistoryPage() {
     </div>
   );
 }
+
