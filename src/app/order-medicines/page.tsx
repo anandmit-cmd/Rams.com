@@ -60,7 +60,7 @@ export default function OrderMedicinesPage() {
         } else {
             setCart(cart.map(item => item.name === name ? {...item, quantity} : item));
         }
-    }
+    };
 
     const totalCartItems = cart.reduce((total, item) => total + item.quantity, 0);
     const cartTotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -71,7 +71,7 @@ export default function OrderMedicinesPage() {
             title: 'Prescription Uploaded',
             description: 'Our team will review your prescription and contact you shortly.',
         });
-    }
+    };
 
   return (
     <div className="flex flex-col min-h-screen bg-secondary">
@@ -171,7 +171,7 @@ export default function OrderMedicinesPage() {
                             <DialogDescription>
                                 Please upload a clear image of your prescription. Our experts will contact you shortly.
                             </DialogDescription>
-                        </Header>
+                        </DialogHeader>
                         <div className="py-4">
                             <Input type="file" />
                         </div>
@@ -210,4 +210,3 @@ export default function OrderMedicinesPage() {
     </div>
   );
 }
-

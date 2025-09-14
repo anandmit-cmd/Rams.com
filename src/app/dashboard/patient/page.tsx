@@ -273,7 +273,7 @@ export default function PatientDashboard() {
                                 <DialogDescription>
                                     Upload a prescription to order medicines or book lab tests.
                                 </DialogDescription>
-                            </Header>
+                            </DialogHeader>
                             <div className="py-4">
                                 <Input type="file" className="w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"/>
                             </div>
@@ -329,5 +329,3 @@ export default function PatientDashboard() {
     </main>
   );
 }
-
-    
