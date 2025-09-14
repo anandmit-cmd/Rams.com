@@ -26,6 +26,7 @@ import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useState, useEffect, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { initializeFCM } from '@/lib/push-notifications';
 
 
 const menuItems = [
@@ -53,6 +54,10 @@ export default function PatientDashboardLayout({
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
+       if (user) {
+        // Initialize FCM once user is logged in
+        initializeFCM(user);
+      }
     });
     return () => unsubscribeAuth();
   }, []);
