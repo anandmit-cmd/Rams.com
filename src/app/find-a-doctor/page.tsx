@@ -42,7 +42,6 @@ const specialties = [
 ];
 
 export default function FindDoctorPage() {
-    const [featuredDoctors, setFeaturedDoctors] = useState<Doctor[]>([]);
     const [allDoctors, setAllDoctors] = useState<Doctor[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -54,15 +53,22 @@ export default function FindDoctorPage() {
                 const allSnapshot = await getDocs(allQuery);
                 const allData = allSnapshot.docs.map((doc, index) => {
                     const data = doc.data();
+                    const rank = data.rank || 'bronze';
                     return {
                         id: doc.id,
-                        ...(data as any),
+                        fullName: data.fullName || 'N/A',
+                        specialty: data.specialty || 'N/A',
+                        location: data.location || 'Mumbai, IN',
+                        rating: data.rating || 4.5,
+                        reviews: data.reviews || 50,
+                        availability: data.availability || 'Online',
                         image: placeholderImages[`doctor-${(index % 6) + 1}` as keyof typeof placeholderImages] || placeholderImages['doctor-1'],
+                        rank: rank,
+                        consultationFee: data.consultationFee || (rank === 'gold' ? 1500 : rank === 'silver' ? 1200 : 1000),
                     } as Doctor;
                 });
                 
                 setAllDoctors(allData);
-                setFeaturedDoctors(allData.filter(d => d.rank === 'gold'));
 
             } catch (error) {
                 console.error("Error fetching doctors:", error);
@@ -73,6 +79,9 @@ export default function FindDoctorPage() {
 
         fetchDoctors();
     }, []);
+    
+    const featuredDoctors = allDoctors.filter(d => d.rank === 'gold');
+
 
   return (
     <div className="flex flex-col min-h-screen bg-secondary">
@@ -177,22 +186,22 @@ export default function FindDoctorPage() {
                                                 <p className="text-primary font-semibold">{doctor.specialty}</p>
                                                 <div className="flex items-center text-sm text-gray-500 my-2">
                                                     <MapPin className="w-4 h-4 mr-1" />
-                                                    {doctor.location || 'Mumbai, IN'}
+                                                    {doctor.location}
                                                 </div>
                                                 <div className="flex items-center gap-4 my-3">
                                                     <div className="flex items-center gap-1">
                                                         <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                                                        <span className="font-bold">{doctor.rating || 4.8}</span>
-                                                        <span className="text-xs text-gray-500">({doctor.reviews || 100+}+ reviews)</span>
+                                                        <span className="font-bold">{doctor.rating}</span>
+                                                        <span className="text-xs text-gray-500">({doctor.reviews}+ reviews)</span>
                                                     </div>
                                                     <Badge variant={doctor.availability === 'Online' ? 'default' : 'secondary'} className={`${doctor.availability === 'Online' ? 'bg-green-100 text-green-800' : ''}`}>
-                                                        {doctor.availability || 'Online'}
+                                                        {doctor.availability}
                                                     </Badge>
                                                 </div>
                                                  <div className="flex items-center justify-between mt-4 pt-4 border-t">
                                                     <div className="flex items-center font-bold text-lg">
                                                         <BadgeIndianRupee className="w-5 h-5 mr-1"/>
-                                                        {doctor.consultationFee || '1500'}
+                                                        {doctor.consultationFee}
                                                     </div>
                                                     <Button asChild className="h-10">
                                                         <Link href={`/book-appointment?doctorId=${doctor.id}`}>Book Appointment</Link>
@@ -222,22 +231,22 @@ export default function FindDoctorPage() {
                                             <p className="text-primary font-semibold">{doctor.specialty}</p>
                                             <div className="flex items-center text-sm text-gray-500 my-2">
                                                 <MapPin className="w-4 h-4 mr-1" />
-                                                {doctor.location || 'Mumbai, IN'}
+                                                {doctor.location}
                                             </div>
                                             <div className="flex items-center gap-4 my-3">
                                                 <div className="flex items-center gap-1">
                                                     <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                                                    <span className="font-bold">{doctor.rating || 4.7}</span>
-                                                    <span className="text-xs text-gray-500">({doctor.reviews || 50+}+ reviews)</span>
+                                                    <span className="font-bold">{doctor.rating}</span>
+                                                    <span className="text-xs text-gray-500">({doctor.reviews}+ reviews)</span>
                                                 </div>
                                                 <Badge variant={doctor.availability === 'Online' ? 'default' : 'secondary'} className={`${doctor.availability === 'Online' ? 'bg-green-100 text-green-800' : ''}`}>
-                                                    {doctor.availability || 'In-Clinic'}
+                                                    {doctor.availability}
                                                 </Badge>
                                             </div>
                                              <div className="flex items-center justify-between mt-4 pt-4 border-t">
                                                 <div className="flex items-center font-bold text-lg">
                                                     <BadgeIndianRupee className="w-5 h-5 mr-1"/>
-                                                    {doctor.consultationFee || 1000}
+                                                    {doctor.consultationFee}
                                                 </div>
                                                 <Button asChild className="h-10">
                                                     <Link href={`/book-appointment?doctorId=${doctor.id}`}>Book Appointment</Link>
