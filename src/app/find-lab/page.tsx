@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Search, Star, MapPin, Navigation } from 'lucide-react';
+import { Search, Star, MapPin, Navigation, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { AppLogo } from '@/components/icons';
 import { Badge } from '@/components/ui/badge';
@@ -95,7 +95,10 @@ export default function FindLabPage() {
           </Card>
 
            {loading ? (
-                <p>Loading labs...</p>
+                <div className="flex justify-center items-center py-16">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                    <p className="ml-4">Loading labs...</p>
+                </div>
             ) : labs.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {labs.map((lab) => (
@@ -134,10 +137,12 @@ export default function FindLabPage() {
                     ))}
                 </div>
             ) : (
-                <p>No labs found.</p>
+                <p className="text-center text-muted-foreground">No labs found.</p>
             )}
         </div>
       </main>
     </div>
   );
 }
+
+    

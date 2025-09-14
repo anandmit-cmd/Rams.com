@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Search, Star, MapPin, BedDouble, ShieldAlert, HeartPulse, Baby, GitCommitVertical, User } from 'lucide-react';
+import { Search, Star, MapPin, BedDouble, ShieldAlert, HeartPulse, Baby, GitCommitVertical, User, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { AppLogo } from '@/components/icons';
 import { Badge } from '@/components/ui/badge';
@@ -116,7 +116,10 @@ export default function FindHospitalPage() {
           </Card>
 
           {loading ? (
-                <p>Loading hospitals...</p>
+                <div className="flex justify-center items-center py-16">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                    <p className="ml-4">Loading hospitals...</p>
+                </div>
             ) : hospitals.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {hospitals.map((hospital) => (
@@ -155,10 +158,12 @@ export default function FindHospitalPage() {
                     ))}
                 </div>
             ) : (
-                <p>No hospitals found.</p>
+                <p className="text-center text-muted-foreground">No hospitals found.</p>
             )}
         </div>
       </main>
     </div>
   );
 }
+
+    
