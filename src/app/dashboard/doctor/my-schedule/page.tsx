@@ -16,7 +16,7 @@ import { auth, db } from '@/lib/firebase';
 import { collection, query, where, onSnapshot, DocumentData } from 'firebase/firestore';
 import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 
-interface Appointment {
+interface Appointment extends DocumentData {
   id: string;
   time: string;
   patientName: string;
@@ -144,7 +144,7 @@ export default function DoctorSchedulePage() {
                                     <div className="flex items-center gap-4">
                                         <Avatar>
                                             <AvatarImage src={apt.patientAvatar.src} data-ai-hint={apt.patientAvatar.hint} alt={apt.patientName} />
-                                            <AvatarFallback>{apt.patientName.charAt(0)}</AvatarFallback>
+                                            <AvatarFallback>{apt.patientName?.charAt(0) || 'P'}</AvatarFallback>
                                         </Avatar>
                                         <div>
                                             <p className="font-semibold">{apt.patientName}</p>
@@ -171,8 +171,8 @@ export default function DoctorSchedulePage() {
                     ) : (
                          <div className="text-center py-16">
                             <CalendarIcon className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
-                            <p className="text-lg font-semibold">No appointments scheduled for this day.</p>
-                            <p className="text-sm text-muted-foreground">Select another date to view other appointments.</p>
+                            <p className="text-lg font-semibold">{currentUser ? 'No appointments scheduled for this day.' : 'Please log in to view your schedule.'}</p>
+                            <p className="text-sm text-muted-foreground">{currentUser ? 'Select another date to view other appointments.' : 'Your appointments will appear here once you log in.'}</p>
                         </div>
                     )}
                 </CardContent>
