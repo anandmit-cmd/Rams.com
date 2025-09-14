@@ -71,6 +71,7 @@ export default function PatientDashboardLayout({
   }, [currentUser]);
 
   const handleAvatarClick = () => {
+    if (isUploading) return;
     fileInputRef.current?.click();
   };
 
@@ -159,9 +160,9 @@ export default function PatientDashboardLayout({
                     <AvatarImage src={userAvatarSrc} alt="Patient" data-ai-hint={userAvatarHint} />
                     <AvatarFallback>{userData?.fullName?.charAt(0) || 'P'}</AvatarFallback>
                 </Avatar>
-                <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" onClick={handleAvatarClick}>
+                <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer" onClick={handleAvatarClick}>
                     {isUploading ? 
-                        <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div> :
+                        <Loader2 className="h-5 w-5 text-white animate-spin" /> :
                         <Camera className="h-5 w-5 text-white" />
                     }
                 </div>
@@ -171,6 +172,7 @@ export default function PatientDashboardLayout({
                     onChange={handleFileChange}
                     className="hidden"
                     accept="image/png, image/jpeg"
+                    disabled={isUploading}
                 />
             </div>
           </div>
