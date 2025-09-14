@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { ShoppingCart, Package, BarChart, Bell, LogOut, LayoutGrid, PlusCircle, Calendar as CalendarIcon, MoreHorizontal, Trash2, Pencil } from 'lucide-react';
+import { ShoppingCart, Package, BarChart, Bell, LogOut, LayoutGrid, PlusCircle, Calendar as CalendarIcon, MoreHorizontal, Trash2, Pencil, Loader2 } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogTrigger, DialogClose } from '@/components/ui/dialog';
@@ -14,10 +14,13 @@ import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
-import { useState }from 'react';
+import { useState, useEffect } from 'react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import placeholderImages from '@/lib/placeholder-images.json';
 import { useToast } from '@/hooks/use-toast';
+import { auth, db } from '@/lib/firebase';
+import { collection, addDoc, onSnapshot, doc, deleteDoc, query, where, getDocs, QuerySnapshot, DocumentData } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
 
 type Medicine = {
     id: string;
@@ -25,27 +28,58 @@ type Medicine = {
     price: number;
     stock: number;
     expiry: string;
+    pharmacyId: string;
 };
 
-const initialInventory: Medicine[] = [
-  { id: 'MED-001', name: 'Paracetamol 500mg', price: 25.50, stock: 120, expiry: '2025-12-31' },
-  { id: 'MED-002', name: 'Aspirin 75mg', price: 15.00, stock: 80, expiry: '2026-06-30' },
-  { id: 'MED-003', name: 'Amoxicillin 250mg', price: 75.00, stock: 50, expiry: '2025-08-15' },
-  { id: 'MED-004', name: 'Cetirizine 10mg', price: 30.00, stock: 200, expiry: '2026-01-20' },
-];
-
 export default function InventoryPage() {
-    const [inventory, setInventory] = useState<Medicine[]>(initialInventory);
+    const [inventory, setInventory] = useState<Medicine[]>([]);
     const [newMedName, setNewMedName] = useState('');
     const [newMedPrice, setNewMedPrice] = useState('');
     const [newMedStock, setNewMedStock] = useState('');
     const [newMedExpiry, setNewMedExpiry] = useState<Date | undefined>();
+    const [isLoading, setIsLoading] = useState(true);
+    const [currentUser, setCurrentUser] = useState<any>(null);
     const { toast } = useToast();
 
     const pharmacistAvatar = placeholderImages['pharmacist-avatar'];
 
-    const handleAddMedicine = () => {
-        if (!newMedName || !newMedPrice || !newMedStock || !newMedExpiry) {
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setCurrentUser(user);
+            } else {
+                // Handle user not logged in
+                setCurrentUser(null);
+            }
+        });
+        return () => unsubscribe();
+    }, []);
+
+    useEffect(() => {
+        if (currentUser) {
+            setIsLoading(true);
+            const q = query(collection(db, "medicines"), where("pharmacyId", "==", currentUser.uid));
+            const unsubscribe = onSnapshot(q, (snapshot: QuerySnapshot<DocumentData>) => {
+                const medsData: Medicine[] = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Medicine));
+                setInventory(medsData);
+                setIsLoading(false);
+            }, (error) => {
+                console.error("Error fetching inventory: ", error);
+                toast({
+                    title: 'Error',
+                    description: 'Could not fetch inventory.',
+                    variant: 'destructive',
+                });
+                setIsLoading(false);
+            });
+
+            return () => unsubscribe();
+        }
+    }, [currentUser, toast]);
+
+
+    const handleAddMedicine = async () => {
+        if (!newMedName || !newMedPrice || !newMedStock || !newMedExpiry || !currentUser) {
             toast({
                 title: 'Error',
                 description: 'Please fill all the fields to add a new medicine.',
@@ -53,31 +87,49 @@ export default function InventoryPage() {
             });
             return;
         }
-        const newMedicine: Medicine = {
-            id: `MED-${String(inventory.length + 1).padStart(3, '0')}`,
-            name: newMedName,
-            price: parseFloat(newMedPrice),
-            stock: parseInt(newMedStock),
-            expiry: format(newMedExpiry, 'yyyy-MM-dd'),
-        };
-        setInventory([...inventory, newMedicine]);
-        // Reset form
-        setNewMedName('');
-        setNewMedPrice('');
-        setNewMedStock('');
-        setNewMedExpiry(undefined);
-        toast({
-            title: 'Success!',
-            description: `${newMedicine.name} has been added to the inventory.`,
-        });
+        try {
+            const newMedicine = {
+                name: newMedName,
+                price: parseFloat(newMedPrice),
+                stock: parseInt(newMedStock),
+                expiry: format(newMedExpiry, 'yyyy-MM-dd'),
+                pharmacyId: currentUser.uid,
+            };
+            await addDoc(collection(db, "medicines"), newMedicine);
+
+            setNewMedName('');
+            setNewMedPrice('');
+            setNewMedStock('');
+            setNewMedExpiry(undefined);
+            toast({
+                title: 'Success!',
+                description: `${newMedicine.name} has been added to the inventory.`,
+            });
+        } catch (error) {
+            console.error("Error adding document: ", error);
+            toast({
+                title: 'Error',
+                description: 'Failed to add medicine.',
+                variant: 'destructive',
+            });
+        }
     };
     
-    const handleDeleteMedicine = (id: string) => {
-        setInventory(inventory.filter(med => med.id !== id));
-        toast({
-            title: 'Medicine Removed',
-            description: 'The selected medicine has been removed from the inventory.',
-        });
+    const handleDeleteMedicine = async (id: string) => {
+        try {
+            await deleteDoc(doc(db, "medicines", id));
+            toast({
+                title: 'Medicine Removed',
+                description: 'The selected medicine has been removed from the inventory.',
+            });
+        } catch (error) {
+            console.error("Error removing document: ", error);
+            toast({
+                title: 'Error',
+                description: 'Failed to remove medicine.',
+                variant: 'destructive',
+            });
+        }
     };
 
   return (
@@ -171,7 +223,7 @@ export default function InventoryPage() {
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
-                                            <Calendar mode="single" selected={newMedExpiry} onSelect={setNewMedExpiry} initialFocus />
+                                            <Calendar mode="single" selected={newMedExpiry} onSelect={setNewMedExpiry} initialFocus disabled={(date) => date < new Date()} />
                                         </PopoverContent>
                                     </Popover>
                                 </div>
@@ -185,6 +237,11 @@ export default function InventoryPage() {
                     </Dialog>
                 </CardHeader>
                 <CardContent>
+                    {isLoading ? (
+                        <div className="flex justify-center items-center h-64">
+                            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                        </div>
+                    ) : (
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -197,9 +254,9 @@ export default function InventoryPage() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {inventory.map(med => (
+                            {inventory.length > 0 ? inventory.map(med => (
                                 <TableRow key={med.id}>
-                                    <TableCell className="font-medium">{med.id}</TableCell>
+                                    <TableCell className="font-medium">{med.id.substring(0, 7)}...</TableCell>
                                     <TableCell>{med.name}</TableCell>
                                     <TableCell>{med.price.toFixed(2)}</TableCell>
                                     <TableCell>{med.stock}</TableCell>
@@ -213,7 +270,7 @@ export default function InventoryPage() {
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
-                                                <DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => toast({ title: 'Edit action is not implemented yet.' })}>
                                                     <Pencil className="mr-2 h-4 w-4" />
                                                     Edit
                                                 </DropdownMenuItem>
@@ -225,9 +282,16 @@ export default function InventoryPage() {
                                         </DropdownMenu>
                                     </TableCell>
                                 </TableRow>
-                            ))}
+                            )) : (
+                                <TableRow>
+                                    <TableCell colSpan={6} className="h-24 text-center">
+                                        No medicines found in your inventory. Add one to get started.
+                                    </TableCell>
+                                </TableRow>
+                            )}
                         </TableBody>
                     </Table>
+                    )}
                 </CardContent>
             </Card>
         </main>
