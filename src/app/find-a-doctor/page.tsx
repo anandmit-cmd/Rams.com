@@ -50,26 +50,19 @@ export default function FindDoctorPage() {
         const fetchDoctors = async () => {
             setLoading(true);
             try {
-                // Fetch featured (gold) doctors
-                const featuredQuery = query(collection(db, "users"), where("role", "==", "doctor"), where("rank", "==", "gold"));
-                const featuredSnapshot = await getDocs(featuredQuery);
-                const featuredData = featuredSnapshot.docs.map((doc, index) => ({
-                    id: doc.id,
-                    ...(doc.data() as any),
-                    // Assign placeholder image sequentially for demo
-                    image: placeholderImages[`doctor-${index + 1}` as keyof typeof placeholderImages] || placeholderImages['doctor-1'],
-                })) as Doctor[];
-                setFeaturedDoctors(featuredData);
-
-                // Fetch all doctors
-                const allQuery = query(collection(db, "users"), where("role", "==", "doctor"));
+                 const allQuery = query(collection(db, "users"), where("role", "==", "doctor"));
                 const allSnapshot = await getDocs(allQuery);
-                const allData = allSnapshot.docs.map((doc, index) => ({
-                    id: doc.id,
-                    ...(doc.data() as any),
-                     image: placeholderImages[`doctor-${index + 1}` as keyof typeof placeholderImages] || placeholderImages['doctor-1'],
-                })) as Doctor[];
+                const allData = allSnapshot.docs.map((doc, index) => {
+                    const data = doc.data();
+                    return {
+                        id: doc.id,
+                        ...(data as any),
+                        image: placeholderImages[`doctor-${(index % 6) + 1}` as keyof typeof placeholderImages] || placeholderImages['doctor-1'],
+                    } as Doctor;
+                });
+                
                 setAllDoctors(allData);
+                setFeaturedDoctors(allData.filter(d => d.rank === 'gold'));
 
             } catch (error) {
                 console.error("Error fetching doctors:", error);
@@ -213,6 +206,7 @@ export default function FindDoctorPage() {
                             <div className="text-center mb-8">
                                 <h2 className="text-3xl font-bold tracking-tighter text-gray-800">All Doctors</h2>
                             </div>
+                           {allDoctors.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {allDoctors.map((doctor) => (
                                      <Card key={doctor.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow">
@@ -250,6 +244,9 @@ export default function FindDoctorPage() {
                                     </Card>
                                 ))}
                             </div>
+                             ) : (
+                                <p>No doctors found.</p>
+                            )}
                         </section>
                     </>
                  )}
@@ -328,5 +325,3 @@ export default function FindDoctorPage() {
     </div>
   );
 }
-
-    

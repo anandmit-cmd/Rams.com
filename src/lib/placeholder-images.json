@@ -275,5 +275,29 @@
   "wellness-expert-avatar": {
     "src": "https://picsum.photos/seed/expert/100/100",
     "hint": "professional person"
+  },
+  "lab-avatar-1": {
+    "src": "https://picsum.photos/seed/lab-avatar1/100/100",
+    "hint": "lab building"
+  },
+  "lab-avatar-2": {
+    "src": "https://picsum.photos/seed/lab-avatar2/100/100",
+    "hint": "lab logo"
+  },
+  "lab-avatar-3": {
+    "src": "https://picsum.photos/seed/lab-avatar3/100/100",
+    "hint": "diagnostics center"
+  },
+  "pharmacy-avatar-1": {
+    "src": "https://picsum.photos/seed/pharmacy-avatar1/100/100",
+    "hint": "pharmacy logo"
+  },
+  "pharmacy-avatar-2": {
+    "src": "https://picsum.photos/seed/pharmacy-avatar2/100/100",
+    "hint": "medical store"
+  },
+  "pharmacy-avatar-3": {
+    "src": "https://picsum.photos/seed/pharmacy-avatar3/100/100",
+    "hint": "drug store"
   }
 }

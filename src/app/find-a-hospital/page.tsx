@@ -11,42 +11,23 @@ import { AppLogo } from '@/components/icons';
 import { Badge } from '@/components/ui/badge';
 import { RankBadge } from '@/components/rank-badge';
 import placeholderImages from '@/lib/placeholder-images.json';
+import { useEffect, useState } from 'react';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
-const hospitals = [
-  {
-    id: '1',
-    name: 'Apollo Hospital',
-    location: 'Mumbai, IN',
-    rating: 4.9,
-    reviews: 1800,
-    image: placeholderImages['hospital-1'],
-    bedsAvailable: 25,
-    tags: ['Multi-Specialty', '24/7 Emergency'],
-    rank: 'gold'
-  },
-  {
-    id: '2',
-    name: 'Fortis Hospital',
-    location: 'Delhi, IN',
-    rating: 4.8,
-    reviews: 1500,
-    image: placeholderImages['hospital-2'],
-    bedsAvailable: 15,
-    tags: ['Cardiac Care', 'Neurology'],
-    rank: 'silver'
-  },
-  {
-    id: '3',
-    name: 'Manipal Hospital',
-    location: 'Bangalore, IN',
-    rating: 4.7,
-    reviews: 1200,
-    image: placeholderImages['hospital-3'],
-    bedsAvailable: 30,
-    tags: ['Cancer Care', 'Pediatrics'],
-    rank: 'bronze'
-  },
-];
+
+type Hospital = {
+    id: string;
+    hospitalName: string;
+    location: string;
+    rating: number;
+    reviews: number;
+    image: { src: string; hint: string; };
+    bedsAvailable: number;
+    tags: string[];
+    rank: 'gold' | 'silver' | 'bronze';
+};
+
 
 const hospitalCategories = [
     { name: 'Emergency', icon: ShieldAlert },
@@ -57,6 +38,41 @@ const hospitalCategories = [
 ];
 
 export default function FindHospitalPage() {
+    const [hospitals, setHospitals] = useState<Hospital[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchHospitals = async () => {
+            setLoading(true);
+            try {
+                const q = query(collection(db, "users"), where("role", "==", "hospital"));
+                const querySnapshot = await getDocs(q);
+                const hospitalsData = querySnapshot.docs.map((doc, index) => {
+                    const data = doc.data();
+                    return {
+                        id: doc.id,
+                        hospitalName: data.hospitalName,
+                        location: data.address,
+                        rating: data.rating || 4.7,
+                        reviews: data.reviews || (Math.floor(Math.random() * 500) + 100),
+                        image: placeholderImages[`hospital-${(index % 3) + 1}` as keyof typeof placeholderImages] || placeholderImages['hospital-1'],
+                        bedsAvailable: data.bedsAvailable || (Math.floor(Math.random() * 20) + 5),
+                        tags: data.tags || ['Multi-Specialty', '24/7 Emergency'],
+                        rank: data.rank || 'bronze',
+                    } as Hospital;
+                });
+                setHospitals(hospitalsData);
+            } catch (error) {
+                console.error("Error fetching hospitals:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchHospitals();
+    }, []);
+
+
   return (
     <div className="flex flex-col min-h-screen bg-secondary">
       <header className="container mx-auto px-4 md:px-6 py-4 flex items-center justify-between bg-white shadow-sm">
@@ -99,42 +115,48 @@ export default function FindHospitalPage() {
             </div>
           </Card>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {hospitals.map((hospital) => (
-              <Card key={hospital.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow relative">
-                <div className="relative h-52">
-                  <Image src={hospital.image.src} alt={`Photo of ${hospital.name}`} fill style={{ objectFit: 'cover' }} data-ai-hint={hospital.image.hint} />
-                   {hospital.rank && <RankBadge rank={hospital.rank as 'gold' | 'silver' | 'bronze'} className="absolute top-2 right-2"/>}
+          {loading ? (
+                <p>Loading hospitals...</p>
+            ) : hospitals.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {hospitals.map((hospital) => (
+                    <Card key={hospital.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow relative">
+                        <div className="relative h-52">
+                        <Image src={hospital.image.src} alt={`Photo of ${hospital.hospitalName}`} fill style={{ objectFit: 'cover' }} data-ai-hint={hospital.image.hint} />
+                        {hospital.rank && <RankBadge rank={hospital.rank as 'gold' | 'silver' | 'bronze'} className="absolute top-2 right-2"/>}
+                        </div>
+                        <CardContent className="p-4">
+                        <h3 className="font-bold text-xl text-gray-800">{hospital.hospitalName}</h3>
+                        <div className="flex items-center text-sm text-gray-500 my-2">
+                            <MapPin className="w-4 h-4 mr-1" />
+                            {hospital.location}
+                        </div>
+                        <div className="flex items-center gap-4 my-3">
+                            <div className="flex items-center gap-1">
+                            <Star className="w-5 h-5 text-yellow-400 fill-current" />
+                            <span className="font-bold">{hospital.rating}</span>
+                            <span className="text-xs text-gray-500">({hospital.reviews} reviews)</span>
+                            </div>
+                            <Badge variant="secondary" className="flex items-center gap-2">
+                                <BedDouble className="w-4 h-4 text-green-600" />
+                                {hospital.bedsAvailable} Beds Available
+                            </Badge>
+                        </div>
+                        <div className="flex flex-wrap gap-2 mb-4">
+                                {hospital.tags.map(tag => (
+                                    <Badge key={tag} variant="outline">{tag}</Badge>
+                                ))}
+                            </div>
+                        <Button asChild className="w-full mt-4 h-10">
+                            <Link href={`/hospitals/${hospital.id}`}>View Details & Book</Link>
+                        </Button>
+                        </CardContent>
+                    </Card>
+                    ))}
                 </div>
-                <CardContent className="p-4">
-                  <h3 className="font-bold text-xl text-gray-800">{hospital.name}</h3>
-                  <div className="flex items-center text-sm text-gray-500 my-2">
-                    <MapPin className="w-4 h-4 mr-1" />
-                    {hospital.location}
-                  </div>
-                  <div className="flex items-center gap-4 my-3">
-                    <div className="flex items-center gap-1">
-                      <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                      <span className="font-bold">{hospital.rating}</span>
-                      <span className="text-xs text-gray-500">({hospital.reviews} reviews)</span>
-                    </div>
-                     <Badge variant="secondary" className="flex items-center gap-2">
-                        <BedDouble className="w-4 h-4 text-green-600" />
-                        {hospital.bedsAvailable} Beds Available
-                    </Badge>
-                  </div>
-                   <div className="flex flex-wrap gap-2 mb-4">
-                        {hospital.tags.map(tag => (
-                            <Badge key={tag} variant="outline">{tag}</Badge>
-                        ))}
-                    </div>
-                  <Button asChild className="w-full mt-4 h-10">
-                    <Link href={`/hospitals/${hospital.id}`}>View Details & Book</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+            ) : (
+                <p>No hospitals found.</p>
+            )}
         </div>
       </main>
     </div>
