@@ -5,13 +5,16 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { LayoutGrid, Users, Hospital, Stethoscope, BarChart2, Bell, LogOut, Settings, PlusCircle, Trash2, Pencil, MoreHorizontal, FileText, BadgePercent } from 'lucide-react';
+import { LayoutGrid, Users, Hospital, Stethoscope, BarChart2, Bell, LogOut, Settings, PlusCircle, Trash2, Pencil, MoreHorizontal, FileText, BadgePercent, Loader2 } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import placeholderImages from '@/lib/placeholder-images.json';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartConfig } from '@/components/ui/chart';
 import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
+import { db } from '@/lib/firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 
 
 const chartData = [
@@ -31,20 +34,83 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
+type User = {
+    id: string;
+    fullName?: string;
+    hospitalName?: string;
+    pharmacyName?: string;
+    labName?: string;
+    driverName?: string;
+    role: string;
+    createdAt: any;
+};
 
-const allUsers = [
-    { id: 1, name: 'Anjali Sharma', role: 'Patient', registered: '2024-07-20', avatar: placeholderImages['patient-user-avatar'] },
-    { id: 2, name: 'Dr. Vikram Singh', role: 'Doctor', registered: '2024-07-18', avatar: placeholderImages['doctor-avatar'] },
-    { id: 3, name: 'Apollo Hospital', role: 'Hospital', registered: '2024-07-15', avatar: placeholderImages['hospital-1'] },
-    { id: 4, name: 'City Medicals', role: 'Pharmacy', registered: '2024-07-12', avatar: placeholderImages['pharmacy-1'] },
-    { id: 5, name: 'Metropolis Lab', role: 'Lab', registered: '2024-07-11', avatar: placeholderImages['lab-tech-avatar'] },
-    { id: 6, name: 'Ramesh Kumar', role: 'Ambulance', registered: '2024-07-10', avatar: placeholderImages['ambulance-driver-avatar'] },
-    { id: 7, name: 'Aarav Sharma', role: 'Wellness Expert', registered: '2024-07-09', avatar: placeholderImages['wellness-expert-avatar'] },
-    { id: 8, name: 'Anand Mishra', role: 'Admin', registered: '2024-07-01', avatar: placeholderImages['admin-avatar'] },
-]
 
 export default function AdminDashboard() {
   const adminAvatar = placeholderImages['admin-avatar'];
+  const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchUsers() {
+        setLoading(true);
+        try {
+            const usersCollection = await getDocs(collection(db, 'users'));
+            const usersData = usersCollection.docs.map(doc => ({ id: doc.id, ...doc.data() } as User));
+            setAllUsers(usersData);
+        } catch (error) {
+            console.error("Error fetching users:", error);
+        } finally {
+            setLoading(false);
+        }
+    }
+    fetchUsers();
+  }, []);
+
+  const getUserDetails = (user: User) => {
+    let name = 'N/A';
+    let avatarKey: keyof typeof placeholderImages = 'patient-user-avatar';
+
+    switch(user.role) {
+      case 'patient':
+        name = user.fullName || 'Patient';
+        avatarKey = 'patient-user-avatar';
+        break;
+      case 'doctor':
+        name = user.fullName || 'Doctor';
+        avatarKey = 'doctor-avatar';
+        break;
+      case 'hospital':
+        name = user.hospitalName || 'Hospital';
+        avatarKey = 'hospital-1';
+        break;
+      case 'pharmacy':
+        name = user.pharmacyName || 'Pharmacy';
+        avatarKey = 'pharmacy-1';
+        break;
+      case 'lab':
+        name = user.labName || 'Lab';
+        avatarKey = 'lab-tech-avatar';
+        break;
+      case 'ambulance':
+        name = user.driverName || 'Ambulance Driver';
+        avatarKey = 'ambulance-driver-avatar';
+        break;
+      case 'wellness':
+          name = user.fullName || 'Wellness Expert';
+          avatarKey = 'wellness-expert-avatar';
+          break;
+      case 'admin':
+          name = user.fullName || 'Admin';
+          avatarKey = 'admin-avatar';
+          break;
+      default:
+          name = user.fullName || 'Unknown User';
+          break;
+    }
+    const avatar = placeholderImages[avatarKey] || placeholderImages['patient-user-avatar'];
+    return { name, avatar };
+  }
 
   return (
     <div className="flex min-h-screen bg-secondary">
@@ -104,8 +170,8 @@ export default function AdminDashboard() {
                         <Users className="w-4 h-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">10,254</div>
-                        <p className="text-xs text-muted-foreground">+120 in the last 24h</p>
+                        <div className="text-2xl font-bold">{loading ? <Skeleton className="h-8 w-20" /> : allUsers.length}</div>
+                        <p className="text-xs text-muted-foreground">All registered users</p>
                     </CardContent>
                 </Card>
                  <Card>
@@ -114,8 +180,8 @@ export default function AdminDashboard() {
                         <Stethoscope className="w-4 h-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">850</div>
-                         <p className="text-xs text-muted-foreground">+5 new applications</p>
+                        <div className="text-2xl font-bold"> {loading ? <Skeleton className="h-8 w-16" /> : allUsers.filter(u => u.role === 'doctor').length}</div>
+                         <p className="text-xs text-muted-foreground">Verified doctors</p>
                     </CardContent>
                 </Card>
                  <Card>
@@ -124,8 +190,8 @@ export default function AdminDashboard() {
                         <Hospital className="w-4 h-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">125</div>
-                        <p className="text-xs text-muted-foreground">+2 new partnerships</p>
+                        <div className="text-2xl font-bold">{loading ? <Skeleton className="h-8 w-16" /> : allUsers.filter(u => u.role === 'hospital').length}</div>
+                        <p className="text-xs text-muted-foreground">Partnered hospitals</p>
                     </CardContent>
                 </Card>
                  <Card>
@@ -148,6 +214,14 @@ export default function AdminDashboard() {
                             <CardDescription>View, manage, or delete users from the platform.</CardDescription>
                         </CardHeader>
                         <CardContent>
+                           {loading ? (
+                                <div className="space-y-2">
+                                    <Skeleton className="h-12 w-full" />
+                                    <Skeleton className="h-12 w-full" />
+                                    <Skeleton className="h-12 w-full" />
+                                    <Skeleton className="h-12 w-full" />
+                                </div>
+                            ) : (
                             <Table>
                                 <TableHeader>
                                     <TableRow>
@@ -158,37 +232,41 @@ export default function AdminDashboard() {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {allUsers.map(user => (
-                                        <TableRow key={user.id}>
-                                            <TableCell className="font-medium">
-                                                <div className="flex items-center gap-3">
-                                                    <Avatar className="w-8 h-8">
-                                                        <AvatarImage src={user.avatar.src} data-ai-hint={user.avatar.hint} alt={user.name} />
-                                                        <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-                                                    </Avatar>
-                                                    {user.name}
-                                                </div>
-                                            </TableCell>
-                                            <TableCell>{user.role}</TableCell>
-                                            <TableCell>{user.registered}</TableCell>
-                                            <TableCell className="text-right">
-                                                 <DropdownMenu>
-                                                    <DropdownMenuTrigger asChild>
-                                                        <Button variant="ghost" className="h-8 w-8 p-0">
-                                                            <span className="sr-only">Open menu</span>
-                                                            <MoreHorizontal className="h-4 w-4" />
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="end">
-                                                        <DropdownMenuItem><Pencil className="mr-2 h-4 w-4" /> Edit User</DropdownMenuItem>
-                                                        <DropdownMenuItem className="text-red-600 focus:text-red-600"><Trash2 className="mr-2 h-4 w-4" /> Delete User</DropdownMenuItem>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
+                                    {allUsers.map(user => {
+                                        const { name, avatar } = getUserDetails(user);
+                                        return (
+                                            <TableRow key={user.id}>
+                                                <TableCell className="font-medium">
+                                                    <div className="flex items-center gap-3">
+                                                        <Avatar className="w-8 h-8">
+                                                            <AvatarImage src={avatar.src} data-ai-hint={avatar.hint} alt={name} />
+                                                            <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+                                                        </Avatar>
+                                                        {name}
+                                                    </div>
+                                                </TableCell>
+                                                <TableCell className="capitalize">{user.role}</TableCell>
+                                                <TableCell>{user.createdAt?.toDate ? new Date(user.createdAt.toDate()).toLocaleDateString() : 'N/A'}</TableCell>
+                                                <TableCell className="text-right">
+                                                    <DropdownMenu>
+                                                        <DropdownMenuTrigger asChild>
+                                                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                                                <span className="sr-only">Open menu</span>
+                                                                <MoreHorizontal className="h-4 w-4" />
+                                                            </Button>
+                                                        </DropdownMenuTrigger>
+                                                        <DropdownMenuContent align="end">
+                                                            <DropdownMenuItem><Pencil className="mr-2 h-4 w-4" /> Edit User</DropdownMenuItem>
+                                                            <DropdownMenuItem className="text-red-600 focus:text-red-600"><Trash2 className="mr-2 h-4 w-4" /> Delete User</DropdownMenuItem>
+                                                        </DropdownMenuContent>
+                                                    </DropdownMenu>
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
                                 </TableBody>
                             </Table>
+                            )}
                         </CardContent>
                     </Card>
                 </div>
