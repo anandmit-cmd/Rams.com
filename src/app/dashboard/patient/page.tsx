@@ -5,21 +5,51 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Calendar, Stethoscope, FileText, Wallet, Bell, LogOut, LayoutGrid, HeartPulse, ShieldPlus, HeartHandshake, Star, MessageSquare, Leaf, Users, Download, Upload } from 'lucide-react';
+import { Calendar, Stethoscope, FileText, Wallet, Bell, LogOut, LayoutGrid, HeartPulse, ShieldPlus, HeartHandshake, Star, MessageSquare, Leaf, Users, Download, Upload, Camera } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import placeholderImages from '@/lib/placeholder-images.json';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
+import { auth, db } from '@/lib/firebase';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default function PatientDashboard() {
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const { toast } = useToast();
   const ratingLabels = ["Very Poor", "Poor", "Fair", "Good", "Excellent"];
-  const userAvatar = placeholderImages['patient-user-avatar'];
+  const defaultUserAvatar = placeholderImages['patient-user-avatar'];
+
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [userData, setUserData] = useState<any>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+    });
+    return () => unsubscribeAuth();
+  }, []);
+
+  useEffect(() => {
+    if (currentUser) {
+      const unsubDoc = onSnapshot(doc(db, "users", currentUser.uid), (doc) => {
+        if (doc.exists()) {
+          setUserData(doc.data());
+        } else {
+          console.log("No such document!");
+        }
+      });
+      return () => unsubDoc();
+    }
+  }, [currentUser]);
+
 
   const handleFeedbackSubmit = () => {
     toast({
@@ -35,6 +65,48 @@ export default function PatientDashboard() {
         description: "Your prescription has been successfully uploaded.",
     });
   };
+
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !currentUser) return;
+
+    setIsUploading(true);
+    const storage = getStorage();
+    const storageRef = ref(storage, `avatars/${currentUser.uid}/${file.name}`);
+
+    try {
+      const snapshot = await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(snapshot.ref);
+
+      const userDocRef = doc(db, "users", currentUser.uid);
+      await updateDoc(userDocRef, {
+        avatar: downloadURL
+      });
+
+      toast({
+        title: "Profile Picture Updated!",
+        description: "Your new profile picture is now visible.",
+      });
+
+    } catch (error) {
+      console.error("Error uploading file: ", error);
+      toast({
+        title: "Upload Failed",
+        description: "Could not upload your profile picture. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+
+  const userAvatarSrc = userData?.avatar || defaultUserAvatar.src;
+  const userAvatarHint = userData?.avatar ? "user profile picture" : defaultUserAvatar.hint;
 
   return (
     <div className="flex min-h-screen bg-secondary">
@@ -68,7 +140,7 @@ export default function PatientDashboard() {
           </Link>
         </nav>
         <div className="p-4 mt-auto">
-             <Link href="#" className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100" prefetch={false}>
+             <Link href="/" onClick={() => auth.signOut()} className="flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100" prefetch={false}>
                 <LogOut className="h-5 w-5" />
                 Logout
             </Link>
@@ -83,17 +155,32 @@ export default function PatientDashboard() {
                 <Bell className="w-6 h-6 text-gray-600" />
                 <span className="sr-only">Notifications</span>
             </Button>
-            <Avatar>
-              <AvatarImage src={userAvatar.src} data-ai-hint={userAvatar.hint} alt="Patient" />
-              <AvatarFallback>P</AvatarFallback>
-            </Avatar>
+            <div className="relative group">
+                <Avatar className="h-10 w-10 cursor-pointer" onClick={handleAvatarClick}>
+                    <AvatarImage src={userAvatarSrc} alt="Patient" data-ai-hint={userAvatarHint} />
+                    <AvatarFallback>{userData?.fullName?.charAt(0) || 'P'}</AvatarFallback>
+                </Avatar>
+                <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" onClick={handleAvatarClick}>
+                    {isUploading ? 
+                        <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div> :
+                        <Camera className="h-5 w-5 text-white" />
+                    }
+                </div>
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    className="hidden"
+                    accept="image/png, image/jpeg"
+                />
+            </div>
           </div>
         </header>
 
         <main className="flex-1 p-6">
             <Card className="mb-8 bg-gradient-to-r from-primary/10 to-accent/10">
                 <CardHeader>
-                    <CardTitle>Welcome back, Anjali!</CardTitle>
+                    <CardTitle>Welcome back, {userData?.fullName || 'Guest'}!</CardTitle>
                     <CardDescription>Here's a quick overview of your health dashboard.</CardDescription>
                 </CardHeader>
             </Card>
@@ -293,3 +380,5 @@ export default function PatientDashboard() {
     </div>
   );
 }
+
+    
