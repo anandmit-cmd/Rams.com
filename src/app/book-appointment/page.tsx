@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -15,11 +16,45 @@ import placeholderImages from '@/lib/placeholder-images.json';
 import { db } from '@/lib/firebase';
 import { collection, addDoc, doc, getDoc, DocumentData, serverTimestamp } from "firebase/firestore"; 
 import React from 'react';
+import type { Metadata } from 'next';
 
 const timeSlots = [
   '09:00 AM', '09:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM',
   '02:00 PM', '02:30 PM', '03:00 PM', '03:30 PM', '04:00 PM', '04:30 PM'
 ];
+
+async function fetchDoctorData(doctorId: string | null): Promise<DocumentData | null> {
+    if (!doctorId) return null;
+    try {
+        const docRef = doc(db, "users", doctorId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            return docSnap.data();
+        }
+        return null;
+    } catch (error) {
+        console.error("Error fetching doctor for metadata:", error);
+        return null;
+    }
+}
+
+export async function generateMetadata({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }): Promise<Metadata> {
+  const doctorId = searchParams.doctorId as string | null;
+  const doctor = await fetchDoctorData(doctorId);
+
+  if (!doctor) {
+    return {
+      title: 'Book Appointment | RAMS.com',
+      description: 'Select a doctor to book an appointment.',
+    };
+  }
+
+  return {
+    title: `Book Appointment with ${doctor.fullName} | RAMS.com`,
+    description: `Schedule an appointment with ${doctor.fullName}, a specialist in ${doctor.specialty}.`,
+  };
+}
+
 
 function BookAppointmentPage() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
