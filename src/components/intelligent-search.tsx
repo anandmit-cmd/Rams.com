@@ -25,6 +25,7 @@ import {
   Beaker,
   Clock,
   HeartPulse,
+  Hospital,
   Pill,
   Stethoscope,
 } from 'lucide-react';
@@ -62,6 +63,8 @@ function ResultIcon({ type }: { type: string }) {
       return <Beaker className="size-8 text-primary" />;
     case 'medical_store':
       return <Pill className="size-8 text-primary" />;
+    case 'hospital':
+      return <Hospital className="size-8 text-primary" />;
     default:
       return null;
   }
@@ -71,6 +74,7 @@ const resultLinks = {
   doctor: '/find-a-doctor',
   lab: '/book-lab-test',
   medical_store: '/order-medicines',
+  hospital: '/find-a-hospital',
 };
 
 export function IntelligentSearch() {

@@ -21,7 +21,7 @@ export type IntelligentMedicalSearchInput = z.infer<
 >;
 
 const SearchResultSchema = z.object({
-  type: z.enum(['doctor', 'lab', 'medical_store']).describe('The type of medical service.'),
+  type: z.enum(['doctor', 'lab', 'medical_store', 'hospital']).describe('The type of medical service.'),
   name: z.string().describe('The name of the service.'),
   description: z.string().describe('A brief description of the service.'),
   availability: z.string().optional().describe('Availability details, if applicable.'),
@@ -62,7 +62,7 @@ const intelligentMedicalSearchPrompt = ai.definePrompt({
   1.  **Analyze the Symptoms**: Provide a helpful summary of what the symptoms might indicate in the user's language. Do not provide a definitive diagnosis. Use phrases like "This could be related to..." or "It's possible that...".
   2.  **Estimate Severity**: Assess the potential severity as 'low', 'medium', or 'high'. If the user mentions symptoms like severe chest pain, difficulty breathing, or uncontrolled bleeding, always mark it as 'high'. For mild symptoms like a slight headache or a common cold, mark it as 'low'.
   3.  **Provide First Aid**: If applicable, suggest safe, general first aid or home care advice in the user's language. For example, for a sprain, suggest R.I.C.E (Rest, Ice, Compression, Elevation). For stress, suggest deep breathing exercises. DO NOT suggest taking any specific medicine.
-  4.  **Suggest Next Steps**: Based on the analysis, provide an array of suggestions for medical services (doctors, labs, medical stores). For high-severity issues, strongly recommend seeing a specific type of doctor. The suggestions array must be in English.
+  4.  **Suggest Next Steps**: Based on the analysis, provide an array of suggestions for medical services (doctors, labs, medical stores, hospitals). For high-severity issues, strongly recommend seeing a specific type of doctor or visiting a hospital. The suggestions array must be in English.
 
   Format your response as a single JSON object with two main keys: "analysis" and "suggestions".
 
@@ -75,15 +75,15 @@ const intelligentMedicalSearchPrompt = ai.definePrompt({
     },
     "suggestions": [
       {
+        "type": "hospital",
+        "name": "Emergency Room",
+        "description": "Go to the nearest hospital emergency room without delay."
+      },
+      {
         "type": "doctor",
         "name": "Cardiologist (Heart Specialist)",
         "description": "It is highly recommended to consult a cardiologist immediately.",
         "availability": "Emergency services are available 24/7"
-      },
-      {
-        "type": "doctor",
-        "name": "Emergency Room",
-        "description": "Go to the nearest hospital emergency room without delay."
       }
     ]
   }
