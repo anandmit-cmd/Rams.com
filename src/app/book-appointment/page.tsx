@@ -277,5 +277,3 @@ const BookAppointmentPageWrapper = () => (
 );
 
 export default BookAppointmentPageWrapper;
-
-    

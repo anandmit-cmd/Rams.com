@@ -271,5 +271,3 @@ export default function HospitalDetailPage({ params }: { params: { id: string } 
     </div>
   );
 }
-
-    
