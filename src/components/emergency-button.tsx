@@ -22,7 +22,7 @@ export function EmergencyButton() {
       <AlertDialogTrigger asChild>
         <Button
           variant="destructive"
-          className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg z-50 flex items-center justify-center"
+          className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg z-50 flex items-center justify-center animate-pulse"
           aria-label="Emergency Button"
         >
           <Siren className="h-8 w-8" />
