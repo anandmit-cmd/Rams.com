@@ -1,4 +1,3 @@
-
 {
   "doctor-1": {
     "src": "https://picsum.photos/seed/1/300/200",
@@ -224,7 +223,7 @@
     "src": "https://picsum.photos/seed/provider-doctor/400/300",
     "hint": "doctor smiling"
   },
-   "provider-hospital": {
+  "provider-hospital": {
     "src": "https://picsum.photos/seed/provider-hospital/400/300",
     "hint": "hospital building"
   },
@@ -299,5 +298,9 @@
   "pharmacy-avatar-3": {
     "src": "https://picsum.photos/seed/pharmacy-avatar3/100/100",
     "hint": "drug store"
+  },
+  "hero-background": {
+    "src": "https://picsum.photos/seed/herobg/1920/1080",
+    "hint": "doctor patient interaction"
   }
 }

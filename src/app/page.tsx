@@ -27,6 +27,8 @@ export default function LandingPage() {
     Autoplay({ delay: 3000, stopOnInteraction: true })
   )
 
+  const heroBgImage = placeholderImages['hero-background'];
+
   return (
     <div className="flex flex-col min-h-screen bg-secondary">
       <header className="container mx-auto px-4 md:px-6 py-4 flex items-center justify-between bg-white shadow-sm">
@@ -72,13 +74,17 @@ export default function LandingPage() {
       </header>
 
       <main className="flex-1">
-        <section className="py-12 md:py-24 lg:py-32 bg-white">
-          <div className="container mx-auto px-4 md:px-6">
+        <section className="relative py-12 md:py-24 lg:py-32 bg-white overflow-hidden">
+          <div className="absolute inset-0">
+             <Image src={heroBgImage.src} alt="Healthcare background" fill style={{objectFit: 'cover'}} className="opacity-10" data-ai-hint={heroBgImage.hint} />
+            <div className="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-transparent"></div>
+          </div>
+          <div className="container mx-auto px-4 md:px-6 relative">
            <IntelligentSearch />
           </div>
         </section>
 
-        <section className="py-12 md:py-24 lg:py-32 bg-white">
+        <section className="py-12 md:py-24 lg:py-32 bg-secondary">
             <div className="container mx-auto px-4 md:px-6">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl font-bold tracking-tighter text-gray-800">Discover Health Offers &amp; Events</h2>
@@ -119,15 +125,15 @@ export default function LandingPage() {
             </div>
         </section>
 
-        <section className="py-12 md:py-24 lg:py-32 bg-secondary">
+        <section className="py-12 md:py-24 lg:py-32 bg-white">
           <div className="container mx-auto px-4 md:px-6">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold tracking-tighter text-gray-800">Explore Our Core Services</h2>
               <p className="mt-2 text-gray-500">Comprehensive healthcare at your fingertips.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-              <Link href="/find-a-doctor" className="flex group">
-                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-blue-50 border-blue-200 hover:border-blue-400">
+              <Link href="/find-a-doctor" className="group">
+                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-blue-50 border-blue-200 hover:border-blue-400 transform hover:-translate-y-2 duration-300">
                   <div className="p-3 rounded-full bg-blue-100 mb-4 group-hover:scale-110 transition-transform">
                     <Stethoscope className="w-12 h-12 text-blue-600" />
                   </div>
@@ -135,8 +141,8 @@ export default function LandingPage() {
                   <p className="text-gray-600 mt-2 text-sm">Search for top specialists and book instantly.</p>
                 </Card>
               </Link>
-              <Link href="/find-a-hospital" className="flex group">
-                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-green-50 border-green-200 hover:border-green-400">
+              <Link href="/find-a-hospital" className="group">
+                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-green-50 border-green-200 hover:border-green-400 transform hover:-translate-y-2 duration-300">
                    <div className="p-3 rounded-full bg-green-100 mb-4 group-hover:scale-110 transition-transform">
                     <Hospital className="w-12 h-12 text-green-600" />
                   </div>
@@ -144,8 +150,8 @@ export default function LandingPage() {
                   <p className="text-gray-600 mt-2 text-sm">Explore hospitals and check bed availability.</p>
                 </Card>
               </Link>
-               <Link href="/order-medicines" className="flex group">
-                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-indigo-50 border-indigo-200 hover:border-indigo-400">
+               <Link href="/order-medicines" className="group">
+                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-indigo-50 border-indigo-200 hover:border-indigo-400 transform hover:-translate-y-2 duration-300">
                    <div className="p-3 rounded-full bg-indigo-100 mb-4 group-hover:scale-110 transition-transform">
                     <Pill className="w-12 h-12 text-indigo-600" />
                   </div>
@@ -153,8 +159,8 @@ export default function LandingPage() {
                   <p className="text-gray-600 mt-2 text-sm">Get medicines delivered to your doorstep.</p>
                 </Card>
               </Link>
-               <Link href="/book-lab-test" className="flex group">
-                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-purple-50 border-purple-200 hover:border-purple-400">
+               <Link href="/book-lab-test" className="group">
+                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-purple-50 border-purple-200 hover:border-purple-400 transform hover:-translate-y-2 duration-300">
                    <div className="p-3 rounded-full bg-purple-100 mb-4 group-hover:scale-110 transition-transform">
                     <TestTube2 className="w-12 h-12 text-purple-600" />
                   </div>
@@ -162,8 +168,8 @@ export default function LandingPage() {
                   <p className="text-gray-600 mt-2 text-sm">Book tests and get reports online.</p>
                 </Card>
               </Link>
-              <Link href="/book-ambulance" className="flex group">
-                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-xl hover:shadow-2xl transition-all bg-red-100 border-2 border-red-500 hover:bg-red-200 w-full animate-pulse">
+              <Link href="/book-ambulance" className="group">
+                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-xl hover:shadow-2xl transition-all bg-red-100 border-2 border-red-500 hover:bg-red-200 w-full animate-pulse transform hover:-translate-y-2 duration-300">
                   <div className="p-3 rounded-full bg-red-200 mb-4 group-hover:scale-110 transition-transform">
                     <Ambulance className="w-12 h-12 text-red-700" />
                   </div>
@@ -171,8 +177,8 @@ export default function LandingPage() {
                   <p className="text-red-700 mt-2 text-sm">Get immediate emergency assistance.</p>
                 </Card>
               </Link>
-               <Link href="/health-loan" className="flex group">
-                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-orange-50 border-orange-200 hover:border-orange-400">
+               <Link href="/health-loan" className="group">
+                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-orange-50 border-orange-200 hover:border-orange-400 transform hover:-translate-y-2 duration-300">
                    <div className="p-3 rounded-full bg-orange-100 mb-4 group-hover:scale-110 transition-transform">
                     <HeartHandshake className="w-12 h-12 text-orange-600" />
                   </div>
@@ -180,8 +186,8 @@ export default function LandingPage() {
                   <p className="text-gray-600 mt-2 text-sm">Instant loans for medical expenses.</p>
                 </Card>
               </Link>
-               <Link href="/rams-health-card" className="flex group">
-                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-teal-50 border-teal-200 hover:border-teal-400">
+               <Link href="/rams-health-card" className="group">
+                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-teal-50 border-teal-200 hover:border-teal-400 transform hover:-translate-y-2 duration-300">
                    <div className="p-3 rounded-full bg-teal-100 mb-4 group-hover:scale-110 transition-transform">
                     <ShieldPlus className="w-12 h-12 text-teal-600" />
                   </div>
@@ -193,7 +199,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="py-12 md:py-24 lg:py-32 bg-white">
+        <section className="py-12 md:py-24 lg:py-32 bg-secondary">
           <div className="container mx-auto px-4 md:px-6">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold tracking-tighter text-gray-800">Browse by Specialty</h2>
@@ -221,10 +227,11 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="py-12 md:py-24 lg:py-32 bg-secondary">
+        <section className="py-12 md:py-24 lg:py-32 bg-white">
           <div className="container mx-auto px-4 md:px-6">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold tracking-tighter text-gray-800">Wellness Zone</h2>
+               <p className="mt-2 text-gray-500 max-w-2xl mx-auto">Discover personalized wellness plans, expert guidance, and a supportive community to help you achieve your health goals.</p>
             </div>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
                 {[
