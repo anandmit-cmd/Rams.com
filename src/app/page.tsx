@@ -135,7 +135,7 @@ export default function LandingPage() {
               <Link href="/find-a-doctor" className="group">
                 <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-blue-50 border-blue-200 hover:border-blue-400 transform hover:-translate-y-2 duration-300">
                   <div className="p-3 rounded-full bg-blue-100 mb-4 transition-transform group-hover:scale-110">
-                    <Stethoscope className="w-12 h-12 text-blue-600" />
+                    <Users className="w-12 h-12 text-blue-600" />
                   </div>
                   <h3 className="text-xl font-bold text-blue-900">Find a Doctor</h3>
                   <p className="text-gray-600 mt-2 text-sm">Search for top specialists and book instantly.</p>
@@ -171,7 +171,7 @@ export default function LandingPage() {
               <Link href="/book-ambulance" className="group">
                 <Card className="p-6 flex flex-col items-center justify-center text-center shadow-xl hover:shadow-2xl transition-all bg-red-100 border-2 border-red-500 hover:bg-red-200 w-full transform hover:-translate-y-2 duration-300">
                   <div className="p-3 rounded-full bg-red-200 mb-4 relative">
-                    <Ambulance className="w-12 h-12 text-red-700" />
+                    <Ambulance className="w-12 h-12 text-red-700 animate-ping" />
                      <span className="absolute h-full w-full top-0 left-0 animate-ping rounded-full bg-red-400 opacity-75"></span>
                   </div>
                   <h3 className="text-xl font-bold text-red-900">Book an Ambulance</h3>
@@ -190,7 +190,7 @@ export default function LandingPage() {
                <Link href="/rams-health-card" className="group">
                 <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-teal-50 border-teal-200 hover:border-teal-400 transform hover:-translate-y-2 duration-300">
                    <div className="p-3 rounded-full bg-teal-100 mb-4 transition-transform group-hover:scale-110">
-                    <ShieldPlus className="w-12 h-12 text-teal-600" />
+                    <ShieldCheck className="w-12 h-12 text-teal-600" />
                   </div>
                   <h3 className="text-xl font-bold text-teal-900">Health Card</h3>
                   <p className="text-gray-600 mt-2 text-sm">Get health insurance coverage.</p>
