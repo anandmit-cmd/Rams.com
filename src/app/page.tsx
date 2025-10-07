@@ -170,8 +170,9 @@ export default function LandingPage() {
               </Link>
               <Link href="/book-ambulance" className="group">
                 <Card className="p-6 flex flex-col items-center justify-center text-center shadow-xl hover:shadow-2xl transition-all bg-red-100 border-2 border-red-500 hover:bg-red-200 w-full transform hover:-translate-y-2 duration-300">
-                  <div className="p-3 rounded-full bg-red-200 mb-4">
-                    <Ambulance className="w-12 h-12 text-red-700 animate-pulse" />
+                  <div className="p-3 rounded-full bg-red-200 mb-4 relative">
+                    <Ambulance className="w-12 h-12 text-red-700" />
+                     <span className="absolute h-full w-full top-0 left-0 animate-ping rounded-full bg-red-400 opacity-75"></span>
                   </div>
                   <h3 className="text-xl font-bold text-red-900">Book an Ambulance</h3>
                   <p className="text-red-700 mt-2 text-sm">Get immediate emergency assistance.</p>
