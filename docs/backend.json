@@ -4,141 +4,133 @@
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Patient",
       "type": "object",
-      "description": "Represents a patient registered in the system.",
+      "description": "Represents a patient using the Rams.com platform.",
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique identifier for the patient."
+          "description": "Unique identifier for the Patient entity."
         },
         "firstName": {
           "type": "string",
-          "description": "First name of the patient."
+          "description": "The first name of the patient."
         },
         "lastName": {
           "type": "string",
-          "description": "Last name of the patient."
-        },
-        "email": {
-          "type": "string",
-          "description": "Email address of the patient.",
-          "format": "email"
-        },
-        "phone": {
-          "type": "string",
-          "description": "Phone number of the patient."
-        },
-        "address": {
-          "type": "string",
-          "description": "Address of the patient."
+          "description": "The last name of the patient."
         },
         "dateOfBirth": {
           "type": "string",
-          "description": "Date of birth of the patient.",
+          "description": "The date of birth of the patient.",
           "format": "date-time"
         },
         "gender": {
           "type": "string",
-          "description": "Gender of the patient."
+          "description": "The gender of the patient."
+        },
+        "contactNumber": {
+          "type": "string",
+          "description": "The contact phone number of the patient."
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the patient.",
+          "format": "email"
+        },
+        "address": {
+          "type": "string",
+          "description": "The address of the patient."
         }
       },
       "required": [
         "id",
         "firstName",
         "lastName",
+        "dateOfBirth",
+        "gender",
+        "contactNumber",
         "email",
-        "phone"
+        "address"
       ]
     },
     "Doctor": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Doctor",
       "type": "object",
-      "description": "Represents a doctor registered in the system.",
+      "description": "Represents a doctor registered on the Rams.com platform.",
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique identifier for the doctor."
+          "description": "Unique identifier for the Doctor entity."
         },
         "firstName": {
           "type": "string",
-          "description": "First name of the doctor."
+          "description": "The first name of the doctor."
         },
         "lastName": {
           "type": "string",
-          "description": "Last name of the doctor."
-        },
-        "email": {
-          "type": "string",
-          "description": "Email address of the doctor.",
-          "format": "email"
-        },
-        "phone": {
-          "type": "string",
-          "description": "Phone number of the doctor."
+          "description": "The last name of the doctor."
         },
         "specialization": {
           "type": "string",
-          "description": "Area of specialization of the doctor."
+          "description": "The specialization of the doctor (e.g., Cardiology, Pediatrics)."
         },
-        "hospitalId": {
+        "contactNumber": {
           "type": "string",
-          "description": "Reference to Hospital. (Relationship: Hospital 1:N Doctor)"
+          "description": "The contact phone number of the doctor."
         },
-        "availability": {
+        "email": {
           "type": "string",
-          "description": "Availability schedule of the doctor."
+          "description": "The email address of the doctor.",
+          "format": "email"
+        },
+        "address": {
+          "type": "string",
+          "description": "The address of the doctor's clinic or practice."
         }
       },
       "required": [
         "id",
         "firstName",
         "lastName",
-        "email",
-        "phone",
         "specialization",
-        "hospitalId"
+        "contactNumber",
+        "email",
+        "address"
       ]
     },
     "MedicalStore": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "MedicalStore",
       "type": "object",
-      "description": "Represents a medical store registered in the system.",
+      "description": "Represents a medical store registered on the Rams.com platform.",
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique identifier for the medical store."
+          "description": "Unique identifier for the MedicalStore entity."
         },
         "name": {
           "type": "string",
-          "description": "Name of the medical store."
+          "description": "The name of the medical store."
+        },
+        "contactNumber": {
+          "type": "string",
+          "description": "The contact phone number of the medical store."
         },
         "email": {
           "type": "string",
-          "description": "Email address of the medical store.",
+          "description": "The email address of the medical store.",
           "format": "email"
-        },
-        "phone": {
-          "type": "string",
-          "description": "Phone number of the medical store."
         },
         "address": {
           "type": "string",
-          "description": "Address of the medical store."
-        },
-        "inventory": {
-          "type": "array",
-          "description": "Inventory of the medical store, referencing medicine ids.",
-          "items": {
-            "type": "string"
-          }
+          "description": "The address of the medical store."
         }
       },
       "required": [
         "id",
         "name",
+        "contactNumber",
         "email",
-        "phone",
         "address"
       ]
     },
@@ -146,112 +138,72 @@
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Lab",
       "type": "object",
-      "description": "Represents a lab registered in the system.",
+      "description": "Represents a medical laboratory registered on the Rams.com platform.",
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique identifier for the lab."
+          "description": "Unique identifier for the Lab entity."
         },
         "name": {
           "type": "string",
-          "description": "Name of the lab."
+          "description": "The name of the lab."
+        },
+        "contactNumber": {
+          "type": "string",
+          "description": "The contact phone number of the lab."
         },
         "email": {
           "type": "string",
-          "description": "Email address of the lab.",
+          "description": "The email address of the lab.",
           "format": "email"
-        },
-        "phone": {
-          "type": "string",
-          "description": "Phone number of the lab."
         },
         "address": {
           "type": "string",
-          "description": "Address of the lab."
-        },
-        "services": {
-          "type": "array",
-          "description": "List of services offered by the lab.",
-          "items": {
-            "type": "string"
-          }
+          "description": "The address of the lab."
         }
       },
       "required": [
         "id",
         "name",
+        "contactNumber",
         "email",
-        "phone",
         "address"
       ]
     },
-    "Ambulance": {
+    "AmbulanceService": {
       "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "Ambulance",
+      "title": "AmbulanceService",
       "type": "object",
-      "description": "Represents an ambulance service registered in the system.",
+      "description": "Represents an ambulance service registered on the Rams.com platform.",
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique identifier for the ambulance service."
+          "description": "Unique identifier for the AmbulanceService entity."
         },
         "name": {
           "type": "string",
-          "description": "Name of the ambulance service."
+          "description": "The name of the ambulance service."
         },
-        "phone": {
+        "contactNumber": {
           "type": "string",
-          "description": "Phone number of the ambulance service."
+          "description": "The contact phone number of the ambulance service."
         },
-        "location": {
+        "email": {
           "type": "string",
-          "description": "Current location of the ambulance."
-        },
-        "availability": {
-          "type": "boolean",
-          "description": "Indicates if the ambulance is currently available."
-        }
-      },
-      "required": [
-        "id",
-        "name",
-        "phone",
-        "location",
-        "availability"
-      ]
-    },
-    "Hospital": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "Hospital",
-      "type": "object",
-      "description": "Represents a hospital in the system.",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the hospital."
-        },
-        "name": {
-          "type": "string",
-          "description": "Name of the hospital."
+          "description": "The email address of the ambulance service.",
+          "format": "email"
         },
         "address": {
           "type": "string",
-          "description": "Address of the hospital."
-        },
-        "phone": {
-          "type": "string",
-          "description": "Phone number of the hospital."
-        },
-        "location": {
-          "type": "string",
-          "description": "GPS coordinates of the hospital."
+          "description": "The address of the ambulance service."
         }
       },
       "required": [
         "id",
         "name",
-        "address",
-        "phone"
+        "contactNumber",
+        "email",
+        "address"
       ]
     }
   },
@@ -270,11 +222,11 @@
           "schema": {
             "$ref": "#/backend/entities/Patient"
           },
-          "description": "Stores patient profiles. Each patient document is uniquely identified by its patientId.",
+          "description": "Stores patient data.  Each patient is identified by their unique ID.",
           "params": [
             {
               "name": "patientId",
-              "description": "Unique identifier for the patient."
+              "description": "The unique identifier for the patient."
             }
           ]
         }
@@ -286,11 +238,11 @@
           "schema": {
             "$ref": "#/backend/entities/Doctor"
           },
-          "description": "Stores doctor profiles. Each doctor document is uniquely identified by its doctorId.",
+          "description": "Stores doctor data. Each doctor is identified by their unique ID.",
           "params": [
             {
               "name": "doctorId",
-              "description": "Unique identifier for the doctor."
+              "description": "The unique identifier for the doctor."
             }
           ]
         }
@@ -302,11 +254,11 @@
           "schema": {
             "$ref": "#/backend/entities/MedicalStore"
           },
-          "description": "Stores medical store profiles. Each medicalStore document is uniquely identified by its medicalStoreId.",
+          "description": "Stores medical store data. Each medical store is identified by their unique ID.",
           "params": [
             {
               "name": "medicalStoreId",
-              "description": "Unique identifier for the medical store."
+              "description": "The unique identifier for the medical store."
             }
           ]
         }
@@ -318,48 +270,32 @@
           "schema": {
             "$ref": "#/backend/entities/Lab"
           },
-          "description": "Stores lab profiles. Each lab document is uniquely identified by its labId.",
+          "description": "Stores lab data. Each lab is identified by their unique ID.",
           "params": [
             {
               "name": "labId",
-              "description": "Unique identifier for the lab."
+              "description": "The unique identifier for the lab."
             }
           ]
         }
       },
       {
-        "path": "/ambulances/{ambulanceId}",
+        "path": "/ambulanceServices/{ambulanceServiceId}",
         "definition": {
-          "entityName": "Ambulance",
+          "entityName": "AmbulanceService",
           "schema": {
-            "$ref": "#/backend/entities/Ambulance"
+            "$ref": "#/backend/entities/AmbulanceService"
           },
-          "description": "Stores ambulance service profiles. Each ambulance document is uniquely identified by its ambulanceId.",
+          "description": "Stores ambulance service data. Each ambulance service is identified by their unique ID.",
           "params": [
             {
-              "name": "ambulanceId",
-              "description": "Unique identifier for the ambulance service."
-            }
-          ]
-        }
-      },
-      {
-        "path": "/hospitals/{hospitalId}",
-        "definition": {
-          "entityName": "Hospital",
-          "schema": {
-            "$ref": "#/backend/entities/Hospital"
-          },
-          "description": "Stores hospital profiles. Each hospital document is uniquely identified by its hospitalId.",
-          "params": [
-            {
-              "name": "hospitalId",
-              "description": "Unique identifier for the hospital."
+              "name": "ambulanceServiceId",
+              "description": "The unique identifier for the ambulance service."
             }
           ]
         }
       }
     ],
-    "reasoning": "The Firestore data structure is designed to support dynamic data storage for patients, doctors, medical stores, labs, ambulances, and hospitals, enabling user registration and profile creation as requested. Each entity type has its own top-level collection. This structure facilitates easy querying and management of each entity. User-related data (patients, doctors, medical stores, labs, and ambulances) is stored at the top level for easy access. No denormalization is needed as the app is not collaborative and only requires role-based access. This setup avoids complex authorization rules and simplifies data management.\n\nThis structure supports QAPs because each entity (Doctor, MedicalStore, Lab, Ambulance, Hospital) has its own top-level collection, ensuring that listing operations are always secure. There's no need for filtering based on user roles within a single collection."
+    "reasoning": "The Firestore structure is designed to securely manage data for the Rams.com application, focusing on user roles (Patients, Doctors, Medical Stores, Labs, Ambulance Services). Each entity has its own top-level collection. This approach simplifies security rules, as each collection has a homogeneous security posture.\n\n**Authorization Independence:** This design inherently supports authorization independence. Because the app does not implement collaborative features on the data itself (such as collaborative patient records), there is no need to denormalize data for authorization purposes. Each entity manages its own data, which is linked to the Firebase Authentication `uid` via path-based ownership, ensuring that each entity can only access their own data. For the Intelligent Medical Search, this structure allows for efficient querying and filtering based on entity types without needing to perform complex joins or subqueries that might compromise security.\n\n**QAPs (Rules are not Filters):** This structure naturally supports secure `list` operations. Since each role has its own dedicated collection, listing entities is straightforward and doesn't require complex filtering within the rules. For example, listing all Doctors involves querying the `/doctors` collection, and the security rules can easily restrict access based on authentication status and potentially other role-based criteria."
   }
 }

@@ -1,167 +1,257 @@
 /**
- * @fileOverview Firestore Security Rules for a dynamic healthcare app.
- *
- * Core Philosophy:
- * This ruleset enforces a user-ownership model, where each registered entity (patient, doctor, medical store, lab, ambulance, hospital)
- * can only be created, read, updated, or deleted by the authenticated user who owns that entity.
+ * @fileOverview
+ * This ruleset enforces a strict user-ownership model for all data stored in Firestore.
+ * Each top-level collection (patients, doctors, medicalStores, labs, ambulanceServices)
+ * is designed to be accessed only by the entity with the matching ID.
  *
  * Data Structure:
- * The Firestore database is structured with top-level collections for each entity type:
- * /patients/{patientId}
- * /doctors/{doctorId}
- * /medicalStores/{medicalStoreId}
- * /labs/{labId}
- * /ambulances/{ambulanceId}
- * /hospitals/{hospitalId}
+ * All data is stored in top-level collections named after the entity type
+ * (e.g., `/patients/{patientId}`, `/doctors/{doctorId}`).
  *
  * Key Security Decisions:
- * - User-owned entities are restricted to CRUD operations only by their respective owners.
- * - Listing of user entities is allowed only for authenticated owners.
- * - Data validation is limited to authorization-critical fields, allowing flexible data shapes during prototyping.
- * - The rule set prioritizes authorization and access control and assumes that all data is private to the
- *   respective owner unless explicitly stated otherwise.
+ * - No user listing is allowed. Listing is restricted to owners of the entity type.
+ * - Data validation is minimal, focusing on authorization and relational integrity
+ *   (e.g., ensuring the document ID matches the authenticated user's ID).
+ * - Write operations are strictly controlled, requiring authentication and
+ *   ownership validation.
  *
  * Denormalization for Authorization:
- * - The document ID is used as the ownership identifier and is enforced in both creation and updates.
- *
- * Structural Segregation:
- * - All entities are stored in separate top-level collections, making authorization simpler and more performant.
+ *  - The document ID acts as the owner ID, which allows the rules to verify ownership
+ *    via the `isOwner(entityId)` helper function. This avoids the need for additional
+ *    `get()` calls to determine ownership.
  */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * @description Manages access control for patient profiles.
+     * @description Manages access to patient data. Only the patient with the matching ID can read, update, or delete their own data.
      * @path /patients/{patientId}
-     * @allow (create) - Authenticated user creates their own profile: request.auth.uid == patientId
-     * @allow (get, list) - Authenticated user can read their own profile.
-     * @allow (update, delete) - Authenticated user can modify their own profile.
-     * @deny (create) - Non-authenticated user attempts to create a profile.
-     * @deny (update, delete) - Authenticated user attempts to modify someone else's profile.
-     * @principle Enforces document ownership for writes and restricts access to a user's own data tree.
+     * @allow (create) - Authenticated user with UID 'patient123' can create a patient document at /patients/patient123.
+     * @allow (get) - Authenticated user with UID 'patient123' can get their patient document at /patients/patient123.
+     * @allow (update) - Authenticated user with UID 'patient123' can update their patient document at /patients/patient123.
+     * @allow (delete) - Authenticated user with UID 'patient123' can delete their patient document at /patients/patient123.
+     * @deny (create) - Authenticated user with UID 'doctor456' cannot create a patient document at /patients/patient123.
+     * @deny (get) - Authenticated user with UID 'doctor456' cannot get the patient document at /patients/patient123.
+     * @deny (update) - Authenticated user with UID 'doctor456' cannot update the patient document at /patients/patient123.
+     * @deny (delete) - Authenticated user with UID 'doctor456' cannot delete the patient document at /patients/patient123.
+     * @principle Enforces document ownership for all operations on patient data.
      */
     match /patients/{patientId} {
-      // Authentication check
-      allow get, list: if isSignedIn() && isOwner(patientId);
-      allow create: if isSignedIn() && isOwner(patientId) && request.resource.data.id == patientId;
-      allow update: if isSignedIn() && isExistingOwner(patientId) && request.resource.data.id == resource.data.id;
-      allow delete: if isSignedIn() && isExistingOwner(patientId);
+      // Helper function to check if the user is signed in
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      // Helper function to check if the authenticated user's ID matches the patientId
+      function isOwner(patientId) {
+        return isSignedIn() && request.auth.uid == patientId;
+      }
+
+      // Helper function to check if the authenticated user is the existing owner
+      function isExistingOwner(patientId) {
+        return isOwner(patientId) && resource != null;
+      }
+
+      // Allow anyone to read the document if they are the owner
+      allow get: if isOwner(patientId);
+      allow list: if isOwner(patientId);
+
+      // Allow create if the user is signed in and the patientId matches the authenticated user's ID.
+      // Also validate that the document ID matches the patientId in the request.
+      allow create: if isOwner(patientId) && request.resource.data.id == patientId;
+
+      // Allow update if the user is signed in, the patientId matches the authenticated user's ID,
+      // and the document already exists. Enforce immutability of the 'id' field.
+      allow update: if isExistingOwner(patientId) && request.resource.data.id == resource.data.id;
+
+      // Allow delete if the user is signed in, the patientId matches the authenticated user's ID,
+      // and the document already exists.
+      allow delete: if isExistingOwner(patientId);
     }
 
     /**
-     * @description Manages access control for doctor profiles.
+     * @description Manages access to doctor data. Only the doctor with the matching ID can read, update, or delete their own data.
      * @path /doctors/{doctorId}
-     * @allow (create) - Authenticated user creates their own profile: request.auth.uid == doctorId
-     * @allow (get, list) - Authenticated user can read their own profile.
-     * @allow (update, delete) - Authenticated user can modify their own profile.
-     * @deny (create) - Non-authenticated user attempts to create a profile.
-     * @deny (update, delete) - Authenticated user attempts to modify someone else's profile.
-     * @principle Enforces document ownership for writes and restricts access to a user's own data tree.
+     * @allow (create) - Authenticated user with UID 'doctor456' can create a doctor document at /doctors/doctor456.
+     * @allow (get) - Authenticated user with UID 'doctor456' can get their doctor document at /doctors/doctor456.
+     * @allow (update) - Authenticated user with UID 'doctor456' can update their doctor document at /doctors/doctor456.
+     * @allow (delete) - Authenticated user with UID 'doctor456' can delete their doctor document at /doctors/doctor456.
+     * @deny (create) - Authenticated user with UID 'patient123' cannot create a doctor document at /doctors/doctor456.
+     * @deny (get) - Authenticated user with UID 'patient123' cannot get the doctor document at /doctors/doctor456.
+     * @deny (update) - Authenticated user with UID 'patient123' cannot update the doctor document at /doctors/doctor456.
+     * @deny (delete) - Authenticated user with UID 'patient123' cannot delete the doctor document at /doctors/doctor456.
+     * @principle Enforces document ownership for all operations on doctor data.
      */
     match /doctors/{doctorId} {
-      allow get, list: if isSignedIn() && isOwner(doctorId);
-      allow create: if isSignedIn() && isOwner(doctorId) && request.resource.data.id == doctorId;
-      allow update: if isSignedIn() && isExistingOwner(doctorId) && request.resource.data.id == resource.data.id;
-      allow delete: if isSignedIn() && isExistingOwner(doctorId);
+      // Helper function to check if the user is signed in
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      // Helper function to check if the authenticated user's ID matches the doctorId
+      function isOwner(doctorId) {
+        return isSignedIn() && request.auth.uid == doctorId;
+      }
+
+      // Helper function to check if the authenticated user is the existing owner
+      function isExistingOwner(doctorId) {
+        return isOwner(doctorId) && resource != null;
+      }
+
+      // Allow anyone to read the document if they are the owner
+      allow get: if isOwner(doctorId);
+      allow list: if isOwner(doctorId);
+
+      // Allow create if the user is signed in and the doctorId matches the authenticated user's ID.
+      // Also validate that the document ID matches the doctorId in the request.
+      allow create: if isOwner(doctorId) && request.resource.data.id == doctorId;
+
+      // Allow update if the user is signed in, the doctorId matches the authenticated user's ID,
+      // and the document already exists. Enforce immutability of the 'id' field.
+      allow update: if isExistingOwner(doctorId) && request.resource.data.id == resource.data.id;
+
+      // Allow delete if the user is signed in, the doctorId matches the authenticated user's ID,
+      // and the document already exists.
+      allow delete: if isExistingOwner(doctorId);
     }
 
     /**
-     * @description Manages access control for medical store profiles.
+     * @description Manages access to medical store data. Only the medical store with the matching ID can read, update, or delete their own data.
      * @path /medicalStores/{medicalStoreId}
-     * @allow (create) - Authenticated user creates their own profile: request.auth.uid == medicalStoreId
-     * @allow (get, list) - Authenticated user can read their own profile.
-     * @allow (update, delete) - Authenticated user can modify their own profile.
-     * @deny (create) - Non-authenticated user attempts to create a profile.
-     * @deny (update, delete) - Authenticated user attempts to modify someone else's profile.
-     * @principle Enforces document ownership for writes and restricts access to a user's own data tree.
+     * @allow (create) - Authenticated user with UID 'store789' can create a medical store document at /medicalStores/store789.
+     * @allow (get) - Authenticated user with UID 'store789' can get their medical store document at /medicalStores/store789.
+     * @allow (update) - Authenticated user with UID 'store789' can update their medical store document at /medicalStores/store789.
+     * @allow (delete) - Authenticated user with UID 'store789' can delete their medical store document at /medicalStores/store789.
+     * @deny (create) - Authenticated user with UID 'patient123' cannot create a medical store document at /medicalStores/store789.
+     * @deny (get) - Authenticated user with UID 'patient123' cannot get the medical store document at /medicalStores/store789.
+     * @deny (update) - Authenticated user with UID 'patient123' cannot update the medical store document at /medicalStores/store789.
+     * @deny (delete) - Authenticated user with UID 'patient123' cannot delete the medical store document at /medicalStores/store789.
+     * @principle Enforces document ownership for all operations on medical store data.
      */
     match /medicalStores/{medicalStoreId} {
-      allow get, list: if isSignedIn() && isOwner(medicalStoreId);
-      allow create: if isSignedIn() && isOwner(medicalStoreId) && request.resource.data.id == medicalStoreId;
-      allow update: if isSignedIn() && isExistingOwner(medicalStoreId) && request.resource.data.id == resource.data.id;
-      allow delete: if isSignedIn() && isExistingOwner(medicalStoreId);
+      // Helper function to check if the user is signed in
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      // Helper function to check if the authenticated user's ID matches the medicalStoreId
+      function isOwner(medicalStoreId) {
+        return isSignedIn() && request.auth.uid == medicalStoreId;
+      }
+
+      // Helper function to check if the authenticated user is the existing owner
+      function isExistingOwner(medicalStoreId) {
+        return isOwner(medicalStoreId) && resource != null;
+      }
+
+      // Allow anyone to read the document if they are the owner
+      allow get: if isOwner(medicalStoreId);
+      allow list: if isOwner(medicalStoreId);
+
+      // Allow create if the user is signed in and the medicalStoreId matches the authenticated user's ID.
+      // Also validate that the document ID matches the medicalStoreId in the request.
+      allow create: if isOwner(medicalStoreId) && request.resource.data.id == medicalStoreId;
+
+      // Allow update if the user is signed in, the medicalStoreId matches the authenticated user's ID,
+      // and the document already exists. Enforce immutability of the 'id' field.
+      allow update: if isExistingOwner(medicalStoreId) && request.resource.data.id == resource.data.id;
+
+      // Allow delete if the user is signed in, the medicalStoreId matches the authenticated user's ID,
+      // and the document already exists.
+      allow delete: if isExistingOwner(medicalStoreId);
     }
 
     /**
-     * @description Manages access control for lab profiles.
+     * @description Manages access to lab data. Only the lab with the matching ID can read, update, or delete their own data.
      * @path /labs/{labId}
-     * @allow (create) - Authenticated user creates their own profile: request.auth.uid == labId
-     * @allow (get, list) - Authenticated user can read their own profile.
-     * @allow (update, delete) - Authenticated user can modify their own profile.
-     * @deny (create) - Non-authenticated user attempts to create a profile.
-     * @deny (update, delete) - Authenticated user attempts to modify someone else's profile.
-     * @principle Enforces document ownership for writes and restricts access to a user's own data tree.
+     * @allow (create) - Authenticated user with UID 'lab101' can create a lab document at /labs/lab101.
+     * @allow (get) - Authenticated user with UID 'lab101' can get their lab document at /labs/lab101.
+     * @allow (update) - Authenticated user with UID 'lab101' can update their lab document at /labs/lab101.
+     * @allow (delete) - Authenticated user with UID 'lab101' can delete their lab document at /labs/lab101.
+     * @deny (create) - Authenticated user with UID 'patient123' cannot create a lab document at /labs/lab101.
+     * @deny (get) - Authenticated user with UID 'patient123' cannot get the lab document at /labs/lab101.
+     * @deny (update) - Authenticated user with UID 'patient123' cannot update the lab document at /labs/lab101.
+     * @deny (delete) - Authenticated user with UID 'patient123' cannot delete the lab document at /labs/lab101.
+     * @principle Enforces document ownership for all operations on lab data.
      */
     match /labs/{labId} {
-      allow get, list: if isSignedIn() && isOwner(labId);
-      allow create: if isSignedIn() && isOwner(labId) && request.resource.data.id == labId;
-      allow update: if isSignedIn() && isExistingOwner(labId) && request.resource.data.id == resource.data.id;
-      allow delete: if isSignedIn() && isExistingOwner(labId);
+      // Helper function to check if the user is signed in
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      // Helper function to check if the authenticated user's ID matches the labId
+      function isOwner(labId) {
+        return isSignedIn() && request.auth.uid == labId;
+      }
+
+      // Helper function to check if the authenticated user is the existing owner
+      function isExistingOwner(labId) {
+        return isOwner(labId) && resource != null;
+      }
+
+      // Allow anyone to read the document if they are the owner
+      allow get: if isOwner(labId);
+      allow list: if isOwner(labId);
+
+      // Allow create if the user is signed in and the labId matches the authenticated user's ID.
+      // Also validate that the document ID matches the labId in the request.
+      allow create: if isOwner(labId) && request.resource.data.id == labId;
+
+      // Allow update if the user is signed in, the labId matches the authenticated user's ID,
+      // and the document already exists. Enforce immutability of the 'id' field.
+      allow update: if isExistingOwner(labId) && request.resource.data.id == resource.data.id;
+
+      // Allow delete if the user is signed in, the labId matches the authenticated user's ID,
+      // and the document already exists.
+      allow delete: if isExistingOwner(labId);
     }
 
     /**
-     * @description Manages access control for ambulance profiles.
-     * @path /ambulances/{ambulanceId}
-     * @allow (create) - Authenticated user creates their own profile: request.auth.uid == ambulanceId
-     * @allow (get, list) - Authenticated user can read their own profile.
-     * @allow (update, delete) - Authenticated user can modify their own profile.
-     * @deny (create) - Non-authenticated user attempts to create a profile.
-     * @deny (update, delete) - Authenticated user attempts to modify someone else's profile.
-     * @principle Enforces document ownership for writes and restricts access to a user's own data tree.
+     * @description Manages access to ambulance service data. Only the ambulance service with the matching ID can read, update, or delete their own data.
+     * @path /ambulanceServices/{ambulanceServiceId}
+     * @allow (create) - Authenticated user with UID 'ambulance555' can create an ambulance service document at /ambulanceServices/ambulance555.
+     * @allow (get) - Authenticated user with UID 'ambulance555' can get their ambulance service document at /ambulanceServices/ambulance555.
+     * @allow (update) - Authenticated user with UID 'ambulance555' can update their ambulance service document at /ambulanceServices/ambulance555.
+     * @allow (delete) - Authenticated user with UID 'ambulance555' can delete their ambulance service document at /ambulanceServices/ambulance555.
+     * @deny (create) - Authenticated user with UID 'patient123' cannot create an ambulance service document at /ambulanceServices/ambulance555.
+     * @deny (get) - Authenticated user with UID 'patient123' cannot get the ambulance service document at /ambulanceServices/ambulance555.
+     * @deny (update) - Authenticated user with UID 'patient123' cannot update the ambulance service document at /ambulanceServices/ambulance555.
+     * @deny (delete) - Authenticated user with UID 'patient123' cannot delete the ambulance service document at /ambulanceServices/ambulance555.
+     * @principle Enforces document ownership for all operations on ambulance service data.
      */
-    match /ambulances/{ambulanceId} {
-      allow get, list: if isSignedIn() && isOwner(ambulanceId);
-      allow create: if isSignedIn() && isOwner(ambulanceId) && request.resource.data.id == ambulanceId;
-      allow update: if isSignedIn() && isExistingOwner(ambulanceId) && request.resource.data.id == resource.data.id;
-      allow delete: if isSignedIn() && isExistingOwner(ambulanceId);
-    }
+    match /ambulanceServices/{ambulanceServiceId} {
+      // Helper function to check if the user is signed in
+      function isSignedIn() {
+        return request.auth != null;
+      }
 
-    /**
-     * @description Manages access control for hospital profiles.
-     * @path /hospitals/{hospitalId}
-     * @allow (create) - Authenticated user creates their own profile: request.auth.uid == hospitalId
-     * @allow (get, list) - Authenticated user can read their own profile.
-     * @allow (update, delete) - Authenticated user can modify their own profile.
-     * @deny (create) - Non-authenticated user attempts to create a profile.
-     * @deny (update, delete) - Authenticated user attempts to modify someone else's profile.
-     * @principle Enforces document ownership for writes and restricts access to a user's own data tree.
-     */
-    match /hospitals/{hospitalId} {
-      allow get, list: if isSignedIn() && isOwner(hospitalId);
-      allow create: if isSignedIn() && isOwner(hospitalId) && request.resource.data.id == hospitalId;
-      allow update: if isSignedIn() && isExistingOwner(hospitalId) && request.resource.data.id == resource.data.id;
-      allow delete: if isSignedIn() && isExistingOwner(hospitalId);
-    }
+      // Helper function to check if the authenticated user's ID matches the ambulanceServiceId
+      function isOwner(ambulanceServiceId) {
+        return isSignedIn() && request.auth.uid == ambulanceServiceId;
+      }
 
-    //----------------------------------------------------------------------------------------------
-    // Helper functions
-    //----------------------------------------------------------------------------------------------
+      // Helper function to check if the authenticated user is the existing owner
+      function isExistingOwner(ambulanceServiceId) {
+        return isOwner(ambulanceServiceId) && resource != null;
+      }
 
-    /**
-     * @description Checks if the user is signed in.
-     * @return {boolean} True if the user is signed in, false otherwise.
-     */
-    function isSignedIn() {
-      return request.auth != null;
-    }
+      // Allow anyone to read the document if they are the owner
+      allow get: if isOwner(ambulanceServiceId);
+      allow list: if isOwner(ambulanceServiceId);
 
-    /**
-     * @description Checks if the user is the owner of the document based on the document ID.
-     * @param {string} userId The user ID to check against.
-     * @return {boolean} True if the user is the owner, false otherwise.
-     */
-    function isOwner(userId) {
-      return request.auth.uid == userId;
-    }
+      // Allow create if the user is signed in and the ambulanceServiceId matches the authenticated user's ID.
+      // Also validate that the document ID matches the ambulanceServiceId in the request.
+      allow create: if isOwner(ambulanceServiceId) && request.resource.data.id == ambulanceServiceId;
 
-    /**
-     * @description Checks if the user is the owner of the document and the document exists.  This is to prevent updates or deletes on non-existent documents.
-     * @param {string} userId The user ID to check against.
-     * @return {boolean} True if the user is the owner and the document exists, false otherwise.
-     */
-    function isExistingOwner(userId) {
-        return isOwner(userId) && resource != null;
+      // Allow update if the user is signed in, the ambulanceServiceId matches the authenticated user's ID,
+      // and the document already exists. Enforce immutability of the 'id' field.
+      allow update: if isExistingOwner(ambulanceServiceId) && request.resource.data.id == resource.data.id;
+
+      // Allow delete if the user is signed in, the ambulanceServiceId matches the authenticated user's ID,
+      // and the document already exists.
+      allow delete: if isExistingOwner(ambulanceServiceId);
     }
   }
 }
