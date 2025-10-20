@@ -42,7 +42,7 @@ const initialState: SearchState = {
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" disabled={pending} className="w-full mt-4 h-12 text-base bg-accent hover:bg-accent/90">
+    <Button type="submit" disabled={pending} className="w-full mt-4 h-12 text-base bg-gradient-to-r from-primary to-accent text-white hover:opacity-90 transition-opacity">
       {pending ? (
         <>
           <div className="size-5 animate-spin rounded-full border-2 border-background border-t-transparent mr-2" />
