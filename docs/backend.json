@@ -1,0 +1,365 @@
+{
+  "entities": {
+    "Patient": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Patient",
+      "type": "object",
+      "description": "Represents a patient registered in the system.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the patient."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "First name of the patient."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Last name of the patient."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the patient.",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number of the patient."
+        },
+        "address": {
+          "type": "string",
+          "description": "Address of the patient."
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "description": "Date of birth of the patient.",
+          "format": "date-time"
+        },
+        "gender": {
+          "type": "string",
+          "description": "Gender of the patient."
+        }
+      },
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "email",
+        "phone"
+      ]
+    },
+    "Doctor": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Doctor",
+      "type": "object",
+      "description": "Represents a doctor registered in the system.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the doctor."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "First name of the doctor."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Last name of the doctor."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the doctor.",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number of the doctor."
+        },
+        "specialization": {
+          "type": "string",
+          "description": "Area of specialization of the doctor."
+        },
+        "hospitalId": {
+          "type": "string",
+          "description": "Reference to Hospital. (Relationship: Hospital 1:N Doctor)"
+        },
+        "availability": {
+          "type": "string",
+          "description": "Availability schedule of the doctor."
+        }
+      },
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "specialization",
+        "hospitalId"
+      ]
+    },
+    "MedicalStore": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "MedicalStore",
+      "type": "object",
+      "description": "Represents a medical store registered in the system.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the medical store."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the medical store."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the medical store.",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number of the medical store."
+        },
+        "address": {
+          "type": "string",
+          "description": "Address of the medical store."
+        },
+        "inventory": {
+          "type": "array",
+          "description": "Inventory of the medical store, referencing medicine ids.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "email",
+        "phone",
+        "address"
+      ]
+    },
+    "Lab": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Lab",
+      "type": "object",
+      "description": "Represents a lab registered in the system.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the lab."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the lab."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the lab.",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number of the lab."
+        },
+        "address": {
+          "type": "string",
+          "description": "Address of the lab."
+        },
+        "services": {
+          "type": "array",
+          "description": "List of services offered by the lab.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "email",
+        "phone",
+        "address"
+      ]
+    },
+    "Ambulance": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Ambulance",
+      "type": "object",
+      "description": "Represents an ambulance service registered in the system.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the ambulance service."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the ambulance service."
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number of the ambulance service."
+        },
+        "location": {
+          "type": "string",
+          "description": "Current location of the ambulance."
+        },
+        "availability": {
+          "type": "boolean",
+          "description": "Indicates if the ambulance is currently available."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "phone",
+        "location",
+        "availability"
+      ]
+    },
+    "Hospital": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Hospital",
+      "type": "object",
+      "description": "Represents a hospital in the system.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the hospital."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the hospital."
+        },
+        "address": {
+          "type": "string",
+          "description": "Address of the hospital."
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number of the hospital."
+        },
+        "location": {
+          "type": "string",
+          "description": "GPS coordinates of the hospital."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "address",
+        "phone"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/patients/{patientId}",
+        "definition": {
+          "entityName": "Patient",
+          "schema": {
+            "$ref": "#/backend/entities/Patient"
+          },
+          "description": "Stores patient profiles. Each patient document is uniquely identified by its patientId.",
+          "params": [
+            {
+              "name": "patientId",
+              "description": "Unique identifier for the patient."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/doctors/{doctorId}",
+        "definition": {
+          "entityName": "Doctor",
+          "schema": {
+            "$ref": "#/backend/entities/Doctor"
+          },
+          "description": "Stores doctor profiles. Each doctor document is uniquely identified by its doctorId.",
+          "params": [
+            {
+              "name": "doctorId",
+              "description": "Unique identifier for the doctor."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/medicalStores/{medicalStoreId}",
+        "definition": {
+          "entityName": "MedicalStore",
+          "schema": {
+            "$ref": "#/backend/entities/MedicalStore"
+          },
+          "description": "Stores medical store profiles. Each medicalStore document is uniquely identified by its medicalStoreId.",
+          "params": [
+            {
+              "name": "medicalStoreId",
+              "description": "Unique identifier for the medical store."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/labs/{labId}",
+        "definition": {
+          "entityName": "Lab",
+          "schema": {
+            "$ref": "#/backend/entities/Lab"
+          },
+          "description": "Stores lab profiles. Each lab document is uniquely identified by its labId.",
+          "params": [
+            {
+              "name": "labId",
+              "description": "Unique identifier for the lab."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/ambulances/{ambulanceId}",
+        "definition": {
+          "entityName": "Ambulance",
+          "schema": {
+            "$ref": "#/backend/entities/Ambulance"
+          },
+          "description": "Stores ambulance service profiles. Each ambulance document is uniquely identified by its ambulanceId.",
+          "params": [
+            {
+              "name": "ambulanceId",
+              "description": "Unique identifier for the ambulance service."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/hospitals/{hospitalId}",
+        "definition": {
+          "entityName": "Hospital",
+          "schema": {
+            "$ref": "#/backend/entities/Hospital"
+          },
+          "description": "Stores hospital profiles. Each hospital document is uniquely identified by its hospitalId.",
+          "params": [
+            {
+              "name": "hospitalId",
+              "description": "Unique identifier for the hospital."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore data structure is designed to support dynamic data storage for patients, doctors, medical stores, labs, ambulances, and hospitals, enabling user registration and profile creation as requested. Each entity type has its own top-level collection. This structure facilitates easy querying and management of each entity. User-related data (patients, doctors, medical stores, labs, and ambulances) is stored at the top level for easy access. No denormalization is needed as the app is not collaborative and only requires role-based access. This setup avoids complex authorization rules and simplifies data management.\n\nThis structure supports QAPs because each entity (Doctor, MedicalStore, Lab, Ambulance, Hospital) has its own top-level collection, ensuring that listing operations are always secure. There's no need for filtering based on user roles within a single collection."
+  }
+}
