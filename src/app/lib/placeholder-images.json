@@ -1,4 +1,3 @@
-
 {
   "doctor-1": {
     "src": "https://picsum.photos/seed/1/300/200",
@@ -191,5 +190,118 @@
   "counselor-avatar": {
     "src": "https://picsum.photos/seed/counselor/300/200",
     "hint": "counselor portrait"
+  },
+  "patient-avatar-0": {
+    "src": "https://picsum.photos/seed/patient0/100/100",
+    "hint": "person portrait"
+  },
+  "patient-avatar-1": {
+    "src": "https://picsum.photos/seed/patient1/100/100",
+    "hint": "smiling person"
+  },
+  "patient-avatar-2": {
+    "src": "https://picsum.photos/seed/patient2/100/100",
+    "hint": "woman portrait"
+  },
+  "patient-avatar-3": {
+    "src": "https://picsum.photos/seed/patient3/100/100",
+    "hint": "man portrait"
+  },
+  "client-avatar-1": {
+    "src": "https://picsum.photos/seed/client1/100/100",
+    "hint": "woman smiling"
+  },
+  "client-avatar-2": {
+    "src": "https://picsum.photos/seed/client2/100/100",
+    "hint": "man outdoor"
+  },
+  "provider-hero": {
+    "src": "https://picsum.photos/seed/provider-hero/800/600",
+    "hint": "doctors team"
+  },
+  "provider-doctor": {
+    "src": "https://picsum.photos/seed/provider-doctor/400/300",
+    "hint": "doctor smiling"
+  },
+  "provider-hospital": {
+    "src": "https://picsum.photos/seed/provider-hospital/400/300",
+    "hint": "hospital building"
+  },
+  "provider-pharmacy": {
+    "src": "https://picsum.photos/seed/provider-pharmacy/400/300",
+    "hint": "pharmacy interior"
+  },
+  "provider-lab": {
+    "src": "https://picsum.photos/seed/provider-lab/400/300",
+    "hint": "lab equipment"
+  },
+  "provider-ambulance": {
+    "src": "https://picsum.photos/seed/provider-ambulance/400/300",
+    "hint": "ambulance van"
+  },
+  "hospital-admin-avatar": {
+    "src": "https://picsum.photos/seed/hospital-admin/100/100",
+    "hint": "professional person"
+  },
+  "admin-avatar": {
+    "src": "https://picsum.photos/seed/admin-avatar/100/100",
+    "hint": "professional person"
+  },
+  "promo-1": {
+    "src": "https://picsum.photos/seed/promo1/1200/500",
+    "hint": "eye checkup"
+  },
+  "promo-2": {
+    "src": "https://picsum.photos/seed/promo2/1200/500",
+    "hint": "health checkup"
+  },
+  "promo-3": {
+    "src": "https://picsum.photos/seed/promo3/1200/500",
+    "hint": "medicine discount"
+  },
+  "health-loan-hero": {
+    "src": "https://picsum.photos/seed/loan-hero/800/600",
+    "hint": "financial support"
+  },
+  "health-card-hero": {
+    "src": "https://picsum.photos/seed/card-hero/800/600",
+    "hint": "health card"
+  },
+  "contact-hero": {
+    "src": "https://picsum.photos/seed/contact-hero/1200/400",
+    "hint": "customer support"
+  },
+  "wellness-expert-avatar": {
+    "src": "https://picsum.photos/seed/expert/100/100",
+    "hint": "professional person"
+  },
+  "lab-avatar-1": {
+    "src": "https://picsum.photos/seed/lab-avatar1/100/100",
+    "hint": "lab building"
+  },
+  "lab-avatar-2": {
+    "src": "https://picsum.photos/seed/lab-avatar2/100/100",
+    "hint": "lab logo"
+  },
+  "lab-avatar-3": {
+    "src": "https://picsum.photos/seed/lab-avatar3/100/100",
+    "hint": "diagnostics center"
+  },
+  "pharmacy-avatar-1": {
+    "src": "https://picsum.photos/seed/pharmacy-avatar1/100/100",
+    "hint": "pharmacy logo"
+  },
+  "pharmacy-avatar-2": {
+    "src": "https://picsum.photos/seed/pharmacy-avatar2/100/100",
+    "hint": "medical store"
+  },
+  "pharmacy-avatar-3": {
+    "src": "https://picsum.photos/seed/pharmacy-avatar3/100/100",
+    "hint": "drug store"
+  },
+  "hero-background": {
+    "src": "https://picsum.photos/seed/herobg/1920/1080",
+    "hint": "doctor patient interaction"
   }
 }
+    
