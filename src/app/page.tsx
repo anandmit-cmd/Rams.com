@@ -133,8 +133,8 @@ export default function LandingPage() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
               <Link href="/find-a-doctor" className="group">
-                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-blue-50 border-blue-200 hover:border-blue-400 transform hover:-translate-y-2 duration-300">
-                  <div className="p-3 rounded-full bg-blue-100 mb-4 transition-transform group-hover:scale-110">
+                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-blue-50 border-blue-200 hover:bg-blue-100 hover:border-blue-400 transform hover:-translate-y-2 duration-300">
+                  <div className="p-3 rounded-full bg-blue-100 group-hover:bg-blue-200 mb-4 transition-transform group-hover:scale-110">
                     <Users className="w-12 h-12 text-blue-600" />
                   </div>
                   <h3 className="text-xl font-bold text-blue-900">Find a Doctor</h3>
@@ -142,8 +142,8 @@ export default function LandingPage() {
                 </Card>
               </Link>
               <Link href="/find-a-hospital" className="group">
-                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-green-50 border-green-200 hover:border-green-400 transform hover:-translate-y-2 duration-300">
-                   <div className="p-3 rounded-full bg-green-100 mb-4 transition-transform group-hover:scale-110">
+                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-green-50 border-green-200 hover:bg-green-100 hover:border-green-400 transform hover:-translate-y-2 duration-300">
+                   <div className="p-3 rounded-full bg-green-100 group-hover:bg-green-200 mb-4 transition-transform group-hover:scale-110">
                     <Hospital className="w-12 h-12 text-green-600" />
                   </div>
                   <h3 className="text-xl font-bold text-green-900">Find a Hospital</h3>
@@ -151,8 +151,8 @@ export default function LandingPage() {
                 </Card>
               </Link>
                <Link href="/order-medicines" className="group">
-                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-indigo-50 border-indigo-200 hover:border-indigo-400 transform hover:-translate-y-2 duration-300">
-                   <div className="p-3 rounded-full bg-indigo-100 mb-4 transition-transform group-hover:scale-110">
+                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-indigo-50 border-indigo-200 hover:bg-indigo-100 hover:border-indigo-400 transform hover:-translate-y-2 duration-300">
+                   <div className="p-3 rounded-full bg-indigo-100 group-hover:bg-indigo-200 mb-4 transition-transform group-hover:scale-110">
                     <Pill className="w-12 h-12 text-indigo-600" />
                   </div>
                   <h3 className="text-xl font-bold text-indigo-900">Order Medicines</h3>
@@ -160,8 +160,8 @@ export default function LandingPage() {
                 </Card>
               </Link>
                <Link href="/book-lab-test" className="group">
-                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-purple-50 border-purple-200 hover:border-purple-400 transform hover:-translate-y-2 duration-300">
-                   <div className="p-3 rounded-full bg-purple-100 mb-4 transition-transform group-hover:scale-110">
+                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-purple-50 border-purple-200 hover:bg-purple-100 hover:border-purple-400 transform hover:-translate-y-2 duration-300">
+                   <div className="p-3 rounded-full bg-purple-100 group-hover:bg-purple-200 mb-4 transition-transform group-hover:scale-110">
                     <TestTube2 className="w-12 h-12 text-purple-600" />
                   </div>
                   <h3 className="text-xl font-bold text-purple-900">Book a Lab Test</h3>
@@ -170,8 +170,8 @@ export default function LandingPage() {
               </Link>
               <Link href="/book-ambulance" className="group">
                 <Card className="p-6 flex flex-col items-center justify-center text-center shadow-xl hover:shadow-2xl transition-all bg-red-100 border-2 border-red-500 hover:bg-red-200 w-full transform hover:-translate-y-2 duration-300">
-                  <div className="p-3 rounded-full bg-red-200 mb-4 relative">
-                    <Ambulance className="w-12 h-12 text-red-700 animate-ping" />
+                  <div className="p-3 rounded-full bg-red-200 group-hover:bg-red-300 mb-4 relative transition-colors">
+                    <Ambulance className="w-12 h-12 text-red-700" />
                      <span className="absolute h-full w-full top-0 left-0 animate-ping rounded-full bg-red-400 opacity-75"></span>
                   </div>
                   <h3 className="text-xl font-bold text-red-900">Book an Ambulance</h3>
@@ -179,8 +179,8 @@ export default function LandingPage() {
                 </Card>
               </Link>
                <Link href="/health-loan" className="group">
-                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-orange-50 border-orange-200 hover:border-orange-400 transform hover:-translate-y-2 duration-300">
-                   <div className="p-3 rounded-full bg-orange-100 mb-4 transition-transform group-hover:scale-110">
+                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-orange-50 border-orange-200 hover:bg-orange-100 hover:border-orange-400 transform hover:-translate-y-2 duration-300">
+                   <div className="p-3 rounded-full bg-orange-100 group-hover:bg-orange-200 mb-4 transition-transform group-hover:scale-110">
                     <HeartHandshake className="w-12 h-12 text-orange-600" />
                   </div>
                   <h3 className="text-xl font-bold text-orange-900">Get Health Loan</h3>
@@ -188,8 +188,8 @@ export default function LandingPage() {
                 </Card>
               </Link>
                <Link href="/rams-health-card" className="group">
-                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-teal-50 border-teal-200 hover:border-teal-400 transform hover:-translate-y-2 duration-300">
-                   <div className="p-3 rounded-full bg-teal-100 mb-4 transition-transform group-hover:scale-110">
+                <Card className="p-6 flex flex-col items-center justify-center text-center shadow-lg hover:shadow-2xl transition-all w-full bg-teal-50 border-teal-200 hover:bg-teal-100 hover:border-teal-400 transform hover:-translate-y-2 duration-300">
+                   <div className="p-3 rounded-full bg-teal-100 group-hover:bg-teal-200 mb-4 transition-transform group-hover:scale-110">
                     <ShieldCheck className="w-12 h-12 text-teal-600" />
                   </div>
                   <h3 className="text-xl font-bold text-teal-900">Health Card</h3>
