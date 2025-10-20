@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -11,9 +11,10 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { AppLogo } from '@/components/icons';
 import { Star, MapPin, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import placeholderImages from '@/lib/placeholder-images.json';
-import { db } from '@/lib/firebase';
-import { collection, addDoc, doc, getDoc, DocumentData, serverTimestamp } from "firebase/firestore"; 
+import placeholderImages from '@/app/lib/placeholder-images.json';
+import { useFirebase, useUser, useMemoFirebase } from '@/firebase';
+import { collection, addDoc, doc, serverTimestamp } from "firebase/firestore";
+import { useDoc } from '@/firebase/firestore/use-doc';
 
 const timeSlots = [
   '09:00 AM', '09:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM',
@@ -24,38 +25,20 @@ export default function BookAppointmentClientPage() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [isBooking, setIsBooking] = useState(false);
-  const [doctor, setDoctor] = useState<DocumentData | null>(null);
-  const [loadingDoctor, setLoadingDoctor] = useState(true);
   const { toast } = useToast();
   
+  const { user: patientUser, isUserLoading: isPatientLoading } = useUser();
+  const { firestore } = useFirebase();
+
   const searchParams = useSearchParams();
   const doctorId = searchParams.get('doctorId');
 
-  useEffect(() => {
-    const fetchDoctor = async () => {
-      if (!doctorId) {
-        setLoadingDoctor(false);
-        return;
-      }
-      try {
-        const docRef = doc(db, "users", doctorId);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setDoctor(docSnap.data());
-        } else {
-          console.log("No such doctor!");
-          toast({ title: "Doctor not found", variant: "destructive" });
-        }
-      } catch (error) {
-        console.error("Error fetching doctor:", error);
-        toast({ title: "Failed to load doctor details", variant: "destructive" });
-      } finally {
-        setLoadingDoctor(false);
-      }
-    };
-    fetchDoctor();
-  }, [doctorId, toast]);
+  const doctorRef = useMemoFirebase(() => {
+    if (!firestore || !doctorId) return null;
+    return doc(firestore, "users", doctorId);
+  }, [firestore, doctorId]);
 
+  const { data: doctor, isLoading: loadingDoctor } = useDoc(doctorRef);
 
   const handleBooking = async () => {
     if (!selectedDate || !selectedTime) {
@@ -74,14 +57,22 @@ export default function BookAppointmentClientPage() {
       });
       return;
     }
+
+    if(isPatientLoading) {
+      toast({ title: 'Please wait', description: 'Checking user authentication...' });
+      return;
+    }
     
     setIsBooking(true);
 
     try {
-        const patientName = 'Guest User'; // In a real app, patientId and name would come from auth state
+        const patientName = patientUser?.displayName || 'Guest User';
+        const patientId = patientUser?.uid || 'guest-patient-id';
+        const appointmentsCollection = collection(firestore, "appointments");
+        
         const appointmentData = {
             doctorId: doctorId,
-            patientId: 'some-patient-id', 
+            patientId: patientId,
             doctorName: doctor.fullName,
             patientName: patientName,
             date: selectedDate.toISOString().split('T')[0],
@@ -91,10 +82,11 @@ export default function BookAppointmentClientPage() {
             createdAt: serverTimestamp()
         };
 
-        await addDoc(collection(db, "appointments"), appointmentData);
+        await addDoc(appointmentsCollection, appointmentData);
 
         // Create a notification for the doctor
-        await addDoc(collection(db, "notifications"), {
+        const notificationsCollection = collection(firestore, "notifications");
+        await addDoc(notificationsCollection, {
             userId: doctorId, // The ID of the user to notify
             title: "New Appointment Booked!",
             body: `${patientName} has booked an appointment with you for ${selectedDate.toLocaleDateString()} at ${selectedTime}.`,
@@ -233,3 +225,5 @@ export default function BookAppointmentClientPage() {
     </div>
   );
 }
+
+    

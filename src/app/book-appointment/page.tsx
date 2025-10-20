@@ -1,14 +1,16 @@
 
 import React from 'react';
 import type { Metadata } from 'next';
-import { db } from '@/lib/firebase';
+import { initializeFirebase } from '@/firebase';
 import { doc, getDoc, DocumentData } from "firebase/firestore"; 
 import BookAppointmentClientPage from './book-appointment-client';
+import { FirebaseClientProvider } from '@/firebase/client-provider';
 
 async function fetchDoctorData(doctorId: string | null): Promise<DocumentData | null> {
     if (!doctorId) return null;
     try {
-        const docRef = doc(db, "users", doctorId);
+        const { firestore } = initializeFirebase();
+        const docRef = doc(firestore, "users", doctorId);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             return { id: docSnap.id, ...docSnap.data() };
@@ -40,8 +42,12 @@ export async function generateMetadata({ searchParams }: { searchParams: { [key:
 
 export default function BookAppointmentPage() {
   return (
-    <React.Suspense fallback={<div>Loading...</div>}>
-      <BookAppointmentClientPage />
-    </React.Suspense>
+    <FirebaseClientProvider>
+        <React.Suspense fallback={<div>Loading...</div>}>
+            <BookAppointmentClientPage />
+        </React.Suspense>
+    </FirebaseClientProvider>
   );
 }
+
+    
