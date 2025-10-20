@@ -8,15 +8,15 @@ import { Calendar, Stethoscope, FileText, Wallet, HeartPulse, ShieldPlus, HeartH
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { useState, useEffect } from 'react';
 import { Textarea } from '@/components/ui/textarea';
-import placeholderImages from '@/lib/placeholder-images.json';
+import placeholderImages from '@/app/lib/placeholder-images.json';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { auth, db } from '@/lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { doc, onSnapshot, collection, query, where, orderBy, limit } from 'firebase/firestore';
+import { doc, onSnapshot, collection, query, where, orderBy, limit, DocumentData } from 'firebase/firestore';
 
 
-interface Appointment {
+interface Appointment extends DocumentData {
     id: string;
     doctorName: string;
     date: string;
@@ -102,6 +102,8 @@ export default function PatientDashboard() {
   };
 
   const upcomingAppointment = appointments.find(a => a.status === 'Confirmed' && new Date(a.date) >= new Date(new Date().toDateString()));
+  const recentActivities = appointments.filter(a => a.status === 'Completed' || a.status === 'Cancelled').slice(0, 3);
+
 
   return (
     <main className="flex-1 p-6">
@@ -153,12 +155,13 @@ export default function PatientDashboard() {
                 <CardContent>
                     {loading ? <Loader2 className='animate-spin' /> : currentUser ? (
                     <div className="space-y-2">
+                        {/* This section can be made dynamic by fetching from a 'medical_records' collection */}
                         <div className="flex items-center justify-between p-2 rounded-lg bg-gray-50 border">
-                        <p className="text-sm font-medium">Blood Test Report (10th July)</p>
+                        <p className="text-sm font-medium">Blood Test Report (Sample)</p>
                         <Button variant="ghost" size="icon" className="h-8 w-8"><Download className="h-4 w-4" /></Button>
                         </div>
                         <div className="flex items-center justify-between p-2 rounded-lg bg-gray-50 border">
-                        <p className="text-sm font-medium">X-Ray Report (5th July)</p>
+                        <p className="text-sm font-medium">X-Ray Report (Sample)</p>
                         <Button variant="ghost" size="icon" className="h-8 w-8"><Download className="h-4 w-4" /></Button>
                         </div>
                     </div>
@@ -174,6 +177,7 @@ export default function PatientDashboard() {
                     <Wallet className="w-4 h-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
+                    {/* This can be made dynamic by fetching from a 'bills' collection */}
                     <div className="text-2xl font-bold">₹1,250.00</div>
                     <p className="text-xs text-muted-foreground">Due for recent consultation.</p>
                     <Button className="mt-4 w-full bg-accent hover:bg-accent/90">Pay Now</Button>
@@ -187,64 +191,60 @@ export default function PatientDashboard() {
                     <CardTitle>Recent Activity</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className="space-y-4">
-                        <div className="flex items-center justify-between p-2 rounded-lg bg-gray-50 border">
-                            <div>
-                                <p className="font-semibold">Consultation with Dr. Sharma</p>
-                                <p className="text-sm text-gray-500">12th July - Technical Issue</p>
-                            </div>
-                            <Button size="sm" variant="destructive">Request Refund</Button>
-                        </div>
-                            <div className="flex items-center justify-between p-2 rounded-lg bg-gray-50 border">
-                            <div>
-                                <p className="font-semibold">Lab Test from City Labs</p>
-                                <p className="text-sm text-gray-500">10th July - Completed</p>
-                            </div>
-                            <Button size="sm" variant="outline">Give Feedback</Button>
-                        </div>
-                        <div className="flex items-center justify-between p-2 rounded-lg bg-gray-50 border">
-                            <div>
-                                <p className="font-semibold">Appointment with Dr. Vikram</p>
-                                <p className="text-sm text-gray-500">8th July - Completed</p>
-                            </div>
-                            <Dialog>
-                                <DialogTrigger asChild>
-                                    <Button size="sm" variant="outline">Rate Doctor</Button>
-                                </DialogTrigger>
-                                <DialogContent>
-                                    <DialogHeader>
-                                        <DialogTitle>Rate your experience with Dr. Vikram</DialogTitle>
-                                        <DialogDescription>Your feedback helps us improve.</DialogDescription>
-                                    </DialogHeader>
-                                    <div className="flex flex-col items-center justify-center py-4">
-                                        <div className="flex items-center gap-2">
-                                            {[...Array(5)].map((_, index) => {
-                                                const starValue = index + 1;
-                                                return (
-                                                    <Star
-                                                        key={starValue}
-                                                        className={`w-10 h-10 cursor-pointer ${starValue <= (hoverRating || rating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
-                                                        onClick={() => setRating(starValue)}
-                                                        onMouseEnter={() => setHoverRating(starValue)}
-                                                        onMouseLeave={() => setHoverRating(0)}
-                                                    />
-                                                );
-                                            })}
-                                        </div>
-                                        <p className="mt-4 h-6 text-sm font-medium">
-                                            {hoverRating > 0 ? ratingLabels[hoverRating - 1] : rating > 0 ? ratingLabels[rating - 1] : 'Select a rating'}
-                                        </p>
-                                            <Textarea placeholder="Share your experience..." className="mt-4" />
+                     {loading ? <Loader2 className='animate-spin' /> : recentActivities.length > 0 ? (
+                        <div className="space-y-4">
+                            {recentActivities.map(activity => (
+                                <div key={activity.id} className="flex items-center justify-between p-2 rounded-lg bg-gray-50 border">
+                                    <div>
+                                        <p className="font-semibold">Appointment with {activity.doctorName}</p>
+                                        <p className="text-sm text-gray-500">{new Date(activity.date).toLocaleDateString()} - {activity.status}</p>
                                     </div>
-                                    <DialogFooter>
-                                        <DialogClose asChild>
-                                            <Button type="submit" onClick={handleFeedbackSubmit}>Submit Feedback</Button>
-                                        </DialogClose>
-                                    </DialogFooter>
-                                </DialogContent>
-                            </Dialog>
+                                    {activity.status === 'Completed' ? (
+                                        <Dialog>
+                                            <DialogTrigger asChild>
+                                                <Button size="sm" variant="outline">Rate Doctor</Button>
+                                            </DialogTrigger>
+                                            <DialogContent>
+                                                <DialogHeader>
+                                                    <DialogTitle>Rate your experience with {activity.doctorName}</DialogTitle>
+                                                    <DialogDescription>Your feedback helps us improve.</DialogDescription>
+                                                </DialogHeader>
+                                                <div className="flex flex-col items-center justify-center py-4">
+                                                    <div className="flex items-center gap-2">
+                                                        {[...Array(5)].map((_, index) => {
+                                                            const starValue = index + 1;
+                                                            return (
+                                                                <Star
+                                                                    key={starValue}
+                                                                    className={`w-10 h-10 cursor-pointer ${starValue <= (hoverRating || rating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
+                                                                    onClick={() => setRating(starValue)}
+                                                                    onMouseEnter={() => setHoverRating(starValue)}
+                                                                    onMouseLeave={() => setHoverRating(0)}
+                                                                />
+                                                            );
+                                                        })}
+                                                    </div>
+                                                    <p className="mt-4 h-6 text-sm font-medium">
+                                                        {hoverRating > 0 ? ratingLabels[hoverRating - 1] : rating > 0 ? ratingLabels[rating - 1] : 'Select a rating'}
+                                                    </p>
+                                                        <Textarea placeholder="Share your experience..." className="mt-4" />
+                                                </div>
+                                                <DialogFooter>
+                                                    <DialogClose asChild>
+                                                        <Button type="submit" onClick={handleFeedbackSubmit}>Submit Feedback</Button>
+                                                    </DialogClose>
+                                                </DialogFooter>
+                                            </DialogContent>
+                                        </Dialog>
+                                    ) : (
+                                        <Button size="sm" variant="secondary" disabled>Cancelled</Button>
+                                    )}
+                                </div>
+                            ))}
                         </div>
-                    </div>
+                    ) : (
+                        <p className="text-sm text-center text-muted-foreground py-8">{currentUser ? 'No recent activities found.' : 'Log in to see your activities.'}</p>
+                    )}
                 </CardContent>
             </Card>
             <Card>
@@ -252,12 +252,13 @@ export default function PatientDashboard() {
                     <CardTitle>My Prescriptions</CardTitle>
                 </CardHeader>
                 <CardContent className="grid grid-cols-1 gap-4">
+                    {/* This can be made dynamic from a 'prescriptions' collection */}
                     <div className="flex items-center justify-between p-2 rounded-lg border">
-                        <p className="text-sm font-medium">Prescription from Dr. Sharma (12th July)</p>
+                        <p className="text-sm font-medium">Prescription from Dr. Sharma (Sample)</p>
                         <Button variant="ghost" size="icon" className="h-8 w-8"><Download className="h-4 w-4" /></Button>
                     </div>
                     <div className="flex items-center justify-between p-2 rounded-lg border">
-                        <p className="text-sm font-medium">Uploaded Prescription (9th July)</p>
+                        <p className="text-sm font-medium">Uploaded Prescription (Sample)</p>
                         <Button variant="ghost" size="icon" className="h-8 w-8"><Download className="h-4 w-4" /></Button>
                     </div>
                     <Dialog>

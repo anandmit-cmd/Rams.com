@@ -1,29 +1,30 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { AppLogo } from '@/components/icons';
 import { Input } from '@/components/ui/input';
-import { Search, ShoppingCart, Truck, Store, ArrowLeft, FileUp, X, Minus, Plus } from 'lucide-react';
+import { Search, ShoppingCart, Truck, Store, ArrowLeft, FileUp, X, Minus, Plus, Loader2 } from 'lucide-react';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import placeholderImages from '@/lib/placeholder-images.json';
+import placeholderImages from '@/app/lib/placeholder-images.json';
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from '@/components/ui/sheet';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { collection, getDocs, QuerySnapshot, DocumentData } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
-const medicines = [
-  { name: 'Paracetamol 500mg', description: 'For fever and pain relief', price: 25.50, image: placeholderImages['medicine-1'] },
-  { name: 'Aspirin 75mg', description: 'Blood thinner, prevents clots', price: 15.00, image: placeholderImages['medicine-2'] },
-  { name: 'Amoxicillin 250mg', description: 'Antibiotic for bacterial infections', price: 75.00, image: placeholderImages['medicine-3'] },
-  { name: 'Cetirizine 10mg', description: 'For allergy relief', price: 30.00, image: placeholderImages['medicine-4'] },
-  { name: 'Omeprazole 20mg', description: 'For acidity and heartburn', price: 45.00, image: placeholderImages['medicine-5'] },
-  { name: 'Multivitamin Tablets', description: 'Supports overall health', price: 150.00, image: placeholderImages['medicine-6'] },
-];
+type Medicine = {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  image: { src: string; hint: string };
+};
 
 type CartItem = {
   name: string;
@@ -36,8 +37,40 @@ type CartItem = {
 export default function OrderMedicinesPage() {
     const { toast } = useToast();
     const [cart, setCart] = useState<CartItem[]>([]);
+    const [medicines, setMedicines] = useState<Medicine[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    const handleAddToCart = (medicine: typeof medicines[0]) => {
+    useEffect(() => {
+      const fetchMedicines = async () => {
+        setLoading(true);
+        try {
+          const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(collection(db, "medicines"));
+          const medsData: Medicine[] = querySnapshot.docs.map((doc, index) => {
+              const data = doc.data();
+              return {
+                  id: doc.id,
+                  name: data.name || 'Unnamed Medicine',
+                  description: data.description || 'No description available.',
+                  price: data.price || 0,
+                  image: placeholderImages[`medicine-${(index % 6) + 1}` as keyof typeof placeholderImages] || placeholderImages['medicine-1'],
+              };
+          });
+          setMedicines(medsData);
+        } catch (error) {
+          console.error("Error fetching medicines: ", error);
+          toast({
+            title: 'Error',
+            description: 'Could not fetch medicines from the database.',
+            variant: 'destructive',
+          });
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchMedicines();
+    }, [toast]);
+
+    const handleAddToCart = (medicine: Medicine) => {
       setCart((prevCart) => {
         const existingItem = prevCart.find((item) => item.name === medicine.name);
         if (existingItem) {
@@ -186,25 +219,35 @@ export default function OrderMedicinesPage() {
                 </CardContent>
               </Card>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {medicines.map((med, index) => (
-                  <Card key={index} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow">
-                    <div className="relative h-48">
-                      <Image src={med.image.src} alt={med.name} fill style={{ objectFit: 'cover' }} data-ai-hint={med.image.hint} />
-                    </div>
-                    <CardContent className="p-4">
-                      <h3 className="font-bold text-lg text-gray-800">{med.name}</h3>
-                      <p className="text-sm text-muted-foreground h-10">{med.description}</p>
-                      <p className="font-bold text-xl my-2">₹{med.price.toFixed(2)}</p>
-                      
-                           <Button className="w-full mt-2" onClick={() => handleAddToCart(med)}>
-                            <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
-                          </Button>
-                      
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+              {loading ? (
+                <div className="flex justify-center items-center py-16">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                    <p className="ml-4">Loading medicines...</p>
+                </div>
+              ) : medicines.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {medicines.map((med) => (
+                    <Card key={med.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow">
+                      <div className="relative h-48">
+                        <Image src={med.image.src} alt={med.name} fill style={{ objectFit: 'cover' }} data-ai-hint={med.image.hint} />
+                      </div>
+                      <CardContent className="p-4">
+                        <h3 className="font-bold text-lg text-gray-800">{med.name}</h3>
+                        <p className="text-sm text-muted-foreground h-10">{med.description || 'No description available.'}</p>
+                        <p className="font-bold text-xl my-2">₹{med.price.toFixed(2)}</p>
+                        <Button className="w-full mt-2" onClick={() => handleAddToCart(med)}>
+                          <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-16">
+                    <p className="text-lg text-muted-foreground">No medicines found.</p>
+                    <p className="text-sm text-muted-foreground">Ask a pharmacy to add medicines to their inventory.</p>
+                </div>
+              )}
             </div>
           </main>
         </div>
