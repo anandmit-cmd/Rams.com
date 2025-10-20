@@ -57,3 +57,29 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .animated-gradient-border {
+    @apply relative overflow-hidden;
+  }
+
+  .animated-gradient-border::before {
+    content: '';
+    @apply absolute -top-1/2 -left-1/2 w-[200%] h-[200%] bg-gradient-to-r from-[#1FA2FF] via-[#12D8FA] to-[#A6FFCB] opacity-0 transition-opacity duration-500;
+    animation: rotate 6s linear infinite;
+  }
+
+  .animated-gradient-border:hover::before {
+    @apply opacity-100;
+  }
+  
+  .animated-gradient-border > * {
+    @apply relative z-10;
+  }
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
