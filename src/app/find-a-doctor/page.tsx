@@ -16,7 +16,8 @@ import { RankBadge } from '@/components/rank-badge';
 import placeholderImages from '@/app/lib/placeholder-images.json';
 import { useCollection } from '@/firebase/firestore/use-collection';
 import { collection, query, where } from 'firebase/firestore';
-import { useFirebase } from '@/firebase';
+import { useFirebase, useMemoFirebase } from '@/firebase';
+import { FirebaseClientProvider } from '@/firebase/client-provider';
 
 type Doctor = {
     id: string;
@@ -41,10 +42,14 @@ const specialties = [
   { name: 'General Medicine', icon: Stethoscope },
 ];
 
-export default function FindDoctorPage() {
+function FindDoctorPage() {
     const { firestore } = useFirebase();
 
-    const doctorsQuery = firestore ? query(collection(firestore, "users"), where("role", "==", "doctor")) : null;
+    const doctorsQuery = useMemoFirebase(() => {
+        if (!firestore) return null;
+        return query(collection(firestore, "users"), where("role", "==", "doctor"));
+    }, [firestore]);
+    
     const { data: allDoctors, isLoading: loading } = useCollection<Omit<Doctor, 'id' | 'image' | 'rank' | 'consultationFee'>>(doctorsQuery);
 
     const doctorsData: Doctor[] = allDoctors ? allDoctors.map((doc, index) => {
@@ -161,7 +166,7 @@ export default function FindDoctorPage() {
                                     {featuredDoctors.map((doctor) => (
                                          <Card key={doctor.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow">
                                             <div className="relative h-52">
-                                                <Image src={doctor.image.src} alt={`Photo of ${doctor.fullName}`} fill style={{ objectFit: 'cover' }} data-ai-hint={doctor.image.hint} />
+                                                <Image src={doctor.image.src} alt={`Photo of ${'doctor.fullName'}`} fill style={{ objectFit: 'cover' }} data-ai-hint={doctor.image.hint} />
                                                  {doctor.rank && <RankBadge rank={doctor.rank} className="absolute top-2 right-2"/>}
                                             </div>
                                             <CardContent className="p-4">
@@ -206,7 +211,7 @@ export default function FindDoctorPage() {
                                 {doctorsData.map((doctor) => (
                                      <Card key={doctor.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow">
                                         <div className="relative h-52">
-                                            <Image src={doctor.image.src} alt={`Photo of ${doctor.fullName}`} fill style={{ objectFit: 'cover' }} data-ai-hint={doctor.image.hint} />
+                                            <Image src={doctor.image.src} alt={`Photo of ${'doctor.fullName'}`} fill style={{ objectFit: 'cover' }} data-ai-hint={doctor.image.hint} />
                                              {doctor.rank && <RankBadge rank={doctor.rank} className="absolute top-2 right-2"/>}
                                         </div>
                                         <CardContent className="p-4">
@@ -319,6 +324,14 @@ export default function FindDoctorPage() {
       </footer>
     </div>
   );
+}
+
+export default function FindDoctorPageWrapper() {
+    return (
+        <FirebaseClientProvider>
+            <FindDoctorPage />
+        </FirebaseClientProvider>
+    )
 }
 
     
