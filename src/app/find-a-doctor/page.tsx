@@ -13,10 +13,10 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { Globe } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { RankBadge } from '@/components/rank-badge';
-import placeholderImages from '@/lib/placeholder-images.json';
-import { db } from '@/lib/firebase';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import placeholderImages from '@/app/lib/placeholder-images.json';
+import { useCollection } from '@/firebase/firestore/use-collection';
+import { collection, query, where } from 'firebase/firestore';
+import { useFirebase } from '@/firebase';
 
 type Doctor = {
     id: string;
@@ -42,45 +42,28 @@ const specialties = [
 ];
 
 export default function FindDoctorPage() {
-    const [allDoctors, setAllDoctors] = useState<Doctor[]>([]);
-    const [loading, setLoading] = useState(true);
+    const { firestore } = useFirebase();
 
-    useEffect(() => {
-        const fetchDoctors = async () => {
-            setLoading(true);
-            try {
-                 const allQuery = query(collection(db, "users"), where("role", "==", "doctor"));
-                const allSnapshot = await getDocs(allQuery);
-                const allData = allSnapshot.docs.map((doc, index) => {
-                    const data = doc.data();
-                    const rank = data.rank || 'bronze';
-                    return {
-                        id: doc.id,
-                        fullName: data.fullName || 'N/A',
-                        specialty: data.specialty || 'N/A',
-                        location: data.location || 'Mumbai, IN',
-                        rating: data.rating || 4.5,
-                        reviews: data.reviews || 50,
-                        availability: data.availability || 'Online',
-                        image: placeholderImages[`doctor-${(index % 6) + 1}` as keyof typeof placeholderImages] || placeholderImages['doctor-1'],
-                        rank: rank,
-                        consultationFee: data.consultationFee || (rank === 'gold' ? 1500 : rank === 'silver' ? 1200 : 1000),
-                    } as Doctor;
-                });
-                
-                setAllDoctors(allData);
+    const doctorsQuery = firestore ? query(collection(firestore, "users"), where("role", "==", "doctor")) : null;
+    const { data: allDoctors, isLoading: loading } = useCollection<Omit<Doctor, 'id' | 'image' | 'rank' | 'consultationFee'>>(doctorsQuery);
 
-            } catch (error) {
-                console.error("Error fetching doctors:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+    const doctorsData: Doctor[] = allDoctors ? allDoctors.map((doc, index) => {
+        const rank = doc.rank || 'bronze';
+        return {
+            id: doc.id,
+            fullName: doc.fullName || 'N/A',
+            specialty: doc.specialty || 'N/A',
+            location: doc.location || 'Mumbai, IN',
+            rating: doc.rating || 4.5,
+            reviews: doc.reviews || 50,
+            availability: doc.availability || 'Online',
+            image: placeholderImages[`doctor-${(index % 6) + 1}` as keyof typeof placeholderImages] || placeholderImages['doctor-1'],
+            rank: rank,
+            consultationFee: doc.consultationFee || (rank === 'gold' ? 1500 : rank === 'silver' ? 1200 : 1000),
+        }
+    }) : [];
 
-        fetchDoctors();
-    }, []);
-    
-    const featuredDoctors = allDoctors.filter(d => d.rank === 'gold');
+    const featuredDoctors = doctorsData.filter(d => d.rank === 'gold');
 
 
   return (
@@ -218,9 +201,9 @@ export default function FindDoctorPage() {
                             <div className="text-center mb-8">
                                 <h2 className="text-3xl font-bold tracking-tighter text-gray-800">All Doctors</h2>
                             </div>
-                           {allDoctors.length > 0 ? (
+                           {doctorsData.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {allDoctors.map((doctor) => (
+                                {doctorsData.map((doctor) => (
                                      <Card key={doctor.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow">
                                         <div className="relative h-52">
                                             <Image src={doctor.image.src} alt={`Photo of ${doctor.fullName}`} fill style={{ objectFit: 'cover' }} data-ai-hint={doctor.image.hint} />
@@ -257,7 +240,7 @@ export default function FindDoctorPage() {
                                 ))}
                             </div>
                              ) : (
-                                <p className="text-center text-muted-foreground">No doctors found.</p>
+                                <p className="text-center text-muted-foreground">No doctors found. Try creating one from the registration page.</p>
                             )}
                         </section>
                     </>
